@@ -5,109 +5,128 @@ let calendar;
 
 async function loadData() {
 
-  const response = await fetch("https://script.google.com/macros/s/AKfycbziPshmMJAQ1PF5MaQYa1iwvTJuIxAEt3xOkY0HbfsNDChmVCyTctEWejvJnXVSSQl9/exec");
-  const data = await response.json();
+  try {
 
-  // =====================
-  // 公告
-  // =====================
-  const notices = data.notices || [];
-  const noticeList = document.getElementById("notice-list");
+    const response = await fetch("https://script.google.com/macros/s/AKfycbziPshmMJAQ1PF5MaQYa1iwvTJuIxAEt3xOkY0HbfsNDChmVCyTctEWejvJnXVSSQl9/exec");
 
-  noticeList.innerHTML = "";
+    const data = await response.json();
 
-  for (let i = 1; i < notices.length; i++) {
-    const row = notices[i];
+    // 公告
+    const notices = data.notices || [];
+    const noticeList = document.getElementById("notice-list");
 
-    noticeList.innerHTML += `
-      <div class="notice">
-        <b>${row[0] || ''}</b><br>
-        <small>${row[1] || ''}</small>
-        <p>${row[2] || ''}</p>
-      </div>
-    `;
-  }
+    noticeList.innerHTML = "";
 
-  // =====================
-  // 日曆
-  // =====================
-  calendarEvents = [];
+    for (let i = 1; i < notices.length; i++) {
 
-  const calendarData = data.calendar || [];
+      const row = notices[i];
 
-  for (let i = 1; i < calendarData.length; i++) {
-    const row = calendarData[i];
-
-    const date = row[0];
-    const type = row[1];
-    const title = row[2];
-
-    let color = '#ca8cff';
-
-    if (type === '簽售') color = '#ff7a7a';
-    if (type === '出境') color = '#7dff9b';
-    if (type === '舞台') color = '#79a9ff';
-    if (type === '時裝周') color = '#ffd96e';
-
-    calendarEvents.push({
-      title: title,
-      start: date,
-      color: color
-    });
-  }
-
-  // =====================
-  // 拆況（只留一份，已修正）
-  // =====================
-  const splitData = [
-    ["WORLD TOUR", "弘中", "20", "18", "2", "尚未成團"],
-    ["WORLD TOUR", "星化", "15", "15", "0", "已成團 可先候補"]
-  ];
-
-  const splitList = document.getElementById("split-list");
-  splitList.innerHTML = "";
-
-  for (let i = 0; i < splitData.length; i++) {
-
-    const row = splitData[i];
-
-    const event = row[0];
-    const member = row[1];
-    const target = row[2];
-    const current = row[3];
-    const remain = row[4];
-    const status = row[5];
-
-    let statusColor = '#ff7a7a';
-    if (status === '已成團 可先候補') {
-      statusColor = '#7dff9b';
+      noticeList.innerHTML += `
+        <div class="notice">
+          <b>${row[0] || ''}</b><br>
+          <small>${row[1] || ''}</small>
+          <p>${row[2] || ''}</p>
+        </div>
+      `;
     }
 
-    let statusText = `還差${remain}包成團`;
-    if (status === '已成團 可先候補') {
-      statusText = '已成團 可先候補';
+    // 日曆
+    calendarEvents = [];
+
+    const calendarData = data.calendar || [];
+
+    for (let i = 1; i < calendarData.length; i++) {
+
+      const row = calendarData[i];
+
+      const date = row[0];
+      const type = row[1];
+      const title = row[2];
+
+      let color = '#ca8cff';
+
+      if (type === '簽售') color = '#ff7a7a';
+      if (type === '出境') color = '#7dff9b';
+      if (type === '舞台') color = '#79a9ff';
+      if (type === '時裝周') color = '#ffd96e';
+
+      calendarEvents.push({
+        title: title,
+        start: date,
+        color: color
+      });
+
     }
 
-    splitList.innerHTML += `
-      <div class="notice">
-        <b>${event}</b>
+    // 拆況
+    const splitData = [
+      ["WORLD TOUR", "弘中", "20", "18", "2", "尚未成團"],
+      ["WORLD TOUR", "星化", "15", "15", "0", "已成團 可先候補"]
+    ];
 
-        <p style="margin-top:10px;">
-          ${member}
-        </p>
+    const splitList = document.getElementById("split-list");
 
-        <p>
-          目前拆況 ${current} / ${target}包
-        </p>
+    splitList.innerHTML = "";
 
-        <p style="color:${statusColor}; font-weight:bold;">
-          ${statusText}
-        </p>
+    for (let i = 0; i < splitData.length; i++) {
+
+      const row = splitData[i];
+
+      const event = row[0];
+      const member = row[1];
+      const target = row[2];
+      const current = row[3];
+      const remain = row[4];
+      const status = row[5];
+
+      let statusColor = '#ff7a7a';
+
+      if (status === '已成團 可先候補') {
+        statusColor = '#7dff9b';
+      }
+
+      let statusText = `還差${remain}包成團`;
+
+      if (status === '已成團 可先候補') {
+        statusText = '已成團 可先候補';
+      }
+
+      splitList.innerHTML += `
+        <div class="notice">
+
+          <b>${event}</b>
+
+          <p style="margin-top:10px;">
+            ${member}
+          </p>
+
+          <p>
+            目前拆況 ${current} / ${target}包
+          </p>
+
+          <p style="color:${statusColor}; font-weight:bold;">
+            ${statusText}
+          </p>
+
+        </div>
+      `;
+    }
+
+    renderCalendar();
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.body.innerHTML = `
+      <div style="padding:40px; color:white; font-family:sans-serif;">
+        網站資料讀取失敗 😭<br><br>
+        請確認 Google Apps Script 是否有開放存取
       </div>
     `;
+
   }
 
-  renderCalendar();
 }
 
 function renderCalendar() {
@@ -119,17 +138,23 @@ function renderCalendar() {
   }
 
   calendar = new FullCalendar.Calendar(calendarEl, {
+
     initialView: 'dayGridMonth',
+
     height: 'auto',
+
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
       right: ''
     },
+
     events: calendarEvents
+
   });
 
   calendar.render();
+
 }
 
 loadData();
