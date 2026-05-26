@@ -1,5 +1,11 @@
 <script>
 
+window.addEventListener('DOMContentLoaded', () => {
+
+  loadData();
+
+});
+
 let calendarEvents = [];
 let calendar;
 
@@ -7,7 +13,34 @@ async function loadData() {
 
   try {
 
-    const response = await fetch("https://script.google.com/macros/s/AKfycbziPshmMJAQ1PF5MaQYa1iwvTJuIxAEt3xOkY0HbfsNDChmVCyTctEWejvJnXVSSQl9/exec");
+    // 公告區先測試能不能抓到
+    const noticeList = document.getElementById("notice-list");
+    const splitList = document.getElementById("split-list");
+    const calendarEl = document.getElementById("calendar");
+
+    if (!noticeList || !splitList || !calendarEl) {
+
+      document.body.innerHTML = `
+        <div style="padding:40px;color:white;font-family:sans-serif;">
+          HTML 元件不存在 😭<br><br>
+          請確認：
+          <br>
+          id="notice-list"
+          <br>
+          id="split-list"
+          <br>
+          id="calendar"
+        </div>
+      `;
+
+      return;
+
+    }
+
+    // API
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbziPshmMJAQ1PF5MaQYa1iwvTJuIxAEt3xOkY0HbfsNDChmVCyTctEWejvJnXVSSQl9/exec"
+    );
 
     const data = await response.json();
 
@@ -16,11 +49,10 @@ async function loadData() {
     // ======================
 
     const notices = data.notices || [];
-    const noticeList = document.getElementById("notice-list");
 
     noticeList.innerHTML = "";
 
-    for(let i = 1; i < notices.length; i++) {
+    for (let i = 1; i < notices.length; i++) {
 
       const row = notices[i];
 
@@ -42,26 +74,26 @@ async function loadData() {
 
     const calendarData = data.calendar || [];
 
-    for(let i = 1; i < calendarData.length; i++) {
+    for (let i = 1; i < calendarData.length; i++) {
 
       const row = calendarData[i];
 
       const rawDate = row[0].toString();
 
       const date =
-        rawDate.substring(0,4) + '-' +
-        rawDate.substring(4,6) + '-' +
-        rawDate.substring(6,8);
+        rawDate.substring(0, 4) + '-' +
+        rawDate.substring(4, 6) + '-' +
+        rawDate.substring(6, 8);
 
       const type = row[1];
       const title = row[2];
 
       let color = '#ca8cff';
 
-      if(type === '簽售') color = '#ff7a7a';
-      if(type === '出境') color = '#7dff9b';
-      if(type === '舞台') color = '#79a9ff';
-      if(type === '時裝周') color = '#ffd96e';
+      if (type === '簽售') color = '#ff7a7a';
+      if (type === '出境') color = '#7dff9b';
+      if (type === '舞台') color = '#79a9ff';
+      if (type === '時裝周') color = '#ffd96e';
 
       calendarEvents.push({
         title: title,
@@ -70,6 +102,8 @@ async function loadData() {
       });
 
     }
+
+    renderCalendar();
 
     // ======================
     // 拆況
@@ -80,11 +114,9 @@ async function loadData() {
       ["WORLD TOUR", "星化", "15", "15", "0", "已成團 可先候補"]
     ];
 
-    const splitList = document.getElementById("split-list");
-
     splitList.innerHTML = "";
 
-    for(let i = 0; i < splitData.length; i++) {
+    for (let i = 0; i < splitData.length; i++) {
 
       const row = splitData[i];
 
@@ -97,13 +129,13 @@ async function loadData() {
 
       let statusColor = '#ff7a7a';
 
-      if(status === '已成團 可先候補') {
+      if (status === '已成團 可先候補') {
         statusColor = '#7dff9b';
       }
 
       let statusText = `還差${remain}包成團`;
 
-      if(status === '已成團 可先候補') {
+      if (status === '已成團 可先候補') {
         statusText = '已成團 可先候補';
       }
 
@@ -120,7 +152,7 @@ async function loadData() {
             目前拆況 ${current} / ${target}包
           </p>
 
-          <p style="color:${statusColor}; font-weight:bold;">
+          <p style="color:${statusColor};font-weight:bold;">
             ${statusText}
           </p>
 
@@ -129,15 +161,15 @@ async function loadData() {
 
     }
 
-    renderCalendar();
-
-  } catch(error) {
+  } catch (error) {
 
     console.error(error);
 
     document.body.innerHTML = `
-      <div style="padding:40px; color:white; font-family:sans-serif;">
+      <div style="padding:40px;color:white;font-family:sans-serif;">
         網站資料讀取失敗 😭
+        <br><br>
+        ${error}
       </div>
     `;
 
@@ -149,7 +181,7 @@ function renderCalendar() {
 
   const calendarEl = document.getElementById('calendar');
 
-  if(calendar) {
+  if (calendar) {
     calendar.destroy();
   }
 
@@ -173,7 +205,4 @@ function renderCalendar() {
 
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  loadData();
-});
 </script>
