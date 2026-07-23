@@ -2,6 +2,8 @@ const API = "https://script.google.com/macros/s/AKfycbzE-HKTDCYDPHnJxEJzsAlSXyC2
 
 document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
+    loadNotice();
+    loadLinks();
 });
 
 async function loadEvents() {
@@ -75,6 +77,74 @@ async function loadEvents() {
             </div>
         `;
     }
+}
+async function loadNotice(){
+
+    const container=document.getElementById("notice-list");
+
+    try{
+
+        const res=await fetch(API+"?type=notice");
+        const data=await res.json();
+
+        container.innerHTML="";
+
+        data.forEach(item=>{
+
+            const card=document.createElement("div");
+
+            card.className="card";
+
+            card.innerHTML=`
+                <strong>${item["標題"]}</strong><br>
+                <small>${item["日期"]}</small><br><br>
+                ${item["內容"]}
+            `;
+
+            container.appendChild(card);
+
+        });
+
+    }catch{
+
+        container.innerHTML="公告讀取失敗";
+
+    }
+
+}
+async function loadLinks(){
+
+    const container=document.getElementById("link-list");
+
+    try{
+
+        const res=await fetch(API+"?type=links");
+        const data=await res.json();
+
+        container.innerHTML="";
+
+        data.forEach(item=>{
+
+            const a=document.createElement("a");
+
+            a.className="link-btn";
+
+            a.href=item["網址"];
+
+            a.target="_blank";
+
+            a.textContent=item["名稱"];
+
+            container.appendChild(a);
+
+        });
+
+    }catch{
+
+        console.log("link error");
+
+    }
+
 }
 
 function getBadge(status) {
