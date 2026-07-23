@@ -8,78 +8,90 @@ async function loadEvents() {
 
     const container = document.getElementById("event-list");
 
-    container.innerHTML = "載入中...";
+    if (!container) {
+        console.error("找不到 event-list");
+        return;
+    }
 
-    try{
+    container.innerHTML = "<div class='card'>載入活動中...</div>";
 
-        const res = await fetch(API + "?type=events");
+    try {
 
-        const data = await res.json();
+        const response = await fetch(`${API}?type=events`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log("API 回傳：", data);
 
         container.innerHTML = "";
 
-        data.forEach(event=>{
+        if (!Array.isArray(data) || data.length === 0) {
+            container.innerHTML = "<div class='card'>目前沒有活動</div>";
+            return;
+        }
+
+        data.forEach(event => {
 
             const card = document.createElement("div");
+            card.className = "card";
 
-            card.className="card";
-
-            card.innerHTML=`
-
-                <div class="event-title">${event["場次名稱"]}</div>
+            card.innerHTML = `
+                <div class="event-title">
+                    ${event["場次名稱"] || ""}
+                </div>
 
                 <div class="member">
-                👤 ${event["成員"]}
+                    👤 ${event["成員"] || ""}
                 </div>
 
                 <div class="badge ${getBadge(event["狀態"])}">
-                ${event["狀態"]}
+                    ${event["狀態"] || ""}
                 </div>
 
                 <div class="price">
-                ${event["價格說明"] || ""}
+                    ${(event["價格"] || "").replace(/\n/g,"<br>")}
                 </div>
 
-                <div style="margin-top:10px;color:#888;">
-                ${event["備註"] || ""}
+                <div style="margin-top:12px;color:#666;">
+                    ${event["備註"] || ""}
                 </div>
-
             `;
 
             container.appendChild(card);
 
         });
 
-    }catch(e){
+    } catch (error) {
 
-        container.innerHTML="讀取失敗";
+        console.error(error);
 
-        console.error(e);
-
+        container.innerHTML = `
+            <div class="card">
+                ❌ 讀取失敗
+            </div>
+        `;
     }
-
 }
 
-function getBadge(status){
+function getBadge(status) {
 
-    if(status=="已成團"){
+    status = status || "";
 
+    if (status === "已成團") {
         return "success";
-
     }
 
-    if(status.includes("差")){
-
+    if (status.includes("差")) {
         return "warning";
-
     }
 
-    if(status=="已成團 可先候補"){
-
+    if (status === "已成團 可先候補") {
         return "danger";
-
     }
 
     return "";
-
 }
