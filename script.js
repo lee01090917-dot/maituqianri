@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const search = document.getElementById("searchInput");
 
     if (search) {
-        search.addEventListener("input", () => {
-            renderEvents();
-        });
-    }
+    search.addEventListener("input", () => {
+        console.log("輸入：", search.value);
+        renderEvents();
+    });
+}
 
     document.querySelectorAll(".category button").forEach(btn => {
 
