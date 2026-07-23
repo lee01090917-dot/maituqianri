@@ -1,69 +1,174 @@
 const API = "https://script.google.com/macros/s/AKfycbzE-HKTDCYDPHnJxEJzsAlSXyC2LMe9H4vTMISMsLv4dNQVEzNiNqN8OPUF2Igy_Yaj/exec";
 
+let allEvents = [];
+let currentCategory = "ALL";
+
 document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
     loadNotice();
-    async function loadLinks() {
+    loadLinks();
 
-    const container = document.getElementById("link-list");
+    const search = document.getElementById("searchInput");
 
-    if (!container) return;
+    if (search) {
+        search.addEventListener("input", () => {
+            renderEvents();
+        });
+    }
 
-    try {
+    document.querySelectorAll(".category button").forEach(btn => {
 
-        const response = await fetch(`${API}?type=links`);
+        btn.addEventListener("click", () => {
 
-        const data = await response.json();
+            currentCategory = btn.textContent.replace(/[✍️✈️🎤👕📁]/g,"").trim();
 
-        container.innerHTML = "";
+            if(currentCategory==="OTHER"){
+                currentCategory="OTHER";
+            }
 
-        if (!Array.isArray(data) || data.length === 0) {
-            return;
-        }
-
-        data.forEach(item => {
-
-            const a = document.createElement("a");
-
-            a.className = "link-btn";
-
-            a.href = item["網址"];
-
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-
-            a.textContent = item["名稱"];
-
-            container.appendChild(a);
+            renderEvents();
 
         });
 
-    } catch (e) {
+    });
 
-        console.error("連結錯誤：", e);
+});
+
+async function loadEvents(){
+
+    const container=document.getElementById("event-list");
+
+    container.innerHTML="<div class='card'>載入活動中...</div>";
+
+    try{
+
+        const res=await fetch(API+"?type=events");
+
+        allEvents=await res.json();
+
+        renderEvents();
+
+    }catch(e){
+
+        console.error(e);
+
+        container.innerHTML="<div class='card'>❌ 活動讀取失敗</div>";
 
     }
 
 }
-});
+function renderEvents() {
 
+    const container = document.getElementById("event-list");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    let keyword = "";
+
+    const input = document.getElementById("searchInput");
+
+    if (input) {
+        keyword = input.value.trim().toLowerCase();
+    }
+
+    let list = [...allEvents];
+
+    if (currentCategory !== "ALL") {
+
+        list = list.filter(item => {
+
+            return (item["分類"] || "") === currentCategory;
+
+        });
+
+    }
+
+    if (keyword !== "") {
+
+        list = list.filter(item => {
+
+            const text = [
+                item["場次名稱"],
+                item["成員"],
+                item["分類"],
+                item["備註"]
+            ].join(" ").toLowerCase();
+
+            return text.includes(keyword);
+
+        });
+
+    }
+
+    if (list.length === 0) {
+
+        container.innerHTML = `
+            <div class="card">
+                找不到符合的活動
+            </div>
+        `;
+
+        return;
+
+    }
+
+    list.forEach(event => {
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+            <div class="event-title">
+                ${event["場次名稱"] || ""}
+            </div>
+
+            <div class="member">
+                👤 ${event["成員"] || ""}
+            </div>
+
+            <div class="badge ${getBadge(event["狀態"])}">
+                ${event["狀態"] || ""}
+            </div>
+
+            <div class="price">
+                ${(event["價格"] || "").replace(/\n/g,"<br>")}
+            </div>
+
+            <div style="margin-top:12px;color:#666;">
+                ${event["備註"] || ""}
+            </div>
+        `;
+
+        container.appendChild(card);
+
+    });
+
+}
 async function loadNotice() {
 
     const container = document.getElementById("notice-list");
 
     if (!container) return;
 
+    container.innerHTML = "<div class='card'>載入公告中...</div>";
+
     try {
 
-        const response = await fetch(`${API}?type=notice`);
+        const res = await fetch(API + "?type=notice");
 
-        const data = await response.json();
+        const data = await res.json();
 
         container.innerHTML = "";
 
         if (!Array.isArray(data) || data.length === 0) {
+
             container.innerHTML = "<div class='card'>目前沒有公告</div>";
+
             return;
+
         }
 
         data.forEach(item => {
@@ -73,9 +178,13 @@ async function loadNotice() {
             card.className = "card";
 
             card.innerHTML = `
-                <strong>${item["標題"]}</strong><br>
-                <small>${item["日期"]}</small><br><br>
-                ${item["內容"]}
+                <strong>${item["標題"] || ""}</strong>
+                <div style="font-size:13px;color:#888;margin:8px 0;">
+                    ${item["日期"] || ""}
+                </div>
+                <div>
+                    ${item["內容"] || ""}
+                </div>
             `;
 
             container.appendChild(card);
@@ -84,7 +193,7 @@ async function loadNotice() {
 
     } catch (e) {
 
-        console.error("公告錯誤：", e);
+        console.error(e);
 
         container.innerHTML = "<div class='card'>公告讀取失敗</div>";
 
@@ -92,138 +201,47 @@ async function loadNotice() {
 
 }
 
-    container.innerHTML = "<div class='card'>載入活動中...</div>";
+async function loadLinks() {
+
+    const container = document.getElementById("link-list");
+
+    if (!container) return;
 
     try {
 
-        const response = await fetch(`${API}?type=events`);
+        const res = await fetch(API + "?type=links");
 
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        console.log("API 回傳：", data);
+        const data = await res.json();
 
         container.innerHTML = "";
 
-        if (!Array.isArray(data) || data.length === 0) {
-            container.innerHTML = "<div class='card'>目前沒有活動</div>";
-            return;
-        }
+        if (!Array.isArray(data)) return;
 
-        data.forEach(event => {
+        data.forEach(item => {
 
-            const card = document.createElement("div");
-            card.className = "card";
+            const a = document.createElement("a");
 
-            card.innerHTML = `
-                <div class="event-title">
-                    ${event["場次名稱"] || ""}
-                </div>
+            a.className = "link-btn";
 
-                <div class="member">
-                    👤 ${event["成員"] || ""}
-                </div>
+            a.href = item["網址"] || "#";
 
-                <div class="badge ${getBadge(event["狀態"])}">
-                    ${event["狀態"] || ""}
-                </div>
+            a.target = "_blank";
 
-                <div class="price">
-                    ${(event["價格"] || "").replace(/\n/g,"<br>")}
-                </div>
+            a.rel = "noopener noreferrer";
 
-                <div style="margin-top:12px;color:#666;">
-                    ${event["備註"] || ""}
-                </div>
-            `;
-
-            container.appendChild(card);
-
-        });
-
-    } catch (error) {
-
-        console.error(error);
-
-        container.innerHTML = `
-            <div class="card">
-                ❌ 讀取失敗
-            </div>
-        `;
-    }
-}
-async function loadNotice(){
-
-    const container=document.getElementById("notice-list");
-
-    try{
-
-        const res=await fetch(API+"?type=notice");
-        const data=await res.json();
-
-        container.innerHTML="";
-
-        data.forEach(item=>{
-
-            const card=document.createElement("div");
-
-            card.className="card";
-
-            card.innerHTML=`
-                <strong>${item["標題"]}</strong><br>
-                <small>${item["日期"]}</small><br><br>
-                ${item["內容"]}
-            `;
-
-            container.appendChild(card);
-
-        });
-
-    }catch{
-
-        container.innerHTML="公告讀取失敗";
-
-    }
-
-}
-async function loadLinks(){
-
-    const container=document.getElementById("link-list");
-
-    try{
-
-        const res=await fetch(API+"?type=links");
-        const data=await res.json();
-
-        container.innerHTML="";
-
-        data.forEach(item=>{
-
-            const a=document.createElement("a");
-
-            a.className="link-btn";
-
-            a.href=item["網址"];
-
-            a.target="_blank";
-
-            a.textContent=item["名稱"];
+            a.textContent = item["名稱"] || "未命名";
 
             container.appendChild(a);
 
         });
 
-    }catch{
+    } catch (e) {
 
-        console.log("link error");
+        console.error(e);
 
     }
 
 }
-
 function getBadge(status) {
 
     status = status || "";
@@ -241,4 +259,5 @@ function getBadge(status) {
     }
 
     return "";
+
 }
