@@ -3,17 +3,94 @@ const API = "https://script.google.com/macros/s/AKfycbzE-HKTDCYDPHnJxEJzsAlSXyC2
 document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
     loadNotice();
-    loadLinks();
+    async function loadLinks() {
+
+    const container = document.getElementById("link-list");
+
+    if (!container) return;
+
+    try {
+
+        const response = await fetch(`${API}?type=links`);
+
+        const data = await response.json();
+
+        container.innerHTML = "";
+
+        if (!Array.isArray(data) || data.length === 0) {
+            return;
+        }
+
+        data.forEach(item => {
+
+            const a = document.createElement("a");
+
+            a.className = "link-btn";
+
+            a.href = item["網址"];
+
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+
+            a.textContent = item["名稱"];
+
+            container.appendChild(a);
+
+        });
+
+    } catch (e) {
+
+        console.error("連結錯誤：", e);
+
+    }
+
+}
 });
 
-async function loadEvents() {
+async function loadNotice() {
 
-    const container = document.getElementById("event-list");
+    const container = document.getElementById("notice-list");
 
-    if (!container) {
-        console.error("找不到 event-list");
-        return;
+    if (!container) return;
+
+    try {
+
+        const response = await fetch(`${API}?type=notice`);
+
+        const data = await response.json();
+
+        container.innerHTML = "";
+
+        if (!Array.isArray(data) || data.length === 0) {
+            container.innerHTML = "<div class='card'>目前沒有公告</div>";
+            return;
+        }
+
+        data.forEach(item => {
+
+            const card = document.createElement("div");
+
+            card.className = "card";
+
+            card.innerHTML = `
+                <strong>${item["標題"]}</strong><br>
+                <small>${item["日期"]}</small><br><br>
+                ${item["內容"]}
+            `;
+
+            container.appendChild(card);
+
+        });
+
+    } catch (e) {
+
+        console.error("公告錯誤：", e);
+
+        container.innerHTML = "<div class='card'>公告讀取失敗</div>";
+
     }
+
+}
 
     container.innerHTML = "<div class='card'>載入活動中...</div>";
 
