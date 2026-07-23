@@ -45,6 +45,7 @@ async function loadEvents(){
         const res=await fetch(API+"?type=events");
 
         allEvents=await res.json();
+        console.log(allEvents);
 
         renderEvents();
 
