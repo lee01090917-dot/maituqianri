@@ -1,7 +1,7 @@
 const API = "https://script.google.com/macros/s/AKfycbwow8HLqsqki1Plrj6qWFQXXa8UYuYfRwyCzY5NBM9spdoh8bsZJUE3t0paKewm2g5v/exec";
 
 let allEvents = [];
-let currentCategory = "ALL";
+let currentCategory = "";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initSearch();
     initCategory();
 
+    loadFavorite();
+    loadCart();
+
 });
 
 function initSearch() {
@@ -21,11 +24,7 @@ function initSearch() {
 
     if (!input) return;
 
-    input.addEventListener("input", () => {
-
-        renderEvents();
-
-    });
+    input.addEventListener("input", renderEvents);
 
 }
 
@@ -41,7 +40,7 @@ function initCategory() {
 
             btn.classList.add("active");
 
-            currentCategory = btn.dataset.category || "ALL";
+            currentCategory = btn.dataset.category || "";
 
             renderEvents();
 
@@ -52,6 +51,19 @@ function initCategory() {
 }
 
 async function loadEvents() {
+
+    const container = document.getElementById("event-list");
+
+    if (container) {
+
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">⏳</div>
+                <h3>載入資料中...</h3>
+            </div>
+        `;
+
+    }
 
     try {
 
@@ -65,11 +77,15 @@ async function loadEvents() {
 
         console.error(err);
 
-        document.getElementById("event-list").innerHTML = `
-            <div class="card">
-                資料讀取失敗
-            </div>
-        `;
+        if (container) {
+
+            container.innerHTML = `
+                <div class="card">
+                    ❌ 資料讀取失敗
+                </div>
+            `;
+
+        }
 
     }
 
@@ -86,9 +102,9 @@ function renderEvents() {
     ).trim().toLowerCase();
 
     const hasKeyword = keyword.length > 0;
-    const hasCategory = currentCategory !== "ALL";
 
-    // 沒搜尋、沒分類 -> 不顯示資料
+    const hasCategory = currentCategory !== "";
+
     if (!hasKeyword && !hasCategory) {
 
         container.innerHTML = `
@@ -99,7 +115,7 @@ function renderEvents() {
                 </div>
 
                 <h3>
-                    開始搜尋即可查看飯拍資料
+                    開始搜尋或選擇分類即可查看飯拍資料
                 </h3>
 
                 <p>
@@ -146,9 +162,7 @@ function renderEvents() {
         container.innerHTML = `
             <div class="empty-state">
 
-                <div class="icon">
-                    😢
-                </div>
+                <div class="icon">😢</div>
 
                 <h3>
                     找不到符合的資料
@@ -162,8 +176,7 @@ function renderEvents() {
     }
 
     container.innerHTML = "";
-
-    list.forEach(event => {
+        list.forEach(event => {
 
         const card = document.createElement("div");
 
@@ -171,16 +184,38 @@ function renderEvents() {
 
         card.innerHTML = `
 
-            <div class="event-title">
-                ${event["場次"] || ""}
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+
+                <div class="event-title">
+                    ${event["場次"] || ""}
+                </div>
+
+                <div style="display:flex;gap:8px;">
+
+                    <button
+                        class="favorite-btn"
+                        onclick="addFavorite('${event["ID"]}')"
+                        title="加入收藏">
+                        ❤️
+                    </button>
+
+                    <button
+                        class="cart-btn"
+                        onclick="addCart(${JSON.stringify(event).replace(/"/g,"&quot;")})"
+                        title="加入喊單">
+                        🛒
+                    </button>
+
+                </div>
+
             </div>
 
             <div class="member">
-                成員｜${event["成員"] || ""}
+                👤 成員｜${event["成員"] || ""}
             </div>
 
             <div class="member">
-                分類｜${event["分類"] || ""}
+                📂 分類｜${event["分類"] || ""}
             </div>
 
             <div class="price">
@@ -189,7 +224,11 @@ function renderEvents() {
 
             ${
                 event["備註"]
-                ? `<div class="note">${event["備註"]}</div>`
+                ? `
+                    <div class="note">
+                        📝 ${event["備註"]}
+                    </div>
+                `
                 : ""
             }
 
@@ -200,61 +239,67 @@ function renderEvents() {
     });
 
 }
-function formatPrice(event) {
+
+/* ===========================
+   價格格式
+=========================== */
+
+function formatPrice(event){
 
     const type = event["拆團方式"] || "";
+
     const text = event["規格／價格"] || "";
 
-    if (!text) return "";
+    if(!text) return "";
 
-    if (type === "包數") {
+    if(type==="包數"){
 
         return formatPackage(text);
 
     }
 
-    if (type === "P數") {
+    if(type==="P數"){
 
         return formatPoint(text);
 
     }
 
-    return text.replace(/\n/g, "<br>");
+    return text.replace(/\n/g,"<br>");
 
 }
 
-function formatPackage(text) {
+function formatPackage(text){
 
-    const rows = text.split("\n");
+    let html="";
 
-    let html = "";
+    text.split("\n").forEach((row,index)=>{
 
-    rows.forEach((row, index) => {
+        const data=row.split("|");
 
-        const data = row.split("|");
+        if(data.length<3) return;
 
-        if (data.length < 3) return;
+        const name=data[0];
 
-        const name = data[0];
+        const p=Number(data[1]);
 
-        const p = Number(data[1]);
+        const price=Number(data[2]);
 
-        const price = Number(data[2]);
-
-        const perPrice = (price / p)
+        const per=(price/p)
             .toFixed(2)
-            .replace(/\.00$/, "");
+            .replace(/\.00$/,"");
 
-        if (index === 0) {
+        if(index===0){
 
-            html += `
-                ${name}　${p}P／$${price}（1P／$${perPrice}）
+            html+=`
+                ${name}　${p}P／$${price}
+                （1P／$${per}）
             `;
 
-        } else {
+        }else{
 
-            html += `
+            html+=`
                 <br><br>
+
                 ${name}　${p}P／$${price}
             `;
 
@@ -266,35 +311,38 @@ function formatPackage(text) {
 
 }
 
-function formatPoint(text) {
+function formatPoint(text){
 
-    const data = text.split("|");
+    const data=text.split("|");
 
-    if (data.length < 2) return text;
+    if(data.length<2) return text;
 
     return `
         ${data[0]}P（1P／$${data[1]}）
     `;
 
 }
+/* ===========================
+   最新公告
+=========================== */
 
-async function loadNotice() {
+async function loadNotice(){
 
-    const container = document.getElementById("notice-list");
+    const container=document.getElementById("notice-list");
 
-    if (!container) return;
+    if(!container) return;
 
-    try {
+    try{
 
-        const res = await fetch(API + "?type=notice");
+        const res=await fetch(API+"?type=notice");
 
-        const data = await res.json();
+        const data=await res.json();
 
-        container.innerHTML = "";
+        container.innerHTML="";
 
-        if (!Array.isArray(data) || data.length === 0) {
+        if(!Array.isArray(data) || data.length===0){
 
-            container.innerHTML = `
+            container.innerHTML=`
                 <div class="card">
                     目前沒有公告
                 </div>
@@ -304,27 +352,29 @@ async function loadNotice() {
 
         }
 
-        data.forEach(item => {
+        data.forEach(item=>{
 
-            const card = document.createElement("div");
+            const card=document.createElement("div");
 
-            card.className = "card";
+            card.className="card";
 
-            card.innerHTML = `
+            card.innerHTML=`
+
                 <div class="event-title">
-                    ${item["場次"] || ""}
+                    ${item["場次"]||""}
                 </div>
 
                 <div class="note">
-                    ${item["公告"] || ""}
+                    ${item["公告"]||""}
                 </div>
+
             `;
 
             container.appendChild(card);
 
         });
 
-    } catch (err) {
+    }catch(err){
 
         console.error(err);
 
@@ -332,23 +382,27 @@ async function loadNotice() {
 
 }
 
-async function loadCurrent() {
+/* ===========================
+   現正開拆中
+=========================== */
 
-    const container = document.getElementById("current-list");
+async function loadCurrent(){
 
-    if (!container) return;
+    const container=document.getElementById("current-list");
 
-    try {
+    if(!container) return;
 
-        const res = await fetch(API + "?type=current");
+    try{
 
-        const data = await res.json();
+        const res=await fetch(API+"?type=current");
 
-        container.innerHTML = "";
+        const data=await res.json();
 
-        if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML="";
 
-            container.innerHTML = `
+        if(!Array.isArray(data) || data.length===0){
+
+            container.innerHTML=`
                 <div class="card">
                     目前沒有開拆場次
                 </div>
@@ -358,72 +412,29 @@ async function loadCurrent() {
 
         }
 
-        data.forEach(item => {
+        data.forEach(item=>{
 
-            const card = document.createElement("div");
+            const card=document.createElement("div");
 
-            card.className = "card";
+            card.className="card";
 
-            card.innerHTML = `
+            card.innerHTML=`
+
                 <div class="event-title">
-                    ${item["場次"] || ""}
+                    ${item["場次"]||""}
                 </div>
 
                 <div class="member">
-                    成員｜${item["成員"] || ""}
+                    👤 ${item["成員"]||""}
                 </div>
+
             `;
 
             container.appendChild(card);
 
         });
 
-    } catch (err) {
-
-        console.error(err);
-
-    }
-
-}
-async function loadLinks() {
-
-    const container = document.getElementById("link-list");
-
-    if (!container) return;
-
-    try {
-
-        const res = await fetch(API + "?type=links");
-
-        const data = await res.json();
-
-        container.innerHTML = "";
-
-        if (!Array.isArray(data)) {
-
-            return;
-
-        }
-
-        data.forEach(item => {
-
-            const link = document.createElement("a");
-
-            link.className = "link-btn";
-
-            link.href = item["網址"] || "#";
-
-            link.target = "_blank";
-
-            link.rel = "noopener noreferrer";
-
-            link.textContent = item["名稱"] || "未命名";
-
-            container.appendChild(link);
-
-        });
-
-    } catch (err) {
+    }catch(err){
 
         console.error(err);
 
@@ -432,14 +443,67 @@ async function loadLinks() {
 }
 
 /* ===========================
-   ❤️ 我的收藏（V4）
+   快速連結
 =========================== */
 
-let favoriteList = [];
+async function loadLinks(){
+
+    const container=document.getElementById("link-list");
+
+    if(!container) return;
+
+    try{
+
+        const res=await fetch(API+"?type=links");
+
+        const data=await res.json();
+
+        container.innerHTML="";
+
+        if(!Array.isArray(data)) return;
+
+        data.forEach(item=>{
+
+            const a=document.createElement("a");
+
+            a.className="link-btn";
+
+            a.href=item["網址"]||"#";
+
+            a.target="_blank";
+
+            a.rel="noopener noreferrer";
+
+            a.textContent=item["名稱"]||"未命名";
+
+            container.appendChild(a);
+
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+    }
+
+}
+/* ===========================
+   ❤️ 我的收藏
+=========================== */
+
+let favoriteList = JSON.parse(
+    localStorage.getItem("favoriteList") || "[]"
+);
 
 function addFavorite(id){
 
-    if(favoriteList.includes(id)) return;
+    if(favoriteList.includes(id)){
+
+        alert("已經收藏過囉❤️");
+
+        return;
+
+    }
 
     favoriteList.push(id);
 
@@ -447,6 +511,8 @@ function addFavorite(id){
         "favoriteList",
         JSON.stringify(favoriteList)
     );
+
+    alert("❤️ 已加入收藏");
 
 }
 
@@ -459,19 +525,23 @@ function loadFavorite(){
 }
 
 /* ===========================
-   🛒 我的清單（V4）
+   🛒 我的喊單
 =========================== */
 
-let cartList = [];
+let cartList = JSON.parse(
+    localStorage.getItem("cartList") || "[]"
+);
 
-function addCart(item){
+function addCart(event){
 
-    cartList.push(item);
+    cartList.push(event);
 
     localStorage.setItem(
         "cartList",
         JSON.stringify(cartList)
     );
+
+    alert("🛒 已加入我的喊單");
 
 }
 
@@ -484,7 +554,54 @@ function loadCart(){
 }
 
 /* ===========================
-   初始化 LocalStorage
+   試算（預留）
+=========================== */
+
+function getCartTotal(){
+
+    let total = 0;
+
+    cartList.forEach(item=>{
+
+        // 之後會依照包數 / P數計算
+        // 目前先預留
+
+    });
+
+    return total;
+
+}
+
+/* ===========================
+   清空收藏
+=========================== */
+
+function clearFavorite(){
+
+    if(!confirm("確定清空收藏嗎？")) return;
+
+    favoriteList = [];
+
+    localStorage.removeItem("favoriteList");
+
+}
+
+/* ===========================
+   清空喊單
+=========================== */
+
+function clearCart(){
+
+    if(!confirm("確定清空我的喊單嗎？")) return;
+
+    cartList = [];
+
+    localStorage.removeItem("cartList");
+
+}
+
+/* ===========================
+   初始化
 =========================== */
 
 loadFavorite();
