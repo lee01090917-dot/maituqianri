@@ -91,11 +91,13 @@ const DOM = {
 
     favoriteCount: null,
 
-    cartCount: null,
+cartCount: null,
 
-    favoriteOpen: null,
+cartMoney: null,
 
-    cartOpen: null,
+favoriteOpen: null,
+
+cartOpen: null,
 
     /* Favorite */
 
@@ -155,13 +157,15 @@ function cacheDOM() {
 
     DOM.overlay = document.getElementById("overlay");
 
-    DOM.favoriteCount = document.getElementById("favorite-count");
+   DOM.favoriteCount = document.getElementById("favorite-count");
 
-    DOM.cartCount = document.getElementById("cart-count");
+DOM.cartCount = document.getElementById("cart-count");
 
-    DOM.favoriteOpen = document.getElementById("favorite-open");
+DOM.cartMoney = document.getElementById("cart-money");
 
-    DOM.cartOpen = document.getElementById("cart-open");
+DOM.favoriteOpen = document.getElementById("favorite-open");
+
+DOM.cartOpen = document.getElementById("cart-open");
 
     DOM.favoritePanel = document.getElementById("favorite-panel");
 
@@ -2409,16 +2413,23 @@ function updateHeroCount() {
     if (DOM.favoriteCount) {
 
         DOM.favoriteCount.textContent =
-
-            State.favorites.length;
+            `${State.favorites.length} 筆`;
 
     }
 
     if (DOM.cartCount) {
 
         DOM.cartCount.textContent =
+            `${State.cart.length} 筆`;
 
-            State.cart.length;
+    }
+
+    if (DOM.cartMoney) {
+
+        DOM.cartMoney.textContent =
+            formatCurrency(
+                calculateCartTotal()
+            );
 
     }
 
