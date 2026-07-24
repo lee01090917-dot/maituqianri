@@ -1,9 +1,8 @@
 /* ==========================================================
    買圖千日 用在一時
-   style.css V5
+   style.css V4
    PART 01
 ========================================================== */
-
 
 /* =========================
    Reset
@@ -15,32 +14,19 @@
     box-sizing:border-box;
 }
 
-
 html{
     scroll-behavior:smooth;
 }
 
-
 body{
 
     background:
-
-        radial-gradient(
-            circle at top left,
-            #cfe4ff 0%,
-            transparent 45%
-        ),
-
-        radial-gradient(
-            circle at bottom right,
-            #ddd6fe 0%,
-            transparent 45%
-        ),
-
+        radial-gradient(circle at top left,#eaf3ff 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#f4f0ff 0%,transparent 40%),
         linear-gradient(
             135deg,
-            #dbeafe 0%,
-            #edf4ff 45%,
+            #eef4fb 0%,
+            #f7f8fc 45%,
             #ffffff 100%
         );
 
@@ -57,7 +43,9 @@ body{
 
 }
 
-
+/* =========================
+   Container
+========================= */
 
 .container{
 
@@ -69,20 +57,17 @@ body{
 
 }
 
-
-
 /* =========================
    Hero
 ========================= */
 
-
 .hero{
 
-    background:rgba(255,255,255,.92);
+   background:rgba(255,255,255,.92);
 
-    backdrop-filter:blur(12px);
+backdrop-filter:blur(10px);
 
-    border:1px solid rgba(255,255,255,.7);
+border:1px solid rgba(255,255,255,.6);
 
     border-radius:24px;
 
@@ -101,17 +86,11 @@ body{
 
 }
 
-
-
 .hero-left{
 
     flex:1;
 
-    min-width:0;
-
 }
-
-
 
 .hero-title{
 
@@ -125,8 +104,6 @@ body{
 
 }
 
-
-
 .hero-sub{
 
     color:#777;
@@ -134,10 +111,10 @@ body{
     font-size:18px;
 
 }
+
 /* =========================
    Hero Cards
 ========================= */
-
 
 .hero-actions{
 
@@ -145,15 +122,12 @@ body{
 
     display:grid;
 
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:
+        repeat(3,1fr);
 
     gap:16px;
 
-    flex-shrink:0;
-
 }
-
-
 
 .hero-card{
 
@@ -183,27 +157,20 @@ body{
 
 }
 
-
-
 .hero-card:hover{
 
     transform:translateY(-4px);
 
     box-shadow:
-
         0 10px 25px rgba(0,0,0,.08);
 
 }
-
-
 
 .total-card{
 
     cursor:default;
 
 }
-
-
 
 .total-card:hover{
 
@@ -213,8 +180,6 @@ body{
 
 }
 
-
-
 .hero-card .icon{
 
     font-size:28px;
@@ -222,8 +187,6 @@ body{
     margin-bottom:6px;
 
 }
-
-
 
 .hero-card .label{
 
@@ -235,8 +198,6 @@ body{
 
 }
 
-
-
 .hero-card .count{
 
     font-size:24px;
@@ -247,15 +208,11 @@ body{
 
 }
 
-
-
 .favorite-card .count{
 
     color:#ff4f7b;
 
 }
-
-
 
 .cart-card .count{
 
@@ -263,28 +220,38 @@ body{
 
 }
 
-
-
 .total-card .count{
 
     color:#0f766e;
 
 }
 
+/* =========================
+   Info Grid
+========================= */
 
+.info-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:22px;
+
+    margin-top:36px;
+
+}
 
 /* =========================
    Section
 ========================= */
-
 
 .section{
 
     margin-top:42px;
 
 }
-
-
 
 .section-title{
 
@@ -295,18 +262,22 @@ body{
     margin-bottom:20px;
 
 }
-/* =========================
-   Event / Data Card
-========================= */
+/* ==========================================================
+   style.css V4
+   PART 02
+========================================================== */
 
+/* =========================
+   Card
+========================= */
 
 .card{
 
-    background:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.92);
 
-    backdrop-filter:blur(8px);
+backdrop-filter:blur(8px);
 
-    border:1px solid rgba(255,255,255,.7);
+border:1px solid rgba(255,255,255,.6);
 
     border-radius:20px;
 
@@ -321,8 +292,6 @@ body{
 
 }
 
-
-
 .card:hover{
 
     transform:translateY(-3px);
@@ -331,8 +300,6 @@ body{
         0 12px 32px rgba(0,0,0,.08);
 
 }
-
-
 
 .event-title{
 
@@ -346,8 +313,6 @@ body{
 
 }
 
-
-
 .member{
 
     color:#666;
@@ -357,8 +322,6 @@ body{
     font-size:15px;
 
 }
-
-
 
 .price{
 
@@ -370,8 +333,6 @@ body{
 
 }
 
-
-
 .note{
 
     margin-top:14px;
@@ -382,20 +343,15 @@ body{
 
 }
 
-
-
 /* =========================
    Search
 ========================= */
-
 
 .search-box{
 
     margin:22px 0;
 
 }
-
-
 
 .search-box input{
 
@@ -417,8 +373,6 @@ body{
 
 }
 
-
-
 .search-box input:focus{
 
     outline:none;
@@ -426,17 +380,13 @@ body{
     border-color:#2563eb;
 
     box-shadow:
-
         0 0 0 4px rgba(37,99,235,.12);
 
 }
 
-
-
 /* =========================
    Category
 ========================= */
-
 
 .category{
 
@@ -447,8 +397,6 @@ body{
     gap:10px;
 
 }
-
-
 
 .category button{
 
@@ -467,20 +415,15 @@ body{
     transition:.2s;
 
     box-shadow:
-
         0 3px 10px rgba(0,0,0,.05);
 
 }
-
-
 
 .category button:hover{
 
     transform:translateY(-2px);
 
 }
-
-
 
 .category button.active{
 
@@ -489,10 +432,123 @@ body{
     color:#fff;
 
 }
+
+/* =========================
+   Empty
+========================= */
+
+.empty-state{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:80px 30px;
+
+    text-align:center;
+
+    color:#888;
+
+}
+
+.empty-state .icon{
+
+    font-size:52px;
+
+    margin-bottom:18px;
+
+}
+
+.empty-state h3{
+
+    font-size:24px;
+
+    margin-bottom:10px;
+
+}
+
+.empty-state p{
+
+    color:#999;
+
+}
+
+/* =========================
+   Links
+========================= */
+
+.links{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(180px,1fr));
+
+    gap:16px;
+
+}
+
+.link-btn{
+
+    height:60px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    text-decoration:none;
+
+    color:#222;
+
+    font-weight:700;
+
+    transition:.2s;
+
+    box-shadow:
+        0 5px 16px rgba(0,0,0,.05);
+
+}
+
+.link-btn:hover{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    transform:translateY(-2px);
+
+}
+
+#notice-list,
+#current-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+#event-list{
+
+    margin-top:26px;
+
+}
+/* ==========================================================
+   style.css V4
+   PART 03
+========================================================== */
+
 /* =========================
    Favorite / Cart Panel
 ========================= */
-
 
 .favorite-panel,
 .cart-panel{
@@ -515,16 +571,13 @@ body{
 
     flex-direction:column;
 
-    box-shadow:
-        -12px 0 35px rgba(0,0,0,.15);
+    box-shadow:-12px 0 35px rgba(0,0,0,.15);
 
     transition:.3s;
 
     z-index:9999;
 
 }
-
-
 
 .favorite-panel.show,
 .cart-panel.show{
@@ -533,12 +586,9 @@ body{
 
 }
 
-
-
 /* =========================
-   Panel Header
+   Header
 ========================= */
-
 
 .cart-header{
 
@@ -554,8 +604,6 @@ body{
 
 }
 
-
-
 .cart-header h2{
 
     font-size:22px;
@@ -563,8 +611,6 @@ body{
     font-weight:700;
 
 }
-
-
 
 .cart-header button{
 
@@ -576,14 +622,19 @@ body{
 
     cursor:pointer;
 
+    transition:.2s;
+
 }
 
+.cart-header button:hover{
 
+    transform:rotate(90deg);
+
+}
 
 /* =========================
-   Cart Items
+   Scroll Area
 ========================= */
-
 
 .cart-items{
 
@@ -595,7 +646,9 @@ body{
 
 }
 
-
+/* =========================
+   Item
+========================= */
 
 .cart-item{
 
@@ -609,9 +662,19 @@ body{
 
     margin-bottom:16px;
 
+    transition:.25s;
+
 }
 
+.cart-item:hover{
 
+    border-color:#2563eb22;
+
+    box-shadow:
+
+        0 8px 24px rgba(0,0,0,.06);
+
+}
 
 .cart-item-title{
 
@@ -621,9 +684,9 @@ body{
 
     margin-bottom:8px;
 
+    line-height:1.5;
+
 }
-
-
 
 .cart-item-price{
 
@@ -637,12 +700,23 @@ body{
 
 }
 
-
-
 /* =========================
-   Cart Footer
+   Empty
 ========================= */
 
+.empty-cart{
+
+    text-align:center;
+
+    color:#999;
+
+    margin-top:80px;
+
+}
+
+/* =========================
+   Footer
+========================= */
 
 .cart-footer{
 
@@ -651,8 +725,6 @@ body{
     border-top:1px solid #eee;
 
 }
-
-
 
 #cart-total{
 
@@ -664,8 +736,6 @@ body{
 
 }
 
-
-
 .cart-actions{
 
     display:flex;
@@ -673,8 +743,6 @@ body{
     gap:12px;
 
 }
-
-
 
 .cart-actions button{
 
@@ -692,9 +760,13 @@ body{
 
     font-weight:700;
 
+    transition:.2s;
+
 }
 
-
+/* =========================
+   Copy
+========================= */
 
 #copy-cart{
 
@@ -704,7 +776,15 @@ body{
 
 }
 
+#copy-cart:hover{
 
+    background:#1d4ed8;
+
+}
+
+/* =========================
+   Clear
+========================= */
 
 #clear-cart{
 
@@ -712,12 +792,15 @@ body{
 
 }
 
+#clear-cart:hover{
 
+    background:#ddd;
+
+}
 
 /* =========================
    Small Buttons
 ========================= */
-
 
 .favorite-btn,
 .cart-btn{
@@ -734,9 +817,9 @@ body{
 
     transition:.2s;
 
+    font-size:14px;
+
 }
-
-
 
 .favorite-btn:hover{
 
@@ -744,17 +827,43 @@ body{
 
 }
 
-
-
 .cart-btn:hover{
 
     background:#e9f1ff;
 
 }
+
+/* =========================
+   Scrollbar
+========================= */
+
+.cart-items::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.cart-items::-webkit-scrollbar-thumb{
+
+    background:#ccc;
+
+    border-radius:999px;
+
+}
+
+.cart-items::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+/* ==========================================================
+   style.css V4
+   PART 04
+========================================================== */
+
 /* =========================
    Modal
 ========================= */
-
 
 .modal{
 
@@ -776,15 +885,11 @@ body{
 
 }
 
-
-
 .modal.show{
 
     display:flex;
 
 }
-
-
 
 .modal-box{
 
@@ -798,9 +903,29 @@ body{
 
     padding:28px;
 
+    animation:modalOpen .25s ease;
+
 }
 
+@keyframes modalOpen{
 
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
 
 .modal-title{
 
@@ -812,7 +937,9 @@ body{
 
 }
 
-
+/* =========================
+   Options
+========================= */
 
 .modal-options{
 
@@ -824,7 +951,9 @@ body{
 
 }
 
-
+/* =========================
+   Option Card
+========================= */
 
 .modal-option{
 
@@ -842,15 +971,15 @@ body{
 
 }
 
-
-
 .modal-option:hover{
 
     border-color:#2563eb;
 
+    transform:translateY(-2px);
+
 }
 
-
+/* 已選擇 */
 
 .modal-option.active{
 
@@ -860,9 +989,23 @@ body{
 
     color:#fff;
 
+    box-shadow:
+
+        0 10px 24px rgba(37,99,235,.25);
+
 }
 
+.modal-option.active .option-price,
 
+.modal-option.active .option-total{
+
+    color:#fff;
+
+}
+
+/* =========================
+   Option Text
+========================= */
 
 .option-title{
 
@@ -871,8 +1014,6 @@ body{
     font-weight:700;
 
 }
-
-
 
 .option-price{
 
@@ -883,8 +1024,6 @@ body{
     font-size:15px;
 
 }
-
-
 
 .option-total{
 
@@ -898,21 +1037,9 @@ body{
 
 }
 
-
-
-.modal-option.active .option-price,
-.modal-option.active .option-total{
-
-    color:#fff;
-
-}
-
-
-
 /* =========================
    P Counter
 ========================= */
-
 
 .p-counter{
 
@@ -927,8 +1054,6 @@ body{
     margin-top:18px;
 
 }
-
-
 
 .p-counter button{
 
@@ -948,9 +1073,15 @@ body{
 
     font-size:22px;
 
+    transition:.2s;
+
 }
 
+.p-counter button:hover{
 
+    transform:scale(1.06);
+
+}
 
 .point-input{
 
@@ -970,12 +1101,21 @@ body{
 
 }
 
+.point-input:focus{
 
+    outline:none;
+
+    border-color:#2563eb;
+
+    box-shadow:
+
+        0 0 0 4px rgba(37,99,235,.12);
+
+}
 
 /* =========================
-   Footer Buttons
+   Footer
 ========================= */
-
 
 .modal-footer{
 
@@ -988,8 +1128,6 @@ body{
     margin-top:28px;
 
 }
-
-
 
 .modal-footer button{
 
@@ -1005,9 +1143,9 @@ body{
 
     cursor:pointer;
 
+    transition:.2s;
+
 }
-
-
 
 #modal-cancel{
 
@@ -1015,7 +1153,11 @@ body{
 
 }
 
+#modal-cancel:hover{
 
+    background:#ddd;
+
+}
 
 #modal-confirm{
 
@@ -1025,12 +1167,19 @@ body{
 
 }
 
+#modal-confirm:hover{
 
+    background:#1d4ed8;
+
+}
+/* ==========================================================
+   style.css V4
+   PART 05（END）
+========================================================== */
 
 /* =========================
-   Overlay / Toast
+   Overlay
 ========================= */
-
 
 .overlay{
 
@@ -1050,8 +1199,6 @@ body{
 
 }
 
-
-
 .overlay.show{
 
     opacity:1;
@@ -1060,7 +1207,9 @@ body{
 
 }
 
-
+/* =========================
+   Toast
+========================= */
 
 .toast{
 
@@ -1080,6 +1229,10 @@ body{
 
     border-radius:999px;
 
+    font-size:15px;
+
+    font-weight:600;
+
     opacity:0;
 
     pointer-events:none;
@@ -1090,8 +1243,6 @@ body{
 
 }
 
-
-
 .toast.show{
 
     opacity:1;
@@ -1100,14 +1251,49 @@ body{
 
 }
 
-
-
 /* =========================
-   Mobile
+   Utility
 ========================= */
 
+.hidden{
 
-@media(max-width:992px){
+    display:none !important;
+
+}
+
+.text-center{
+
+    text-align:center;
+
+}
+
+.text-right{
+
+    text-align:right;
+
+}
+
+/* =========================
+   Footer
+========================= */
+
+footer{
+
+    margin:70px 0 30px;
+
+    text-align:center;
+
+    color:#999;
+
+    font-size:14px;
+
+}
+
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width:992px){
 
     .hero{
 
@@ -1117,18 +1303,27 @@ body{
 
     }
 
-
     .hero-actions{
 
         width:100%;
+
+        grid-template-columns:repeat(3,1fr);
+
+    }
+
+    .info-grid{
+
+        grid-template-columns:1fr;
 
     }
 
 }
 
+/* =========================
+   Mobile
+========================= */
 
-
-@media(max-width:768px){
+@media (max-width:768px){
 
     .container{
 
@@ -1138,6 +1333,11 @@ body{
 
     }
 
+    .hero{
+
+        padding:22px;
+
+    }
 
     .hero-title{
 
@@ -1145,6 +1345,11 @@ body{
 
     }
 
+    .hero-sub{
+
+        font-size:16px;
+
+    }
 
     .hero-actions{
 
@@ -1152,8 +1357,20 @@ body{
 
     }
 
+    .hero-card{
+
+        min-height:90px;
+
+    }
+
+    .links{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
 
     .cart-panel,
+
     .favorite-panel{
 
         width:100%;
@@ -1162,9 +1379,17 @@ body{
 
 }
 
+/* =========================
+   Small Mobile
+========================= */
 
+@media (max-width:480px){
 
-@media(max-width:480px){
+    .links{
+
+        grid-template-columns:1fr;
+
+    }
 
     .hero-title{
 
@@ -1172,11 +1397,68 @@ body{
 
     }
 
+   .section-title{
 
-    .section-title{
+    font-size:24px;
+
+    font-weight:800;
+
+    margin-bottom:20px;
+
+    color:#1f2937;
+
+}
 
         font-size:20px;
 
     }
 
+    .event-title{
+
+        font-size:18px;
+
+    }
+
+    .point-input{
+
+        width:70px;
+
+    }
+
 }
+/* ==========================================
+   Background
+========================================== */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    right:-120px;
+
+    bottom:-60px;
+
+    width:700px;
+
+    height:700px;
+
+    background:url("images/hand-bg.jpg")
+        no-repeat center;
+
+    background-size:contain;
+
+    opacity:.045;
+
+    filter:grayscale(100%);
+
+    pointer-events:none;
+
+    z-index:-1;
+
+}
+
+/* ==========================================================
+   END
+========================================================== */
