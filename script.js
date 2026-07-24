@@ -1525,20 +1525,11 @@ function renderPackagePrice(text) {
 
         const name = cols[0];
 
-        const point = toNumber(cols[1]);
+      const point = toNumber(cols[1]);
+const eachPrice = toNumber(cols[2]);
+const price = point * eachPrice;
 
-        const price = toNumber(cols[2]);
-
-        const each = point
-
-            ? (price / point)
-
-                .toFixed(2)
-
-                .replace(/\.00$/, "")
-
-            : "0";
-
+       const each = eachPrice;
         html += `
 
             ${index ? "<br><br>" : ""}
@@ -1637,17 +1628,19 @@ function parseOptions(event) {
 
                 if (cols.length < 3) return;
 
-                options.push({
+               options.push({
 
-                    mode: "包數",
+    mode: "包數",
 
-                    name: cols[0],
+    name: cols[0],
 
-                    point: toNumber(cols[1]),
+    point: toNumber(cols[1]),
 
-                    price: toNumber(cols[2])
+    eachPrice: toNumber(cols[2]),
 
-                });
+    price: toNumber(cols[1]) * toNumber(cols[2])
+
+});
 
             });
 
@@ -2050,25 +2043,29 @@ function optionHTML(option) {
 
     switch (option.mode) {
 
-        case "包數":
+       case "包數":
 
-            return `
+    return `
 
-                <strong>
+        <strong>
 
-                    ${escapeHTML(option.name)}
+            ${escapeHTML(option.name)}
 
-                </strong>
+        </strong>
 
-                <br>
+        <br>
 
-                ${option.point}P
+        ${option.point}P ／ ${formatCurrency(option.price)}
 
-                ／
+        <br>
 
-                ${formatCurrency(option.price)}
+        <small>
 
-            `;
+            1P ／ ${formatCurrency(option.eachPrice)}
+
+        </small>
+
+    `;
 
         case "P數":
 
