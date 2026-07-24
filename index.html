@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>買圖千日 用在一時🙂‍↕️🙂‍↕️｜ATEEZ飯拍資訊站</title>
+    <title>買圖千日 用在一時🙂‍↕️🙂‍↕️｜ATEEZ飯拍資料庫</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -25,14 +25,66 @@
             買圖千日 用在一時🙂‍↕️🙂‍↕️
         </h1>
 
-        <p>ATEEZ 飯拍資訊站</p>
+        <p>ATEEZ 飯拍資料庫</p>
+
+    </header>
+
+    <!-- 公告 + 開拆 -->
+
+    <div class="info-grid">
+
+        <!-- 最新公告 -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                📢 最新公告
+            </h2>
+
+            <div id="notice-list">
+
+                <div class="card">
+                    載入公告中...
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- 現正開拆中 -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                🌟 現正開拆中
+            </h2>
+
+            <div id="current-list">
+
+                <div class="card">
+                    載入中...
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- 飯拍資料庫 -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            🔍 飯拍資料庫
+        </h2>
 
         <div class="search-box">
 
             <input
                 id="searchInput"
                 type="text"
-                placeholder="搜尋場次、成員、分類..."
+                placeholder="搜尋場次、成員、ID..."
             >
 
         </div>
@@ -65,60 +117,22 @@
 
         </div>
 
-    </header>
-
-    <!-- 最新公告 -->
-
-    <section class="section">
-
-        <h2 class="section-title">
-            📢 最新公告
-        </h2>
-
-        <div id="notice-list">
-
-            <div class="card">
-                載入公告中...
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- 現正開拆中 -->
-
-    <section class="section">
-
-        <h2 class="section-title">
-            🌟 現正開拆中
-        </h2>
-
-        <div id="current-list">
-
-            <div class="card">
-                載入中...
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- 飯拍資料庫 -->
-
-    <section class="section">
-
-        <h2 class="section-title">
-            🔍 飯拍資料庫
-        </h2>
-
-        <p class="section-desc">
-            快速查詢本團曾開放的飯拍場次、成員與活動。
-        </p>
-
         <div id="event-list">
 
-            <div class="card">
-                載入活動中...
+            <div class="empty-state">
+
+                <div class="icon">
+                    🔍
+                </div>
+
+                <h3>
+                    開始搜尋即可查看飯拍資料
+                </h3>
+
+                <p>
+                    可搜尋：場次、成員、ID、分類
+                </p>
+
             </div>
 
         </div>
@@ -135,25 +149,15 @@
 
         <div class="links" id="link-list">
 
-            <a class="link-btn">
-                官方LINE
-            </a>
+            <a class="link-btn">官方LINE</a>
 
-            <a class="link-btn">
-                飯拍注意事項
-            </a>
+            <a class="link-btn">飯拍注意事項</a>
 
-            <a class="link-btn">
-                對帳表
-            </a>
+            <a class="link-btn">對帳表</a>
 
-            <a class="link-btn">
-                匯填表單
-            </a>
+            <a class="link-btn">匯填表單</a>
 
-            <a class="link-btn">
-                儲值金表單
-            </a>
+            <a class="link-btn">儲值金表單</a>
 
         </div>
 
@@ -161,10 +165,10 @@
 
 </div>
 
-<!-- ❤️ 收藏（V3） -->
+<!-- 預留 -->
+
 <div id="favorite-float" style="display:none;"></div>
 
-<!-- 🛒 我的清單（V3） -->
 <div id="cart-float" style="display:none;"></div>
 
 <footer>
