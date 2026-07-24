@@ -53,7 +53,7 @@
 
     </section>
 
-    <!-- 公告 + 開拆 -->
+    <!-- 公告 + 現正開拆 -->
 
     <div class="info-grid">
 
@@ -115,34 +115,27 @@
 
         <div class="category">
 
-            <button
-                class="active"
-                data-category="">
+            <button class="active" data-category="">
                 全部
             </button>
 
-            <button
-                data-category="簽售">
+            <button data-category="簽售">
                 簽售
             </button>
 
-            <button
-                data-category="舞台">
+            <button data-category="舞台">
                 舞台
             </button>
 
-            <button
-                data-category="出境">
+            <button data-category="出境">
                 出境
             </button>
 
-            <button
-                data-category="時裝周">
+            <button data-category="時裝周">
                 時裝周
             </button>
 
-            <button
-                data-category="OTHER">
+            <button data-category="OTHER">
                 OTHER
             </button>
 
@@ -169,14 +162,95 @@
         </div>
 
     </section>
+        <!-- =========================
+         我的喊單（側邊欄）
+    ========================== -->
+
+    <aside id="cart-panel" class="cart-panel">
+
+        <div class="cart-header">
+
+            <h2>🛒 我的喊單</h2>
+
+            <button id="close-cart" type="button">
+                ✕
+            </button>
+
+        </div>
+
+        <div id="cart-items" class="cart-items">
+
+            <div class="empty-cart">
+
+                尚未加入任何飯拍
+
+            </div>
+
+        </div>
+
+        <div class="cart-footer">
+
+            <div id="cart-total">
+
+                總金額：NT$0
+
+            </div>
+
+            <div class="cart-actions">
+
+                <button id="copy-cart" type="button">
+
+                    📋 複製喊單
+
+                </button>
+
+                <button id="clear-cart" type="button">
+
+                    🗑 清空
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </aside>
 
 </div>
 
-<!-- 之後功能 -->
+<!-- =========================
+     右下角浮動按鈕
+========================== -->
 
-<div id="favorite-float" style="display:none;"></div>
+<button
+    id="cart-fab"
+    class="floating-btn"
+    type="button">
 
-<div id="cart-float" style="display:none;"></div>
+    🛒
+
+    <span id="cart-count">
+
+        0
+
+    </span>
+
+</button>
+
+<button
+    id="favorite-fab"
+    class="floating-btn favorite"
+    type="button">
+
+    ❤️
+
+    <span id="favorite-count">
+
+        0
+
+    </span>
+
+</button>
 
 <footer>
 
