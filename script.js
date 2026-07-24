@@ -1542,13 +1542,13 @@ const price = point * eachPrice;
 
             <br>
 
-            ${point}P ／ ${formatCurrency(price)}
+           ${point}包 ／ ${formatCurrency(price)}
 
             <br>
 
             <small>
 
-                1P ／ ${formatCurrency(each)}
+               1包 ／ ${formatCurrency(each)}
 
             </small>
 
@@ -2317,17 +2317,11 @@ function cartPriceText(item) {
 
     switch (item.mode) {
 
-        case "包數":
+       case "包數":
 
-            return `
-
-                ${item.point}P
-
-                ／
-
-                ${formatCurrency(item.price)}
-
-            `;
+return `
+${item.point}包 ／ ${formatCurrency(item.price)}
+`;
 
         case "P數":
 
