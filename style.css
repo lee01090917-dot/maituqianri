@@ -1,3 +1,7 @@
+/* =========================
+   Reset
+========================= */
+
 *{
     margin:0;
     padding:0;
@@ -14,21 +18,23 @@ body{
 .container{
     max-width:1200px;
     margin:auto;
-    padding:30px 20px 80px;
+    padding:30px 20px 70px;
 }
+
+/* =========================
+   Hero
+========================= */
 
 .hero{
     background:#fff;
-    border-radius:24px;
-    padding:30px;
+    border-radius:22px;
+    padding:28px;
     text-align:center;
-    box-shadow:0 10px 35px rgba(0,0,0,.05);
-    margin-bottom:35px;
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
 }
 
 .hero h1{
     font-size:34px;
-    line-height:1.4;
     margin-bottom:8px;
 }
 
@@ -37,70 +43,78 @@ body{
     font-size:18px;
 }
 
+/* =========================
+   Section
+========================= */
+
 .section{
     margin-top:35px;
 }
 
 .section-title{
-    font-size:24px;
+    font-size:22px;
     font-weight:700;
     margin-bottom:18px;
 }
 
-.section-desc{
-    color:#888;
-    margin-bottom:18px;
-}
+/* =========================
+   公告 + 開拆
+========================= */
 
 .info-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,1fr);
     gap:20px;
 }
 
+/* =========================
+   Card
+========================= */
+
 .card{
     background:#fff;
-    border-radius:18px;
-    padding:20px;
-    box-shadow:0 6px 18px rgba(0,0,0,.05);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
 }
 
 .event-title{
-    font-size:20px;
+    font-size:19px;
     font-weight:700;
-    margin-bottom:12px;
 }
 
 .member{
+    margin-top:10px;
     color:#666;
-    margin-top:8px;
 }
 
 .price{
-    margin-top:16px;
-    padding-top:16px;
-    border-top:1px solid #eee;
-    line-height:1.9;
+    margin-top:15px;
+    line-height:1.8;
     font-weight:600;
 }
 
 .note{
-    margin-top:16px;
+    margin-top:15px;
     color:#888;
     font-size:14px;
 }
 
+/* =========================
+   搜尋
+========================= */
+
 .search-box{
-    margin:18px 0;
+    margin:20px 0;
 }
 
 .search-box input{
     width:100%;
-    padding:15px 18px;
+    padding:15px;
     border:1px solid #ddd;
-    border-radius:14px;
+    border-radius:12px;
     font-size:16px;
-    transition:.2s;
 }
 
 .search-box input:focus{
@@ -108,22 +122,25 @@ body{
     border-color:#222;
 }
 
+/* =========================
+   分類
+========================= */
+
 .category{
     display:flex;
     flex-wrap:wrap;
     gap:10px;
-    margin-top:15px;
 }
 
 .category button{
     border:none;
     background:#fff;
+    padding:10px 18px;
     border-radius:999px;
-    padding:10px 20px;
     cursor:pointer;
     font-size:15px;
     transition:.2s;
-    box-shadow:0 4px 12px rgba(0,0,0,.05);
+    box-shadow:0 3px 10px rgba(0,0,0,.05);
 }
 
 .category button:hover{
@@ -135,9 +152,9 @@ body{
     color:#fff;
 }
 
-#event-list{
-    margin-top:25px;
-}
+/* =========================
+   Empty
+========================= */
 
 .empty-state{
     text-align:center;
@@ -146,7 +163,7 @@ body{
 }
 
 .empty-state .icon{
-    font-size:42px;
+    font-size:40px;
     margin-bottom:15px;
 }
 
@@ -157,218 +174,152 @@ body{
 .empty-state p{
     color:#999;
 }
-.links{
+/* =========================
+   快速連結
+========================= */
 
+.links{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
     gap:15px;
-
 }
 
 .link-btn{
-
     display:flex;
     justify-content:center;
     align-items:center;
-
     height:55px;
-
-    background:#222;
-    color:#fff;
-
+    background:#fff;
+    color:#222;
     text-decoration:none;
-
     border-radius:14px;
-
     font-weight:600;
-
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
     transition:.2s;
-
 }
 
 .link-btn:hover{
-
     transform:translateY(-2px);
-
+    background:#222;
+    color:#fff;
 }
+
+/* =========================
+   公告、開拆列表
+========================= */
 
 #notice-list,
 #current-list{
-
-    display:grid;
+    display:flex;
+    flex-direction:column;
     gap:15px;
-
 }
 
-#favorite-float{
-
-    position:fixed;
-
-    right:25px;
-    bottom:95px;
-
-    width:58px;
-    height:58px;
-
-    border-radius:50%;
-
-    background:#ff5d8f;
-
-    color:#fff;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-size:24px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.15);
-
-    cursor:pointer;
-
-    z-index:999;
-
+#event-list{
+    margin-top:25px;
 }
 
+/* =========================
+   預留：收藏、喊單
+========================= */
+
+#favorite-float,
 #cart-float{
-
-    position:fixed;
-
-    right:25px;
-    bottom:25px;
-
-    width:58px;
-    height:58px;
-
-    border-radius:50%;
-
-    background:#222;
-
-    color:#fff;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-size:22px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.15);
-
-    cursor:pointer;
-
-    z-index:999;
-
+    display:none;
 }
+
+/* =========================
+   Footer
+========================= */
 
 footer{
-
-    margin-top:70px;
-    padding:30px 0;
-
+    margin:60px 0 20px;
     text-align:center;
-
     color:#999;
-
     font-size:14px;
-
 }
 
-@media (min-width:900px){
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width:992px){
+
+    .container{
+        padding:20px;
+    }
 
     .info-grid{
-
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:20px;
-
+        grid-template-columns:1fr;
     }
 
 }
 
-@media (max-width:899px){
-
-    .info-grid{
-
-        display:block;
-
-    }
-
-}
+/* =========================
+   Mobile
+========================= */
 
 @media (max-width:768px){
 
-    .container{
-
-        padding:20px 15px 80px;
-
-    }
-
     .hero{
-
-        padding:25px 20px;
-
+        padding:24px 18px;
     }
 
     .hero h1{
-
         font-size:28px;
-
     }
 
     .hero p{
-
         font-size:16px;
-
     }
 
     .section-title{
-
         font-size:20px;
-
     }
 
     .card{
-
-        padding:18px;
-
+        padding:16px;
     }
 
     .event-title{
-
         font-size:18px;
+    }
 
+    .search-box input{
+        font-size:15px;
     }
 
     .category{
+        gap:8px;
+    }
 
-        justify-content:flex-start;
-
+    .category button{
+        padding:9px 15px;
+        font-size:14px;
     }
 
     .links{
+        grid-template-columns:repeat(2,1fr);
+    }
 
+}
+
+@media (max-width:480px){
+
+    .container{
+        padding:16px;
+    }
+
+    .hero h1{
+        font-size:24px;
+    }
+
+    .links{
         grid-template-columns:1fr;
-
     }
 
-    #favorite-float{
-
-        right:18px;
-        bottom:88px;
-
-        width:54px;
-        height:54px;
-
-    }
-
-    #cart-float{
-
-        right:18px;
-        bottom:18px;
-
-        width:54px;
-        height:54px;
-
+    .link-btn{
+        height:50px;
     }
 
 }
