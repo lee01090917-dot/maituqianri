@@ -680,6 +680,46 @@ async function loadAllData() {
 
 function renderAll() {
 
+    try {
+        renderNotice();
+    } catch(e){
+        console.log("notice錯", e);
+    }
+
+    try {
+        renderCurrent();
+    } catch(e){
+        console.log("current錯", e);
+    }
+
+    try {
+        renderLinks();
+    } catch(e){
+        console.log("links錯", e);
+    }
+
+    try {
+        renderEvents();
+    } catch(e){
+        console.log("events錯", e);
+    }
+
+    try {
+        renderFavorite();
+    } catch(e){
+        console.log("favorite錯", e);
+    }
+
+    try {
+        renderCart();
+    } catch(e){
+        console.log("cart錯", e);
+    }
+
+    updateHeroCount();
+
+}
+
     renderNotice();
 
     renderCurrent();
