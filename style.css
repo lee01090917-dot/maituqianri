@@ -958,3 +958,18 @@ footer{
     background:transparent;
 
 }
+/* =========================
+   Overlay
+========================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    z-index:9990;
+}
+
+.overlay.show{
+    display:block;
+}
