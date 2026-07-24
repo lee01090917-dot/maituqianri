@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCurrent();
     loadLinks();
 
-    initCategory();
     initSearch();
+    initCategory();
 
 });
 
@@ -53,12 +53,6 @@ function initCategory() {
 
 async function loadEvents() {
 
-    const container = document.getElementById("event-list");
-
-    if (!container) return;
-
-    container.innerHTML = "<div class='card'>載入中...</div>";
-
     try {
 
         const res = await fetch(API + "?type=events");
@@ -71,7 +65,11 @@ async function loadEvents() {
 
         console.error(err);
 
-        container.innerHTML = "<div class='card'>讀取失敗</div>";
+        document.getElementById("event-list").innerHTML = `
+            <div class="card">
+                資料讀取失敗
+            </div>
+        `;
 
     }
 
@@ -83,40 +81,56 @@ function renderEvents() {
 
     if (!container) return;
 
-    container.innerHTML = "";
+    const keyword = (
+        document.getElementById("searchInput")?.value || ""
+    ).trim().toLowerCase();
 
-    let keyword = "";
+    const hasKeyword = keyword.length > 0;
+    const hasCategory = currentCategory !== "ALL";
 
-    const input = document.getElementById("searchInput");
+    // 沒搜尋、沒分類 -> 不顯示資料
+    if (!hasKeyword && !hasCategory) {
 
-    if (input) {
+        container.innerHTML = `
+            <div class="empty-state">
 
-        keyword = input.value.trim().toLowerCase();
+                <div class="icon">
+                    🔍
+                </div>
+
+                <h3>
+                    開始搜尋即可查看飯拍資料
+                </h3>
+
+                <p>
+                    可搜尋：場次、成員、ID、分類
+                </p>
+
+            </div>
+        `;
+
+        return;
 
     }
 
     let list = [...allEvents];
 
-    if (currentCategory !== "ALL") {
+    if (hasCategory) {
 
         list = list.filter(item => item["分類"] === currentCategory);
 
     }
 
-    if (keyword) {
+    if (hasKeyword) {
 
         list = list.filter(item => {
 
             const text = [
 
                 item["ID"],
-
                 item["場次"],
-
                 item["成員"],
-
                 item["分類"],
-
                 item["備註"]
 
             ].join(" ").toLowerCase();
@@ -130,14 +144,24 @@ function renderEvents() {
     if (list.length === 0) {
 
         container.innerHTML = `
-            <div class="card">
-                找不到符合的資料
+            <div class="empty-state">
+
+                <div class="icon">
+                    😢
+                </div>
+
+                <h3>
+                    找不到符合的資料
+                </h3>
+
             </div>
         `;
 
         return;
 
     }
+
+    container.innerHTML = "";
 
     list.forEach(event => {
 
@@ -146,6 +170,7 @@ function renderEvents() {
         card.className = "card";
 
         card.innerHTML = `
+
             <div class="event-title">
                 ${event["場次"] || ""}
             </div>
@@ -167,6 +192,7 @@ function renderEvents() {
                 ? `<div class="note">${event["備註"]}</div>`
                 : ""
             }
+
         `;
 
         container.appendChild(card);
@@ -177,19 +203,23 @@ function renderEvents() {
 function formatPrice(event) {
 
     const type = event["拆團方式"] || "";
-    const price = event["規格／價格"] || "";
+    const text = event["規格／價格"] || "";
 
-    if (!price) return "";
+    if (!text) return "";
 
     if (type === "包數") {
-        return formatPackage(price);
+
+        return formatPackage(text);
+
     }
 
     if (type === "P數") {
-        return formatP(price);
+
+        return formatPoint(text);
+
     }
 
-    return price.replace(/\n/g, "<br>");
+    return text.replace(/\n/g, "<br>");
 
 }
 
@@ -206,10 +236,14 @@ function formatPackage(text) {
         if (data.length < 3) return;
 
         const name = data[0];
+
         const p = Number(data[1]);
+
         const price = Number(data[2]);
 
-        const perPrice = (price / p).toFixed(2).replace(/\.00$/, "");
+        const perPrice = (price / p)
+            .toFixed(2)
+            .replace(/\.00$/, "");
 
         if (index === 0) {
 
@@ -232,7 +266,7 @@ function formatPackage(text) {
 
 }
 
-function formatP(text) {
+function formatPoint(text) {
 
     const data = text.split("|");
 
@@ -250,8 +284,6 @@ async function loadNotice() {
 
     if (!container) return;
 
-    container.innerHTML = "<div class='card'>載入中...</div>";
-
     try {
 
         const res = await fetch(API + "?type=notice");
@@ -262,7 +294,11 @@ async function loadNotice() {
 
         if (!Array.isArray(data) || data.length === 0) {
 
-            container.innerHTML = "<div class='card'>目前沒有公告</div>";
+            container.innerHTML = `
+                <div class="card">
+                    目前沒有公告
+                </div>
+            `;
 
             return;
 
@@ -292,18 +328,15 @@ async function loadNotice() {
 
         console.error(err);
 
-        container.innerHTML = "<div class='card'>公告讀取失敗</div>";
-
     }
 
 }
+
 async function loadCurrent() {
 
     const container = document.getElementById("current-list");
 
     if (!container) return;
-
-    container.innerHTML = "<div class='card'>載入中...</div>";
 
     try {
 
@@ -315,7 +348,11 @@ async function loadCurrent() {
 
         if (!Array.isArray(data) || data.length === 0) {
 
-            container.innerHTML = "<div class='card'>目前沒有開拆場次</div>";
+            container.innerHTML = `
+                <div class="card">
+                    目前沒有開拆場次
+                </div>
+            `;
 
             return;
 
@@ -345,12 +382,9 @@ async function loadCurrent() {
 
         console.error(err);
 
-        container.innerHTML = "<div class='card'>讀取失敗</div>";
-
     }
 
 }
-
 async function loadLinks() {
 
     const container = document.getElementById("link-list");
@@ -365,23 +399,27 @@ async function loadLinks() {
 
         container.innerHTML = "";
 
-        if (!Array.isArray(data)) return;
+        if (!Array.isArray(data)) {
+
+            return;
+
+        }
 
         data.forEach(item => {
 
-            const a = document.createElement("a");
+            const link = document.createElement("a");
 
-            a.className = "link-btn";
+            link.className = "link-btn";
 
-            a.href = item["網址"] || "#";
+            link.href = item["網址"] || "#";
 
-            a.target = "_blank";
+            link.target = "_blank";
 
-            a.rel = "noopener noreferrer";
+            link.rel = "noopener noreferrer";
 
-            a.textContent = item["名稱"] || "未命名";
+            link.textContent = item["名稱"] || "未命名";
 
-            container.appendChild(a);
+            container.appendChild(link);
 
         });
 
@@ -394,31 +432,61 @@ async function loadLinks() {
 }
 
 /* ===========================
-   ❤️ 我的收藏（V3預留）
+   ❤️ 我的收藏（V4）
 =========================== */
 
 let favoriteList = [];
 
+function addFavorite(id){
+
+    if(favoriteList.includes(id)) return;
+
+    favoriteList.push(id);
+
+    localStorage.setItem(
+        "favoriteList",
+        JSON.stringify(favoriteList)
+    );
+
+}
+
+function loadFavorite(){
+
+    favoriteList = JSON.parse(
+        localStorage.getItem("favoriteList") || "[]"
+    );
+
+}
+
 /* ===========================
-   🛒 我的清單（V3預留）
+   🛒 我的清單（V4）
 =========================== */
 
 let cartList = [];
 
-/* ===========================
-   🧮 試算器（V3預留）
-=========================== */
+function addCart(item){
 
-function calculateTotal() {
+    cartList.push(item);
 
-    let total = 0;
-
-    cartList.forEach(item => {
-
-        total += item.price || 0;
-
-    });
-
-    return total;
+    localStorage.setItem(
+        "cartList",
+        JSON.stringify(cartList)
+    );
 
 }
+
+function loadCart(){
+
+    cartList = JSON.parse(
+        localStorage.getItem("cartList") || "[]"
+    );
+
+}
+
+/* ===========================
+   初始化 LocalStorage
+=========================== */
+
+loadFavorite();
+
+loadCart();
