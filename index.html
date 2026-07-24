@@ -1,124 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>買圖千日 用在一時🙂‍↕️🙂‍↕️｜ATEEZ飯拍資訊站</title>
 
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>買圖千日 用在一時🙂‍↕️🙂‍↕️｜ATEEZ飯拍資訊站</title>
 
-  <style>
-    body{
-      margin:0;
-      background:#f6f6f6;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      color:#222;
-    }
-
-    .container{
-      max-width:1200px;
-      margin:auto;
-      padding:20px;
-    }
-
-    .hero{
-      background:#fff;
-      border-radius:18px;
-      padding:35px;
-      text-align:center;
-      box-shadow:0 8px 25px rgba(0,0,0,.05);
-    }
-
-    .hero h1{
-      margin:0;
-      font-size:36px;
-    }
-
-    .hero p{
-      color:#666;
-      margin-top:10px;
-    }
-
-    .search-box{
-      margin-top:25px;
-    }
-
-    .search-box input{
-      width:100%;
-      padding:16px;
-      border-radius:12px;
-      border:1px solid #ddd;
-      font-size:16px;
-    }
-
-    .category{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:25px;
-    }
-
-    .category button{
-      border:none;
-      background:white;
-      padding:10px 18px;
-      border-radius:999px;
-      cursor:pointer;
-      font-size:15px;
-      box-shadow:0 3px 10px rgba(0,0,0,.05);
-    }
-
-    .section{
-      margin-top:45px;
-    }
-
-    .section-title{
-      font-size:22px;
-      font-weight:bold;
-      margin-bottom:18px;
-    }
-
-    .card{
-      background:white;
-      border-radius:16px;
-      padding:20px;
-      margin-bottom:18px;
-      box-shadow:0 5px 15px rgba(0,0,0,.05);
-    }
-
-    .links{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:15px;
-    }
-
-    .link-btn{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      text-decoration:none;
-      background:#222;
-      color:white;
-      height:55px;
-      border-radius:14px;
-      font-weight:bold;
-      transition:.2s;
-    }
-
-    .link-btn:hover{
-      transform:translateY(-2px);
-    }
-
-    footer{
-      margin:50px 0;
-      text-align:center;
-      color:#888;
-      font-size:14px;
-    }
-  </style>
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -126,135 +16,165 @@
 
 <div class="container">
 
-<div class="hero">
+    <!-- Hero -->
 
-<h1>📸<br>
-買圖千日 用在一時🙂‍↕️🙂‍↕️
-</h1>
+    <header class="hero">
 
-<p>ATEEZ 飯拍資訊站</p>
+        <h1>
+            📸<br>
+            買圖千日 用在一時🙂‍↕️🙂‍↕️
+        </h1>
 
-<div class="search-box">
-<input
-id="searchInput"
-type="text"
-placeholder="搜尋場次、成員..."
->
+        <p>ATEEZ 飯拍資訊站</p>
+
+        <div class="search-box">
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="搜尋場次、成員、分類..."
+            >
+
+        </div>
+
+        <div class="category">
+
+            <button type="button" class="active" data-category="ALL">
+                全部
+            </button>
+
+            <button type="button" data-category="簽售">
+                簽售
+            </button>
+
+            <button type="button" data-category="舞台">
+                舞台
+            </button>
+
+            <button type="button" data-category="出境">
+                出境
+            </button>
+
+            <button type="button" data-category="時裝周">
+                時裝周
+            </button>
+
+            <button type="button" data-category="OTHER">
+                OTHER
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- 最新公告 -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            📢 最新公告
+        </h2>
+
+        <div id="notice-list">
+
+            <div class="card">
+                載入公告中...
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- 現正開拆中 -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            🌟 現正開拆中
+        </h2>
+
+        <div id="current-list">
+
+            <div class="card">
+                載入中...
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- 飯拍資料庫 -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            🔍 飯拍資料庫
+        </h2>
+
+        <p class="section-desc">
+            快速查詢本團曾開放的飯拍場次、成員與活動。
+        </p>
+
+        <div id="event-list">
+
+            <div class="card">
+                載入活動中...
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- 快速連結 -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            🔗 快速連結
+        </h2>
+
+        <div class="links" id="link-list">
+
+            <a class="link-btn">
+                官方LINE
+            </a>
+
+            <a class="link-btn">
+                飯拍注意事項
+            </a>
+
+            <a class="link-btn">
+                對帳表
+            </a>
+
+            <a class="link-btn">
+                匯填表單
+            </a>
+
+            <a class="link-btn">
+                儲值金表單
+            </a>
+
+        </div>
+
+    </section>
+
 </div>
 
-<div class="category">
+<!-- ❤️ 收藏（V3） -->
+<div id="favorite-float" style="display:none;"></div>
 
-<button>✍️ 簽售</button>
-
-<button>✈️ 出境</button>
-
-<button>🎤 舞台</button>
-
-<button>👕 時裝周</button>
-
-<button>📁 OTHER</button>
-
-</div>
-
-</div>
-
-<!-- 公告 -->
-
-<section class="section">
-
-<div class="section-title">
-📢 最新公告
-</div>
-
-<div id="notice-list">
-
-<div class="card">
-載入公告中...
-</div>
-
-</div>
-
-</section>
-
-<!-- 最新場次 -->
-
-<section class="section">
-
-<div class="section-title">
-📅 最新開團
-</div>
-
-<div id="event-list">
-
-<div class="card">
-載入活動中...
-</div>
-
-</div>
-
-</section>
-
-<!-- 我的喊單 -->
-
-<section class="section">
-
-<div class="section-title">
-❤️ 我的喊單
-</div>
-
-<div class="card">
-
-<p>
-尚未收藏任何活動
-</p>
-
-</div>
-
-</section>
-
-<!-- 快速連結 -->
-
-<section class="section">
-
-<div class="section-title">
-🔗 快速連結
-</div>
-
-<div class="links" id="link-list">
-
-<a class="link-btn">
-官方LINE
-</a>
-
-<a class="link-btn">
-飯拍注意事項
-</a>
-
-<a class="link-btn">
-對帳表
-</a>
-
-<a class="link-btn">
-匯填表單
-</a>
-
-<a class="link-btn">
-儲值金表單
-</a>
-
-</div>
-
-</section>
+<!-- 🛒 我的清單（V3） -->
+<div id="cart-float" style="display:none;"></div>
 
 <footer>
 
-© 買圖千日 用在一時🙂‍↕️🙂‍↕️
+    © 買圖千日 用在一時🙂‍↕️🙂‍↕️
 
 </footer>
-
-</div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
