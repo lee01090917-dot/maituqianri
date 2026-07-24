@@ -92,7 +92,7 @@ function renderEvents() {
         list = list.filter(item => {
 
             const text = [
-                item["場次名稱"],
+                item["場次"],
                 item["成員"],
                 item["分類"],
                 item["備註"]
@@ -124,19 +124,15 @@ function renderEvents() {
 
         card.innerHTML = `
             <div class="event-title">
-                ${event["場次名稱"] || ""}
+                ${event["場次"] || ""}
             </div>
 
             <div class="member">
                 👤 ${event["成員"] || ""}
             </div>
 
-            <div class="badge ${getBadge(event["狀態"])}">
-                ${event["狀態"] || ""}
-            </div>
-
             <div class="price">
-                ${(event["價格"] || "").replace(/\n/g,"<br>")}
+                ${(event["規格／價格"] || "").replace(/\n/g,"<br>")}
             </div>
 
             <div style="margin-top:12px;color:#666;">
@@ -180,14 +176,11 @@ async function loadNotice() {
             card.className = "card";
 
             card.innerHTML = `
-                <strong>${item["標題"] || ""}</strong>
-                <div style="font-size:13px;color:#888;margin:8px 0;">
-                    ${item["日期"] || ""}
-                </div>
-                <div>
-                    ${item["內容"] || ""}
-                </div>
-            `;
+    <strong>${item["場次"] || ""}</strong>
+    <div style="margin-top:8px;">
+        ${item["公告"] || ""}
+    </div>
+`;
 
             container.appendChild(card);
 
