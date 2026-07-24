@@ -21,13 +21,24 @@ html{
 body{
 
     background:
-        radial-gradient(circle at top left,#eaf3ff 0%,transparent 35%),
-        radial-gradient(circle at bottom right,#f4f0ff 0%,transparent 40%),
+
+        radial-gradient(
+            circle at top left,
+            #cfe4ff 0%,
+            transparent 45%
+        ),
+
+        radial-gradient(
+            circle at bottom right,
+            #ddd6fe 0%,
+            transparent 45%
+        ),
+
         linear-gradient(
             135deg,
-            #eef4fb 0%,
-            #f7f8fc 45%,
-            #ffffff 100%
+            #dbeafe 0%,
+            #edf4ff 40%,
+            #f8fbff 100%
         );
 
     color:#222;
@@ -62,6 +73,17 @@ body{
 ========================= */
 
 .hero{
+
+    background:rgba(255,255,255,.78);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.7);
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.08);
+
+}
 
    background:rgba(255,255,255,.92);
 
@@ -272,6 +294,14 @@ border:1px solid rgba(255,255,255,.6);
 ========================= */
 
 .card{
+
+    background:rgba(255,255,255,.85);
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(255,255,255,.8);
+
+}
 
   background:rgba(255,255,255,.92);
 
