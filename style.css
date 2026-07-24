@@ -1,8 +1,9 @@
 /* ==========================================================
    買圖千日 用在一時
-   style.css V4
+   style.css V5
    PART 01
 ========================================================== */
+
 
 /* =========================
    Reset
@@ -14,9 +15,11 @@
     box-sizing:border-box;
 }
 
+
 html{
     scroll-behavior:smooth;
 }
+
 
 body{
 
@@ -37,8 +40,8 @@ body{
         linear-gradient(
             135deg,
             #dbeafe 0%,
-            #edf4ff 40%,
-            #f8fbff 100%
+            #edf4ff 45%,
+            #ffffff 100%
         );
 
     color:#222;
@@ -54,9 +57,7 @@ body{
 
 }
 
-/* =========================
-   Container
-========================= */
+
 
 .container{
 
@@ -68,28 +69,20 @@ body{
 
 }
 
+
+
 /* =========================
    Hero
 ========================= */
 
+
 .hero{
 
-    background:rgba(255,255,255,.78);
+    background:rgba(255,255,255,.92);
 
-    backdrop-filter:blur(18px);
+    backdrop-filter:blur(12px);
 
     border:1px solid rgba(255,255,255,.7);
-
-    box-shadow:
-        0 18px 45px rgba(0,0,0,.08);
-
-}
-
-   background:rgba(255,255,255,.92);
-
-backdrop-filter:blur(10px);
-
-border:1px solid rgba(255,255,255,.6);
 
     border-radius:24px;
 
@@ -108,11 +101,17 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .hero-left{
 
     flex:1;
 
+    min-width:0;
+
 }
+
+
 
 .hero-title{
 
@@ -126,6 +125,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .hero-sub{
 
     color:#777;
@@ -133,10 +134,10 @@ border:1px solid rgba(255,255,255,.6);
     font-size:18px;
 
 }
-
 /* =========================
    Hero Cards
 ========================= */
+
 
 .hero-actions{
 
@@ -144,12 +145,15 @@ border:1px solid rgba(255,255,255,.6);
 
     display:grid;
 
-    grid-template-columns:
-        repeat(3,1fr);
+    grid-template-columns:repeat(3,1fr);
 
     gap:16px;
 
+    flex-shrink:0;
+
 }
+
+
 
 .hero-card{
 
@@ -179,20 +183,27 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .hero-card:hover{
 
     transform:translateY(-4px);
 
     box-shadow:
+
         0 10px 25px rgba(0,0,0,.08);
 
 }
+
+
 
 .total-card{
 
     cursor:default;
 
 }
+
+
 
 .total-card:hover{
 
@@ -202,6 +213,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .hero-card .icon{
 
     font-size:28px;
@@ -209,6 +222,8 @@ border:1px solid rgba(255,255,255,.6);
     margin-bottom:6px;
 
 }
+
+
 
 .hero-card .label{
 
@@ -220,6 +235,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .hero-card .count{
 
     font-size:24px;
@@ -230,11 +247,15 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .favorite-card .count{
 
     color:#ff4f7b;
 
 }
+
+
 
 .cart-card .count{
 
@@ -242,38 +263,28 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .total-card .count{
 
     color:#0f766e;
 
 }
 
-/* =========================
-   Info Grid
-========================= */
 
-.info-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:22px;
-
-    margin-top:36px;
-
-}
 
 /* =========================
    Section
 ========================= */
+
 
 .section{
 
     margin-top:42px;
 
 }
+
+
 
 .section-title{
 
@@ -284,30 +295,18 @@ border:1px solid rgba(255,255,255,.6);
     margin-bottom:20px;
 
 }
-/* ==========================================================
-   style.css V4
-   PART 02
-========================================================== */
-
 /* =========================
-   Card
+   Event / Data Card
 ========================= */
+
 
 .card{
 
-    background:rgba(255,255,255,.85);
+    background:rgba(255,255,255,.92);
 
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(8px);
 
-    border:1px solid rgba(255,255,255,.8);
-
-}
-
-  background:rgba(255,255,255,.92);
-
-backdrop-filter:blur(8px);
-
-border:1px solid rgba(255,255,255,.6);
+    border:1px solid rgba(255,255,255,.7);
 
     border-radius:20px;
 
@@ -322,6 +321,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .card:hover{
 
     transform:translateY(-3px);
@@ -330,6 +331,8 @@ border:1px solid rgba(255,255,255,.6);
         0 12px 32px rgba(0,0,0,.08);
 
 }
+
+
 
 .event-title{
 
@@ -343,6 +346,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .member{
 
     color:#666;
@@ -352,6 +357,8 @@ border:1px solid rgba(255,255,255,.6);
     font-size:15px;
 
 }
+
+
 
 .price{
 
@@ -363,6 +370,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .note{
 
     margin-top:14px;
@@ -373,15 +382,20 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 /* =========================
    Search
 ========================= */
+
 
 .search-box{
 
     margin:22px 0;
 
 }
+
+
 
 .search-box input{
 
@@ -403,6 +417,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .search-box input:focus{
 
     outline:none;
@@ -410,13 +426,17 @@ border:1px solid rgba(255,255,255,.6);
     border-color:#2563eb;
 
     box-shadow:
+
         0 0 0 4px rgba(37,99,235,.12);
 
 }
 
+
+
 /* =========================
    Category
 ========================= */
+
 
 .category{
 
@@ -427,6 +447,8 @@ border:1px solid rgba(255,255,255,.6);
     gap:10px;
 
 }
+
+
 
 .category button{
 
@@ -445,15 +467,20 @@ border:1px solid rgba(255,255,255,.6);
     transition:.2s;
 
     box-shadow:
+
         0 3px 10px rgba(0,0,0,.05);
 
 }
+
+
 
 .category button:hover{
 
     transform:translateY(-2px);
 
 }
+
+
 
 .category button.active{
 
@@ -462,123 +489,10 @@ border:1px solid rgba(255,255,255,.6);
     color:#fff;
 
 }
-
-/* =========================
-   Empty
-========================= */
-
-.empty-state{
-
-    background:#fff;
-
-    border-radius:22px;
-
-    padding:80px 30px;
-
-    text-align:center;
-
-    color:#888;
-
-}
-
-.empty-state .icon{
-
-    font-size:52px;
-
-    margin-bottom:18px;
-
-}
-
-.empty-state h3{
-
-    font-size:24px;
-
-    margin-bottom:10px;
-
-}
-
-.empty-state p{
-
-    color:#999;
-
-}
-
-/* =========================
-   Links
-========================= */
-
-.links{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(auto-fit,minmax(180px,1fr));
-
-    gap:16px;
-
-}
-
-.link-btn{
-
-    height:60px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:#fff;
-
-    border-radius:16px;
-
-    text-decoration:none;
-
-    color:#222;
-
-    font-weight:700;
-
-    transition:.2s;
-
-    box-shadow:
-        0 5px 16px rgba(0,0,0,.05);
-
-}
-
-.link-btn:hover{
-
-    background:#2563eb;
-
-    color:#fff;
-
-    transform:translateY(-2px);
-
-}
-
-#notice-list,
-#current-list{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:16px;
-
-}
-
-#event-list{
-
-    margin-top:26px;
-
-}
-/* ==========================================================
-   style.css V4
-   PART 03
-========================================================== */
-
 /* =========================
    Favorite / Cart Panel
 ========================= */
+
 
 .favorite-panel,
 .cart-panel{
@@ -601,13 +515,16 @@ border:1px solid rgba(255,255,255,.6);
 
     flex-direction:column;
 
-    box-shadow:-12px 0 35px rgba(0,0,0,.15);
+    box-shadow:
+        -12px 0 35px rgba(0,0,0,.15);
 
     transition:.3s;
 
     z-index:9999;
 
 }
+
+
 
 .favorite-panel.show,
 .cart-panel.show{
@@ -616,9 +533,12 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 /* =========================
-   Header
+   Panel Header
 ========================= */
+
 
 .cart-header{
 
@@ -634,6 +554,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .cart-header h2{
 
     font-size:22px;
@@ -641,6 +563,8 @@ border:1px solid rgba(255,255,255,.6);
     font-weight:700;
 
 }
+
+
 
 .cart-header button{
 
@@ -652,19 +576,14 @@ border:1px solid rgba(255,255,255,.6);
 
     cursor:pointer;
 
-    transition:.2s;
-
 }
 
-.cart-header button:hover{
 
-    transform:rotate(90deg);
-
-}
 
 /* =========================
-   Scroll Area
+   Cart Items
 ========================= */
+
 
 .cart-items{
 
@@ -676,9 +595,7 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-/* =========================
-   Item
-========================= */
+
 
 .cart-item{
 
@@ -692,19 +609,9 @@ border:1px solid rgba(255,255,255,.6);
 
     margin-bottom:16px;
 
-    transition:.25s;
-
 }
 
-.cart-item:hover{
 
-    border-color:#2563eb22;
-
-    box-shadow:
-
-        0 8px 24px rgba(0,0,0,.06);
-
-}
 
 .cart-item-title{
 
@@ -714,9 +621,9 @@ border:1px solid rgba(255,255,255,.6);
 
     margin-bottom:8px;
 
-    line-height:1.5;
-
 }
+
+
 
 .cart-item-price{
 
@@ -730,23 +637,12 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-/* =========================
-   Empty
-========================= */
 
-.empty-cart{
-
-    text-align:center;
-
-    color:#999;
-
-    margin-top:80px;
-
-}
 
 /* =========================
-   Footer
+   Cart Footer
 ========================= */
+
 
 .cart-footer{
 
@@ -755,6 +651,8 @@ border:1px solid rgba(255,255,255,.6);
     border-top:1px solid #eee;
 
 }
+
+
 
 #cart-total{
 
@@ -766,6 +664,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .cart-actions{
 
     display:flex;
@@ -773,6 +673,8 @@ border:1px solid rgba(255,255,255,.6);
     gap:12px;
 
 }
+
+
 
 .cart-actions button{
 
@@ -790,13 +692,9 @@ border:1px solid rgba(255,255,255,.6);
 
     font-weight:700;
 
-    transition:.2s;
-
 }
 
-/* =========================
-   Copy
-========================= */
+
 
 #copy-cart{
 
@@ -806,15 +704,7 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-#copy-cart:hover{
 
-    background:#1d4ed8;
-
-}
-
-/* =========================
-   Clear
-========================= */
 
 #clear-cart{
 
@@ -822,15 +712,12 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-#clear-cart:hover{
 
-    background:#ddd;
-
-}
 
 /* =========================
    Small Buttons
 ========================= */
+
 
 .favorite-btn,
 .cart-btn{
@@ -847,9 +734,9 @@ border:1px solid rgba(255,255,255,.6);
 
     transition:.2s;
 
-    font-size:14px;
-
 }
+
+
 
 .favorite-btn:hover{
 
@@ -857,43 +744,17 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .cart-btn:hover{
 
     background:#e9f1ff;
 
 }
-
-/* =========================
-   Scrollbar
-========================= */
-
-.cart-items::-webkit-scrollbar{
-
-    width:6px;
-
-}
-
-.cart-items::-webkit-scrollbar-thumb{
-
-    background:#ccc;
-
-    border-radius:999px;
-
-}
-
-.cart-items::-webkit-scrollbar-track{
-
-    background:transparent;
-
-}
-/* ==========================================================
-   style.css V4
-   PART 04
-========================================================== */
-
 /* =========================
    Modal
 ========================= */
+
 
 .modal{
 
@@ -915,11 +776,15 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .modal.show{
 
     display:flex;
 
 }
+
+
 
 .modal-box{
 
@@ -933,29 +798,9 @@ border:1px solid rgba(255,255,255,.6);
 
     padding:28px;
 
-    animation:modalOpen .25s ease;
-
 }
 
-@keyframes modalOpen{
 
-    from{
-
-        opacity:0;
-
-        transform:translateY(15px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:none;
-
-    }
-
-}
 
 .modal-title{
 
@@ -967,9 +812,7 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-/* =========================
-   Options
-========================= */
+
 
 .modal-options{
 
@@ -981,9 +824,7 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-/* =========================
-   Option Card
-========================= */
+
 
 .modal-option{
 
@@ -1001,15 +842,15 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .modal-option:hover{
 
     border-color:#2563eb;
 
-    transform:translateY(-2px);
-
 }
 
-/* 已選擇 */
+
 
 .modal-option.active{
 
@@ -1019,23 +860,9 @@ border:1px solid rgba(255,255,255,.6);
 
     color:#fff;
 
-    box-shadow:
-
-        0 10px 24px rgba(37,99,235,.25);
-
 }
 
-.modal-option.active .option-price,
 
-.modal-option.active .option-total{
-
-    color:#fff;
-
-}
-
-/* =========================
-   Option Text
-========================= */
 
 .option-title{
 
@@ -1044,6 +871,8 @@ border:1px solid rgba(255,255,255,.6);
     font-weight:700;
 
 }
+
+
 
 .option-price{
 
@@ -1054,6 +883,8 @@ border:1px solid rgba(255,255,255,.6);
     font-size:15px;
 
 }
+
+
 
 .option-total{
 
@@ -1067,9 +898,21 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
+.modal-option.active .option-price,
+.modal-option.active .option-total{
+
+    color:#fff;
+
+}
+
+
+
 /* =========================
    P Counter
 ========================= */
+
 
 .p-counter{
 
@@ -1084,6 +927,8 @@ border:1px solid rgba(255,255,255,.6);
     margin-top:18px;
 
 }
+
+
 
 .p-counter button{
 
@@ -1103,15 +948,9 @@ border:1px solid rgba(255,255,255,.6);
 
     font-size:22px;
 
-    transition:.2s;
-
 }
 
-.p-counter button:hover{
 
-    transform:scale(1.06);
-
-}
 
 .point-input{
 
@@ -1131,21 +970,12 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-.point-input:focus{
 
-    outline:none;
-
-    border-color:#2563eb;
-
-    box-shadow:
-
-        0 0 0 4px rgba(37,99,235,.12);
-
-}
 
 /* =========================
-   Footer
+   Footer Buttons
 ========================= */
+
 
 .modal-footer{
 
@@ -1158,6 +988,8 @@ border:1px solid rgba(255,255,255,.6);
     margin-top:28px;
 
 }
+
+
 
 .modal-footer button{
 
@@ -1173,9 +1005,9 @@ border:1px solid rgba(255,255,255,.6);
 
     cursor:pointer;
 
-    transition:.2s;
-
 }
+
+
 
 #modal-cancel{
 
@@ -1183,11 +1015,7 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-#modal-cancel:hover{
 
-    background:#ddd;
-
-}
 
 #modal-confirm{
 
@@ -1197,19 +1025,12 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-#modal-confirm:hover{
 
-    background:#1d4ed8;
-
-}
-/* ==========================================================
-   style.css V4
-   PART 05（END）
-========================================================== */
 
 /* =========================
-   Overlay
+   Overlay / Toast
 ========================= */
+
 
 .overlay{
 
@@ -1229,6 +1050,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .overlay.show{
 
     opacity:1;
@@ -1237,9 +1060,7 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-/* =========================
-   Toast
-========================= */
+
 
 .toast{
 
@@ -1259,10 +1080,6 @@ border:1px solid rgba(255,255,255,.6);
 
     border-radius:999px;
 
-    font-size:15px;
-
-    font-weight:600;
-
     opacity:0;
 
     pointer-events:none;
@@ -1273,6 +1090,8 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
+
+
 .toast.show{
 
     opacity:1;
@@ -1281,49 +1100,14 @@ border:1px solid rgba(255,255,255,.6);
 
 }
 
-/* =========================
-   Utility
-========================= */
 
-.hidden{
-
-    display:none !important;
-
-}
-
-.text-center{
-
-    text-align:center;
-
-}
-
-.text-right{
-
-    text-align:right;
-
-}
 
 /* =========================
-   Footer
+   Mobile
 ========================= */
 
-footer{
 
-    margin:70px 0 30px;
-
-    text-align:center;
-
-    color:#999;
-
-    font-size:14px;
-
-}
-
-/* =========================
-   Tablet
-========================= */
-
-@media (max-width:992px){
+@media(max-width:992px){
 
     .hero{
 
@@ -1333,27 +1117,18 @@ footer{
 
     }
 
+
     .hero-actions{
 
         width:100%;
-
-        grid-template-columns:repeat(3,1fr);
-
-    }
-
-    .info-grid{
-
-        grid-template-columns:1fr;
 
     }
 
 }
 
-/* =========================
-   Mobile
-========================= */
 
-@media (max-width:768px){
+
+@media(max-width:768px){
 
     .container{
 
@@ -1363,11 +1138,6 @@ footer{
 
     }
 
-    .hero{
-
-        padding:22px;
-
-    }
 
     .hero-title{
 
@@ -1375,11 +1145,6 @@ footer{
 
     }
 
-    .hero-sub{
-
-        font-size:16px;
-
-    }
 
     .hero-actions{
 
@@ -1387,20 +1152,8 @@ footer{
 
     }
 
-    .hero-card{
-
-        min-height:90px;
-
-    }
-
-    .links{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
 
     .cart-panel,
-
     .favorite-panel{
 
         width:100%;
@@ -1409,17 +1162,9 @@ footer{
 
 }
 
-/* =========================
-   Small Mobile
-========================= */
 
-@media (max-width:480px){
 
-    .links{
-
-        grid-template-columns:1fr;
-
-    }
+@media(max-width:480px){
 
     .hero-title{
 
@@ -1427,68 +1172,11 @@ footer{
 
     }
 
-   .section-title{
 
-    font-size:24px;
-
-    font-weight:800;
-
-    margin-bottom:20px;
-
-    color:#1f2937;
-
-}
+    .section-title{
 
         font-size:20px;
 
     }
 
-    .event-title{
-
-        font-size:18px;
-
-    }
-
-    .point-input{
-
-        width:70px;
-
-    }
-
 }
-/* ==========================================
-   Background
-========================================== */
-
-body::before{
-
-    content:"";
-
-    position:fixed;
-
-    right:-120px;
-
-    bottom:-60px;
-
-    width:700px;
-
-    height:700px;
-
-    background:url("images/hand-bg.jpg")
-        no-repeat center;
-
-    background-size:contain;
-
-    opacity:.045;
-
-    filter:grayscale(100%);
-
-    pointer-events:none;
-
-    z-index:-1;
-
-}
-
-/* ==========================================================
-   END
-========================================================== */
