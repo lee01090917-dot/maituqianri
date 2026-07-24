@@ -4,9 +4,13 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>買圖千日 用在一時🙂‍↕️🙂‍↕️｜ATEEZ飯拍資料庫</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        買圖千日 用在一時🙂‍↕️🙂‍↕️｜ATEEZ 飯拍資料庫
+    </title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -16,51 +20,114 @@
 
 <div class="container">
 
-    <!-- Hero -->
+    <!-- =========================
+         Hero
+    ========================== -->
 
     <header class="hero">
 
-        <h1>
-            📸<br>
-            買圖千日 用在一時🙂‍↕️🙂‍↕️
-        </h1>
+        <div class="hero-left">
 
-        <p>ATEEZ 飯拍資料庫</p>
+            <h1 class="hero-title">
+
+                📸 買圖千日 用在一時🙂‍↕️🙂‍↕️
+
+            </h1>
+
+            <p class="hero-sub">
+
+                ATEEZ 飯拍資料庫
+
+            </p>
+
+        </div>
+
+        <div class="hero-actions">
+
+            <div
+                id="favorite-open"
+                class="hero-card favorite-card">
+
+                <div class="icon">
+                    ❤️
+                </div>
+
+                <div class="label">
+                    我的收藏
+                </div>
+
+                <div
+                    id="favorite-count"
+                    class="count">
+
+                    0
+
+                </div>
+
+            </div>
+
+            <div
+                id="cart-open"
+                class="hero-card cart-card">
+
+                <div class="icon">
+                    🛒
+                </div>
+
+                <div class="label">
+                    我的喊單
+                </div>
+
+                <div
+                    id="cart-count"
+                    class="count">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
 
     </header>
 
-    <!-- 快速連結 -->
+    <!-- =========================
+         快速連結
+    ========================== -->
 
     <section class="section">
 
         <h2 class="section-title">
+
             🔗 快速連結
+
         </h2>
 
-        <div class="links" id="link-list">
+        <div
+            id="link-list"
+            class="links">
 
-            <a class="link-btn">💬 官方LINE</a>
-
-            <a class="link-btn">📒 對帳表</a>
-
-            <a class="link-btn">📝 匯填表單</a>
-
-            <a class="link-btn">💰 儲值金</a>
-
-            <a class="link-btn">📖 注意事項</a>
+            <a class="link-btn">
+                載入中...
+            </a>
 
         </div>
 
     </section>
 
-    <!-- 公告 + 現正開拆 -->
+    <!-- =========================
+         公告 + 現正開拆
+    ========================== -->
 
     <div class="info-grid">
 
         <section class="section">
 
             <h2 class="section-title">
+
                 📢 最新公告
+
             </h2>
 
             <div id="notice-list">
@@ -78,7 +145,9 @@
         <section class="section">
 
             <h2 class="section-title">
+
                 🌟 現正開拆中
+
             </h2>
 
             <div id="current-list">
@@ -94,13 +163,16 @@
         </section>
 
     </div>
-
-    <!-- 飯拍資料庫 -->
+        <!-- =========================
+         飯拍資料庫
+    ========================== -->
 
     <section class="section">
 
         <h2 class="section-title">
+
             🔍 飯拍資料庫
+
         </h2>
 
         <div class="search-box">
@@ -108,14 +180,16 @@
             <input
                 id="searchInput"
                 type="text"
-                placeholder="搜尋場次、成員、ID..."
+                placeholder="搜尋場次、成員、ID、分類..."
             >
 
         </div>
 
         <div class="category">
 
-            <button class="active" data-category="">
+            <button
+                class="active"
+                data-category="">
                 全部
             </button>
 
@@ -150,11 +224,15 @@
                 </div>
 
                 <h3>
-                    開始搜尋或選擇分類即可查看飯拍資料
+
+                    開始搜尋即可查看飯拍資料
+
                 </h3>
 
                 <p>
+
                     可搜尋：場次、成員、ID、分類
+
                 </p>
 
             </div>
@@ -162,23 +240,74 @@
         </div>
 
     </section>
-        <!-- =========================
-         我的喊單（側邊欄）
+
+    <!-- =========================
+         我的收藏側邊欄
     ========================== -->
 
-    <aside id="cart-panel" class="cart-panel">
+    <aside
+        id="favorite-panel"
+        class="favorite-panel">
 
         <div class="cart-header">
 
-            <h2>🛒 我的喊單</h2>
+            <h2>
 
-            <button id="close-cart" type="button">
+                ❤️ 我的收藏
+
+            </h2>
+
+            <button
+                id="close-favorite">
+
                 ✕
+
             </button>
 
         </div>
 
-        <div id="cart-items" class="cart-items">
+        <div
+            id="favorite-items"
+            class="cart-items">
+
+            <div class="empty-cart">
+
+                尚未收藏任何飯拍
+
+            </div>
+
+        </div>
+
+    </aside>
+        <!-- =========================
+         我的喊單側邊欄
+    ========================== -->
+
+    <aside
+        id="cart-panel"
+        class="cart-panel">
+
+        <div class="cart-header">
+
+            <h2>
+
+                🛒 我的喊單
+
+            </h2>
+
+            <button
+                id="close-cart"
+                type="button">
+
+                ✕
+
+            </button>
+
+        </div>
+
+        <div
+            id="cart-items"
+            class="cart-items">
 
             <div class="empty-cart">
 
@@ -198,13 +327,17 @@
 
             <div class="cart-actions">
 
-                <button id="copy-cart" type="button">
+                <button
+                    id="copy-cart"
+                    type="button">
 
                     📋 複製喊單
 
                 </button>
 
-                <button id="clear-cart" type="button">
+                <button
+                    id="clear-cart"
+                    type="button">
 
                     🗑 清空
 
@@ -216,47 +349,78 @@
 
     </aside>
 
+    <!-- =========================
+         選擇方案 Modal
+    ========================== -->
+
+    <div
+        id="option-modal"
+        class="modal">
+
+        <div class="modal-box">
+
+            <div
+                id="modal-title"
+                class="modal-title">
+
+                選擇方案
+
+            </div>
+
+            <div
+                id="modal-options"
+                class="modal-options">
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    id="modal-cancel"
+                    type="button">
+
+                    取消
+
+                </button>
+
+                <button
+                    id="modal-confirm"
+                    type="button">
+
+                    加入喊單
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+        <!-- =========================
+         Footer
+    ========================== -->
+
+    <footer>
+
+        © 買圖千日 用在一時🙂‍↕️🙂‍↕️
+
+    </footer>
+
 </div>
 
 <!-- =========================
-     右下角浮動按鈕
+     背景遮罩
 ========================== -->
 
-<button
-    id="cart-fab"
-    class="floating-btn"
-    type="button">
+<div
+    id="overlay"
+    class="overlay">
 
-    🛒
+</div>
 
-    <span id="cart-count">
-
-        0
-
-    </span>
-
-</button>
-
-<button
-    id="favorite-fab"
-    class="floating-btn favorite"
-    type="button">
-
-    ❤️
-
-    <span id="favorite-count">
-
-        0
-
-    </span>
-
-</button>
-
-<footer>
-
-    © 買圖千日 用在一時🙂‍↕️🙂‍↕️
-
-</footer>
+<!-- =========================
+     Script
+========================== -->
 
 <script src="script.js"></script>
 
