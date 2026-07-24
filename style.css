@@ -21,11 +21,12 @@ html{
 body{
 
     background:
-
+        radial-gradient(circle at top left,#eaf3ff 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#f4f0ff 0%,transparent 40%),
         linear-gradient(
             135deg,
             #eef4fb 0%,
-            #f7f8fc 50%,
+            #f7f8fc 45%,
             #ffffff 100%
         );
 
@@ -39,10 +40,6 @@ body{
         sans-serif;
 
     line-height:1.7;
-
-    position:relative;
-
-    overflow-x:hidden;
 
 }
 
@@ -66,7 +63,11 @@ body{
 
 .hero{
 
-    background:#fff;
+   background:rgba(255,255,255,.92);
+
+backdrop-filter:blur(10px);
+
+border:1px solid rgba(255,255,255,.6);
 
     border-radius:24px;
 
@@ -272,7 +273,11 @@ body{
 
 .card{
 
-    background:#fff;
+  background:rgba(255,255,255,.92);
+
+backdrop-filter:blur(8px);
+
+border:1px solid rgba(255,255,255,.6);
 
     border-radius:20px;
 
@@ -1392,7 +1397,17 @@ footer{
 
     }
 
-    .section-title{
+   .section-title{
+
+    font-size:24px;
+
+    font-weight:800;
+
+    margin-bottom:20px;
+
+    color:#1f2937;
+
+}
 
         font-size:20px;
 
