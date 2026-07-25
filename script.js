@@ -1565,11 +1565,9 @@ function renderPackagePrice(text) {
 
         const name = cols[0];
 
-      const point = toNumber(cols[1]);
-const eachPrice = toNumber(cols[2]);
-const price = point * eachPrice;
-
-       const each = eachPrice;
+     const point = toNumber(cols[1]);
+const price = toNumber(cols[2]);
+const each = point > 0 ? price / point : 0;
         html += `
 
             ${index ? "<br><br>" : ""}
@@ -1582,13 +1580,13 @@ const price = point * eachPrice;
 
             <br>
 
-           ${point}包 ／ ${formatCurrency(price)}
+          ${escapeHTML(name)}（${point}P）／ ${formatCurrency(price)}
 
             <br>
 
             <small>
 
-               1包 ／ ${formatCurrency(each)}
+             1P ／ ${formatCurrency(each)}
 
             </small>
 
@@ -1609,26 +1607,28 @@ function renderPointPrice(text) {
     const cols = text.split("|");
 
     if (cols.length < 2) {
-
         return renderNormalPrice(text);
-
     }
 
-    const point = toNumber(cols[0]);
-
+    const pointText = cols[0];
+    const point = toNumber(pointText.replace(/[^\d]/g, ""));
     const price = toNumber(cols[1]);
 
     return `
 
         <strong>
-
-            ${point}P
-
+            最低 ${point}P
         </strong>
 
         <br>
 
         1P ／ ${formatCurrency(price)}
+
+        <br>
+
+        <small>
+            最低金額：${formatCurrency(point * price)}
+        </small>
 
     `;
 
@@ -1654,37 +1654,34 @@ function parseOptions(event) {
 
     /* ---------- 包數 ---------- */
 
-    if (mode === "包數") {
+   if (mode === "包數") {
 
-        text
+    text
+        .split("\n")
+        .filter(Boolean)
+        .forEach(row => {
 
-            .split("\n")
+            const cols = row.split("|");
 
-            .filter(Boolean)
+            if (cols.length < 3) return;
 
-            .forEach(row => {
+            options.push({
 
-                const cols = row.split("|");
+                mode: "包數",
 
-                if (cols.length < 3) return;
+                name: cols[0],
 
-               options.push({
+                point: toNumber(cols[1]),
 
-    mode: "包數",
+                eachPrice: toNumber(cols[2]) / toNumber(cols[1]),
 
-    name: cols[0],
-
-    point: toNumber(cols[1]),
-
-    eachPrice: toNumber(cols[2]),
-
-    price: toNumber(cols[1]) * toNumber(cols[2])
-
-});
+                price: toNumber(cols[2])
 
             });
 
-    }
+        });
+
+}
 
     /* ---------- P數 ---------- */
 
@@ -1698,11 +1695,11 @@ function parseOptions(event) {
 
                 mode: "P數",
 
-                point: toNumber(cols[0]),
+               point: toNumber(cols[0].replace(/[^\d]/g, "")),
 
                 price: toNumber(cols[1]),
 
-                name: `${cols[0]}P`
+                name: `${cols[0]}`
 
             });
 
@@ -2095,7 +2092,7 @@ function optionHTML(option) {
 
         <br>
 
-        ${option.point}P ／ ${formatCurrency(option.price)}
+       ${option.name}（${option.point}P）／ ${formatCurrency(option.price)}
 
         <br>
 
@@ -2357,10 +2354,10 @@ function cartPriceText(item) {
 
     switch (item.mode) {
 
-       case "包數":
+      case "包數":
 
 return `
-${item.point}包 ／ ${formatCurrency(item.price)}
+${item.option}（${item.point}P）／ ${formatCurrency(item.price)}
 `;
 
         case "P數":
