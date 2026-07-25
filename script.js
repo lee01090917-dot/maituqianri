@@ -1692,15 +1692,17 @@ function parseOptions(event) {
 
             options.push({
 
-                mode: "P數",
+    mode: "P數",
 
-               point: toNumber(cols[0].replace(/[^\d]/g, "")),
+    point: toNumber(cols[0].replace(/[^\d]/g, "")), // 最低P
 
-                price: toNumber(cols[1]),
+    quantity: toNumber(cols[0].replace(/[^\d]/g, "")), // 預設購買P
 
-                name: `${cols[0]}`
+    price: toNumber(cols[1]),
 
-            });
+    name: `${cols[0]}`
+
+});
 
         }
 
@@ -2048,7 +2050,50 @@ function createOptionCard(
     }
 
     div.innerHTML = optionHTML(option);
+if (option.mode === "P數") {
 
+    const bindButtons = () => {
+
+        const minus = div.querySelector(".point-minus");
+        const plus = div.querySelector(".point-plus");
+
+        minus.onclick = (e) => {
+
+            e.stopPropagation();
+
+            if (option.quantity > option.point) {
+
+                option.quantity--;
+
+                State.selectedOption = option;
+
+                div.innerHTML = optionHTML(option);
+
+                bindButtons();
+
+            }
+
+        };
+
+        plus.onclick = (e) => {
+
+            e.stopPropagation();
+
+            option.quantity++;
+
+            State.selectedOption = option;
+
+            div.innerHTML = optionHTML(option);
+
+            bindButtons();
+
+        };
+
+    };
+
+    bindButtons();
+
+}
     div.addEventListener("click", () => {
 
         DOM.modalOptions
@@ -2103,23 +2148,48 @@ function optionHTML(option) {
 
     `;
 
-        case "P數":
+       case "P數":
 
-            return `
+    return `
 
-                <strong>
+        <strong>
+            最低 ${option.point}P
+        </strong>
 
-                    ${option.point}P
+        <br><br>
 
-                </strong>
+        <div style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:12px;
+        ">
 
-                <br>
+            <button class="point-minus">－</button>
 
-                1P ／
+            <span style="
+                min-width:70px;
+                text-align:center;
+                font-weight:bold;
+            ">
+                ${option.quantity}P
+            </span>
 
-                ${formatCurrency(option.price)}
+            <button class="point-plus">＋</button>
 
-            `;
+        </div>
+
+        <br>
+
+        1P ／ ${formatCurrency(option.price)}
+
+        <br>
+
+        <small>
+            預估金額：${formatCurrency(option.quantity * option.price)}
+        </small>
+
+    `;
 
         default:
 
@@ -2195,7 +2265,7 @@ function addCart(event, option) {
 
         option: option.name,
 
-        point: toNumber(option.point),
+      point: toNumber(option.quantity || option.point),
 
         price: toNumber(option.price)
 
