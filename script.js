@@ -734,7 +734,6 @@ function renderAll() {
 
     updateHeroCount();
 
-}
 
 /* ==========================================================
    Error
