@@ -720,20 +720,6 @@ function renderAll() {
 
 }
 
-    renderNotice();
-
-    renderCurrent();
-
-    renderLinks();
-
-    renderEvents();
-
-    renderFavorite();
-
-    renderCart();
-
-    updateHeroCount();
-
 
 /* ==========================================================
    Error
