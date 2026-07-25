@@ -2704,20 +2704,6 @@ function closeCartPanel() {
 
 function refreshAll() {
 
-    renderNotice();
-
-    renderCurrent();
-
-    renderLinks();
-
-    renderEvents();
-
-    renderFavorite();
-
-    renderCart();
-
-    updateHeroCount();
-
 }
 
 /* ==========================================================
