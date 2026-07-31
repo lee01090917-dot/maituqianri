@@ -9,12 +9,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  serverTimestamp
+  getFirestore
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -30,20 +25,15 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-const db = getFirestore(app);
-
 const provider = new GoogleAuthProvider();
 
+const db = getFirestore(app);
+
 export {
-  auth,
-  db,
-  provider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  serverTimestamp
+    auth,
+    provider,
+    db,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
 };
