@@ -2,7 +2,9 @@ import { db } from "./firebase.js";
 
 import {
     collection,
-    getDocs
+    getDocs,
+    updateDoc,
+    doc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const memberList = document.getElementById("member-list");
@@ -36,6 +38,20 @@ ${data.email}
 
 狀態：${data.status}
 
+<br><br>
+
+<button class="approve" data-id="${doc.id}">
+✅ 通過
+</button>
+
+<button class="hold" data-id="${doc.id}">
+⏳ 保留
+</button>
+
+<button class="reject" data-id="${doc.id}">
+❌ 拒絕
+</button>
+
 </div>
 
 `;
@@ -45,3 +61,43 @@ ${data.email}
 }
 
 loadMembers();
+
+document.addEventListener("click", async (e) => {
+
+    if (!e.target.dataset.id) return;
+
+    const id = e.target.dataset.id;
+
+    let status = "";
+
+    if (e.target.className === "approve") {
+
+        status = "已通過";
+
+    }
+
+    if (e.target.className === "hold") {
+
+        status = "保留";
+
+    }
+
+    if (e.target.className === "reject") {
+
+        status = "已拒絕";
+
+    }
+
+    if (!status) return;
+
+    await updateDoc(doc(db, "members", id), {
+
+        status: status
+
+    });
+
+    alert("更新成功");
+
+    loadMembers();
+
+});
