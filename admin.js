@@ -1,4 +1,7 @@
-import { db } from "./firebase.js";
+import {
+    auth,
+    db
+} from "./firebase.js";
 
 import {
     collection,
@@ -6,6 +9,10 @@ import {
     updateDoc,
     doc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const memberList = document.getElementById("member-list");
 
@@ -98,6 +105,46 @@ document.addEventListener("click", async (e) => {
 
     alert("更新成功");
 
+   onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        location.href = "login.html";
+
+        return;
+
+    }
+
+    const member = await getDocs(collection(db, "members"));
+
+    let isAdmin = false;
+
+    member.forEach((m) => {
+
+        if (m.id === user.uid) {
+
+            if (m.data().role === "管理員") {
+
+                isAdmin = true;
+
+            }
+
+        }
+
+    });
+
+    if (!isAdmin) {
+
+        alert("沒有權限");
+
+        location.href = "app.html";
+
+        return;
+
+    }
+
     loadMembers();
+
+});
 
 });
