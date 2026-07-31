@@ -2718,23 +2718,6 @@ function hideOverlay() {
    Override Panel Functions
 ========================================================== */
 
-function openFavoritePanel() {
-
-    DOM.cartPanel.classList.remove("show");
-
-    DOM.favoritePanel.classList.add("show");
-
-    showOverlay();
-
-}
-
-function closeFavoritePanel() {
-
-    DOM.favoritePanel.classList.remove("show");
-
-    hideOverlay();
-
-}
 
 function openCartPanel() {
 
