@@ -59,7 +59,7 @@ onAuthStateChanged(auth, (user) => {
 
         });
 
-        alert("申請已送出！");
+        location.href = "pending.html";
 
     });
 
