@@ -2715,29 +2715,6 @@ function hideOverlay() {
 }
 
 /* ==========================================================
-   Override Panel Functions
-========================================================== */
-
-
-function openCartPanel() {
-
-    DOM.favoritePanel.classList.remove("show");
-
-    DOM.cartPanel.classList.add("show");
-
-    showOverlay();
-
-}
-
-function closeCartPanel() {
-
-    DOM.cartPanel.classList.remove("show");
-
-    hideOverlay();
-
-}
-
-/* ==========================================================
    Refresh
 ========================================================== */
 
@@ -2800,40 +2777,6 @@ console.log(
     "color:#2e7d32;font-weight:bold;"
 
 );
-
-import {
-    auth,
-    db
-} from "./firebase.js";
-
-import {
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-onAuthStateChanged(auth, async (user) => {
-
-    if (!user) return;
-
-    const snap = await getDoc(
-        doc(db, "members", user.uid)
-    );
-
-    if (!snap.exists()) return;
-
-    const data = snap.data();
-
-    document.getElementById("user-name").textContent =
-        data.nickname;
-
-    document.getElementById("member-no").textContent =
-        data.memberNo || "待發號";
-
-});
 
 /* ==========================================================
    End
