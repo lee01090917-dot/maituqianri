@@ -41,8 +41,8 @@ loginButton.addEventListener("click", async () => {
                 break;
 
             case "待審核":
-                alert("您的帳號正在等待管理員審核。");
-                break;
+    location.href = "pending.html";
+    break;
 
             case "保留":
                 alert("您的帳號目前需要補充資料。");
