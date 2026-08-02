@@ -2546,58 +2546,65 @@ async function copyCart() {
 
 function buildCartText() {
 
-    const lines = [];
+    const memberOrder = [
+        "全員",
+        "星化",
+        "弘中",
+        "潤浩",
+        "呂尚",
+        "傘尼",
+        "旼琦",
+        "友榮",
+        "鍾浩"
+    ];
 
-    lines.push("===== 我的喊單 =====");
+    const list = [...State.cart];
 
-    lines.push("");
+    list.sort((a, b) => {
 
-    State.cart.forEach((item, index) => {
+        // 依場次排序（前六碼日期）
+        const dateA = a.event.substring(0, 6);
+        const dateB = b.event.substring(0, 6);
 
-        lines.push(
+        if (dateA !== dateB) {
 
-            `${index + 1}. ${item.event}`
+            return dateA.localeCompare(dateB);
 
-        );
+        }
 
-        lines.push(
+        // 同場依成員排序
+        const memberA = memberOrder.indexOf(a.member);
+        const memberB = memberOrder.indexOf(b.member);
 
-            `成員｜${item.member}`
-
-        );
-
-        lines.push(
-
-            `方案｜${item.option}`
-
-        );
-
-        lines.push(
-
-            `價格｜${cartPriceText(item)}`
-
-        );
-
-        lines.push("");
+        return memberA - memberB;
 
     });
 
-    lines.push("----------------------------");
+    return list.map(item => {
 
-    lines.push(
+        let total = 0;
 
-        `總金額｜${formatCurrency(
+        switch (item.mode) {
 
-            calculateCartTotal()
+            case "包數":
+                total = item.price;
+                break;
 
-        )}`
+            case "P數":
+                total = item.point * item.price;
+                break;
 
-    );
+            default:
+                total = item.price;
+                break;
 
-    return lines.join("\n");
+        }
+
+        return `${item.event} ${item.member} ${item.option}|${item.point}|${total}`;
+
+    }).join("\n");
 
 }
-
 /* ==========================================================
    Clear Cart
 ========================================================== */
