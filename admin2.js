@@ -7,7 +7,6 @@ import {
     collection,
     getDocs,
     getDoc,
-    updateDoc,
     doc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -15,7 +14,8 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-const memberList = document.getElementById("member-list");
+const memberList = document.querySelector(".member-list");
+const profileCard = document.querySelector(".profile-card");
 
 // ==========================
 // 權限檢查
@@ -62,122 +62,127 @@ async function loadMembers() {
         const data = memberDoc.data();
 
         memberList.innerHTML += `
-<div style="
-padding:15px;
-margin:10px 0;
-border:1px solid #ddd;
-border-radius:12px;
-">
 
-<b>${data.memberNo || "待發號"}　${data.nickname}</b>
+<div class="member-card" data-id="${memberDoc.id}">
 
-<br>
+    <div class="member-top">
 
-${data.email}
+        <strong>${data.memberNo || "待發號"}</strong>
 
-<br>
+        <span class="status ${data.status === "已通過" ? "approved" : "pending"}">
 
-${data.socialPlatform || ""} ${data.socialAccount || ""}
+            ${data.status || "-"}
 
-<br>
+        </span>
 
-狀態：${data.status}
+    </div>
 
-<br><br>
+    <div class="member-name">
 
-<button class="approve" data-id="${memberDoc.id}">
-✅ 通過
-</button>
+        ${data.nickname || "-"}
 
-<button class="hold" data-id="${memberDoc.id}">
-⏳ 保留
-</button>
+    </div>
 
-<button class="reject" data-id="${memberDoc.id}">
-❌ 拒絕
-</button>
+    <div class="member-info">
+
+        ❤️ ${data.favoriteMember || "-"}
+
+    </div>
+
+    <div class="member-info">
+
+        ${data.socialPlatform || ""}
+
+    </div>
 
 </div>
+
 `;
 
     });
 
+    bindMemberClick();
+
 }
 
 // ==========================
-// 更新狀態
+// 點會員
 // ==========================
 
-document.addEventListener("click", async (e) => {
+function bindMemberClick() {
 
-    if (!e.target.dataset.id) return;
+    const cards = document.querySelectorAll(".member-card");
 
-    const id = e.target.dataset.id;
+    cards.forEach(card => {
 
-    let status = "";
+        card.addEventListener("click", async () => {
 
-    if (e.target.classList.contains("approve")) {
-        status = "已通過";
-    }
+            cards.forEach(c => c.classList.remove("active"));
 
-    if (e.target.classList.contains("hold")) {
-        status = "保留";
-    }
+            card.classList.add("active");
 
-    if (e.target.classList.contains("reject")) {
-        status = "已拒絕";
-    }
+            const snap = await getDoc(
+                doc(db, "members", card.dataset.id)
+            );
 
-    if (!status) return;
+            const data = snap.data();
 
-    // 通過
-    if (status === "已通過") {
+            profileCard.innerHTML = `
 
-        const memberRef = doc(db, "members", id);
+<div class="profile-item">
+<label>MQ編號</label>
+<span>${data.memberNo || "-"}</span>
+</div>
 
-        const memberSnap = await getDoc(memberRef);
+<div class="profile-item">
+<label>暱稱</label>
+<span>${data.nickname || "-"}</span>
+</div>
 
-        const memberData = memberSnap.data();
+<div class="profile-item">
+<label>平台</label>
+<span>${data.socialPlatform || "-"}</span>
+</div>
 
-        // 已有編號就不要重新發
-        if (!memberData.memberNo) {
+<div class="profile-item">
+<label>帳號</label>
+<span>${data.socialAccount || "-"}</span>
+</div>
 
-            const counterRef = doc(db, "counters", "member");
+<div class="profile-item">
+<label>❤️ 主擔</label>
+<span>${data.favoriteMember || "-"}</span>
+</div>
 
-            const counterSnap = await getDoc(counterRef);
+<div class="profile-item">
+<label>💛 副擔</label>
+<span>${(data.subFavoriteMembers || []).join("、") || "-"}</span>
+</div>
 
-            const nextNumber = counterSnap.data().nextNumber;
+<div class="profile-item">
+<label>🟢 官方LINE</label>
+<span>${data.officialLine ? "已加入" : "未加入"}</span>
+</div>
 
-            const memberNo =
-                "MQ" + String(nextNumber).padStart(4, "0");
+<div class="profile-item">
+<label>📍 加入來源</label>
+<span>${data.joinSource || "-"}</span>
+</div>
 
-            await updateDoc(memberRef, {
-                status: "已通過",
-                memberNo: memberNo
-            });
+<div class="profile-item">
+<label>👥 推薦人</label>
+<span>${data.referrerNickname || "-"}</span>
+</div>
 
-            await updateDoc(counterRef, {
-                nextNumber: nextNumber + 1
-            });
+<div class="profile-item">
+<label>📝 備註</label>
+<span>${data.adminNote || "-"}</span>
+</div>
 
-        } else {
+`;
 
-            await updateDoc(memberRef, {
-                status: "已通過"
-            });
-
-        }
-
-    } else {
-
-        await updateDoc(doc(db, "members", id), {
-            status: status
         });
 
-    }
+    });
 
-    alert("更新成功");
-
-    loadMembers();
-
-});
+}
