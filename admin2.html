@@ -3,13 +3,13 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>🧞🧚 神燈精靈 管理後台</title>
+<title>🧞🧚 神燈精靈 管理後台</title>
 
-    <link rel="stylesheet" href="admin2.css">
+<link rel="stylesheet" href="admin2.css">
 
 </head>
 
@@ -21,7 +21,9 @@
 
         <div class="logo">
 
-            <h2>🧞🧚<br>神燈精靈</h2>
+            <h2>🧞🧚</h2>
+
+            <h3>神燈精靈</h3>
 
             <p>管理後台</p>
 
@@ -29,43 +31,135 @@
 
         <ul class="menu">
 
-            <li class="active">📊 今日概況</li>
+            <li class="active" data-page="dashboard">
 
-            <li>👥 會員管理</li>
+                📊 今日概況
 
-            <li>📢 公告管理</li>
+            </li>
 
-            <li>🔗 快速連結</li>
+            <li data-page="members">
 
-            <li>📸 場次管理</li>
+                👥 會員管理
 
-            <li>💰 儲值金</li>
+            </li>
 
-            <li>📦 訂單管理</li>
+            <li data-page="notice">
 
-            <li>⚙️ 系統設定</li>
+                📢 公告管理
+
+            </li>
+
+            <li data-page="links">
+
+                🔗 快速連結
+
+            </li>
+
+            <li data-page="events">
+
+                📸 場次管理
+
+            </li>
+
+            <li data-page="deposit">
+
+                💰 儲值金
+
+            </li>
+
+            <li data-page="orders">
+
+                📦 訂單管理
+
+            </li>
+
+            <li data-page="settings">
+
+                ⚙️ 系統設定
+
+            </li>
 
         </ul>
 
     </aside>
 
-    <main class="content">
+        <main class="content">
 
-        <h1>🧞🧚 神燈精靈 管理後台</h1>
+        <header class="topbar">
 
-        <p>歡迎回來，精靈 ✨</p>
+            <div>
 
-        <hr>
+                <h1>🧞🧚 神燈精靈 管理後台</h1>
 
-        <h2>📊 今日概況</h2>
+                <p>歡迎回來，精靈 ✨</p>
 
-        <p>（之後這裡會放 Dashboard）</p>
+            </div>
+
+            <div class="user-box">
+
+                🧚 精靈
+
+            </div>
+
+        </header>
+
+        <div id="page-content">
+
+            <section class="dashboard">
+
+                <div class="card">
+
+                    <h3>👥 會員總數</h3>
+
+                    <h2>0</h2>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>🟡 待審核</h3>
+
+                    <h2>0</h2>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>🟢 官方LINE</h3>
+
+                    <h2>0</h2>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>📅 今日新增</h3>
+
+                    <h2>0</h2>
+
+                </div>
+
+            </section>
+
+            <section class="panel">
+
+                <h2>📊 今日概況</h2>
+
+                <p>
+
+                    Dashboard 製作中...
+
+                </p>
+
+            </section>
+
+        </div>
 
     </main>
 
 </div>
 
-<script type="module" src="admin2.js"></script>
+    <script type="module" src="admin2.js"></script>
 
 </body>
 
