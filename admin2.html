@@ -3,13 +3,13 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>🧞🧚 神燈精靈 管理後台</title>
+<title>🧞🧚 神燈精靈 管理中心</title>
 
-    <link rel="stylesheet" href="admin2.css">
+<link rel="stylesheet" href="admin.css">
 
 </head>
 
@@ -17,16 +17,29 @@
 
 <div class="layout">
 
-    <!-- 左側選單 -->
+    <!-- Sidebar -->
+
     <aside class="sidebar">
 
         <div class="logo">
 
-            <div class="logo-icon">🧞🧚</div>
+            <div class="logo-icon">
 
-            <h2>神燈精靈</h2>
+                🧞🧚
 
-            <p>Management Center</p>
+            </div>
+
+            <h2>
+
+                神燈精靈
+
+            </h2>
+
+            <p>
+
+                Management Center
+
+            </p>
 
         </div>
 
@@ -34,44 +47,68 @@
 
             <ul class="menu">
 
-                <li class="active">
-                    <span>📊</span>
-                    <span>今日概況</span>
+                <li class="active" data-page="dashboard">
+
+                    <span>🏠</span>
+
+                    <span>Dashboard</span>
+
                 </li>
 
-                <li>
+                <li data-page="members">
+
                     <span>👥</span>
+
                     <span>會員管理</span>
+
                 </li>
 
-                <li>
+                <li data-page="tasks">
+
+                    <span>📌</span>
+
+                    <span>待辦事項</span>
+
+                </li>
+
+                <li data-page="notice">
+
                     <span>📢</span>
+
                     <span>公告管理</span>
+
                 </li>
 
-                <li>
-                    <span>🔗</span>
-                    <span>快速連結</span>
-                </li>
+                <li data-page="events">
 
-                <li>
                     <span>📸</span>
+
                     <span>場次管理</span>
+
                 </li>
 
-                <li>
-                    <span>💰</span>
-                    <span>儲值金</span>
-                </li>
+                <li data-page="orders">
 
-                <li>
                     <span>📦</span>
+
                     <span>訂單管理</span>
+
                 </li>
 
-                <li>
+                <li data-page="deposit">
+
+                    <span>💰</span>
+
+                    <span>儲值金</span>
+
+                </li>
+
+                <li data-page="settings">
+
                     <span>⚙️</span>
+
                     <span>系統設定</span>
+
                 </li>
 
             </ul>
@@ -80,13 +117,25 @@
 
         <div class="admin-profile">
 
-            <div class="avatar">🧚</div>
+            <div class="avatar">
+
+                🧚
+
+            </div>
 
             <div>
 
-                <strong>精靈</strong>
+                <strong>
 
-                <p>管理員</p>
+                    精靈
+
+                </strong>
+
+                <p>
+
+                    Administrator
+
+                </p>
 
             </div>
 
@@ -94,146 +143,161 @@
 
     </aside>
 
-    <!-- 右側 -->
-    <main class="main-content">
+    <!-- Main -->
 
-        <!-- Header -->
-        <header class="header">
+    <main class="main">
+
+        <header class="topbar">
 
             <div>
 
-                <h1>🧞🧚 神燈精靈 管理後台</h1>
+                <h1>
 
-                <p>歡迎回來，精靈 ✨</p>
+                    🧞🧚 神燈精靈
+
+                </h1>
+
+                <p>
+
+                    歡迎回來，精靈 ✨
+
+                </p>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="top-btn">
+
+                    🔔
+
+                </button>
+
+                <button class="top-btn">
+
+                    ⚙️
+
+                </button>
 
             </div>
 
         </header>
 
         <!-- Dashboard -->
+
         <section class="dashboard">
 
             <div class="stat-card">
 
-                <span>👥</span>
+                <div class="icon">
 
-                <h3>會員總數</h3>
+                    👥
 
-                <h2>126</h2>
+                </div>
 
-            </div>
+                <div>
 
-            <div class="stat-card">
+                    <small>
 
-                <span>🟡</span>
+                        會員總數
 
-                <h3>待審核</h3>
+                    </small>
 
-                <h2>8</h2>
+                    <h2 id="memberCount">
 
-            </div>
+                        0
 
-            <div class="stat-card">
+                    </h2>
 
-                <span>🟢</span>
-
-                <h3>官賴加入</h3>
-
-                <h2>102</h2>
+                </div>
 
             </div>
 
             <div class="stat-card">
 
-                <span>📅</span>
+                <div class="icon">
 
-                <h3>今日新增</h3>
+                    🟡
 
-                <h2>3</h2>
+                </div>
+
+                <div>
+
+                    <small>
+
+                        待審核
+
+                    </small>
+
+                    <h2 id="pendingCount">
+
+                        0
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="icon">
+
+                    🟢
+
+                </div>
+
+                <div>
+
+                    <small>
+
+                        LINE加入
+
+                    </small>
+
+                    <h2 id="lineCount">
+
+                        0
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="icon">
+
+                    📅
+
+                </div>
+
+                <div>
+
+                    <small>
+
+                        今日新增
+
+                    </small>
+
+                    <h2 id="todayCount">
+
+                        0
+
+                    </h2>
+
+                </div>
 
             </div>
 
         </section>
 
-        <section class="todo-section">
+                <!-- Workspace -->
 
-    <div class="todo-header">
+        <section class="workspace">
 
-        <h2>📌 管理員便利貼</h2>
-
-        <button class="add-note">
-
-            ＋ 新增便利貼
-
-        </button>
-
-    </div>
-
-    <div class="todo-list">
-
-        <div class="todo-card high">
-
-            <div class="todo-top">
-
-                <span class="priority">🔴 緊急</span>
-
-                <span>2026/08/06</span>
-
-            </div>
-
-            <h3>MQ0008｜迪迪</h3>
-
-            <p>❤️ 星化</p>
-
-            <p>提醒加入官方 LINE</p>
-
-        </div>
-
-        <div class="todo-card medium">
-
-            <div class="todo-top">
-
-                <span class="priority">🟡 待辦</span>
-
-                <span>2026/08/06</span>
-
-            </div>
-
-            <h3>MQ0015｜小花</h3>
-
-            <p>❤️ 傘尼</p>
-
-            <p>等匯款完成</p>
-
-        </div>
-
-        <div class="todo-card low">
-
-            <div class="todo-top">
-
-                <span class="priority">🟢 一般</span>
-
-                <span>2026/08/05</span>
-
-            </div>
-
-            <h3>MQ0033｜ATINY</h3>
-
-            <p>❤️ 弘中</p>
-
-            <p>下次提醒加入官方群</p>
-
-        </div>
-
-    </div>
-
-</section>
-
-                <!-- CRM -->
-
-        <section class="crm-container">
-
-            <!-- 中間：會員列表 -->
+            <!-- 左側：會員 -->
 
             <div class="member-panel">
 
@@ -241,216 +305,152 @@
 
                     <h2>👥 會員管理</h2>
 
+                    <button id="addMember">
+
+                        ＋ 新增
+
+                    </button>
+
+                </div>
+
+                <div class="search-box">
+
                     <input
+                        id="memberSearch"
                         type="text"
-                        placeholder="🔍 搜尋 MQ、暱稱、IG..."
-                    >
+                        placeholder="🔍 搜尋 MQ、暱稱、IG、Threads">
 
                 </div>
 
                 <div class="member-list">
 
-                    <div class="member-card active">
-
-                        <div class="member-top">
-
-                            <strong>MQ0001</strong>
-
-                            <span class="status approved">已通過</span>
-
-                        </div>
-
-                        <div class="member-name">
-
-                            迪迪
-
-                        </div>
-
-                        <div class="member-info">
-
-                            ❤️ 星化
-
-                        </div>
-
-                    </div>
-
-                    <div class="member-card">
-
-                        <div class="member-top">
-
-                            <strong>MQ0002</strong>
-
-                            <span class="status pending">待審核</span>
-
-                        </div>
-
-                        <div class="member-name">
-
-                            小花
-
-                        </div>
-
-                        <div class="member-info">
-
-                            ❤️ 傘尼
-
-                        </div>
-
-                    </div>
-
-                    <div class="member-card">
-
-                        <div class="member-top">
-
-                            <strong>MQ0003</strong>
-
-                            <span class="status approved">已通過</span>
-
-                        </div>
-
-                        <div class="member-name">
-
-                            ATINY
-
-                        </div>
-
-                        <div class="member-info">
-
-                            ❤️ 弘中
-
-                        </div>
-
-                    </div>
+                    <!-- JS產生 -->
 
                 </div>
 
             </div>
 
-            <!-- 右側：會員檔案 -->
+            <!-- 中間：會員資料 -->
 
             <div class="profile-panel">
 
                 <div class="panel-header">
 
-                    <h2>👤 會員檔案</h2>
+                    <div>
+
+                        <h2>
+
+                            👤 會員資料
+
+                        </h2>
+
+                        <p id="memberTitle">
+
+                            尚未選擇會員
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <span
+                            id="memberStatus"
+                            class="status">
+
+                            -
+
+                        </span>
+
+                    </div>
 
                 </div>
 
-                <div class="profile-card">
+                <div
+                    class="profile-card"
+                    id="profileCard">
 
-                    <div class="profile-item">
+                    <div class="empty">
 
-                        <label>MQ編號</label>
-
-                        <span>MQ0001</span>
-
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>暱稱</label>
-
-                        <span>迪迪</span>
+                        👈 請從左側選擇會員
 
                     </div>
 
-                    <div class="profile-item">
+                </div>
 
-                        <label>平台</label>
+                <div class="profile-actions">
 
-                        <span>Instagram</span>
+                    <button
+                        id="editMember">
 
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>帳號</label>
-
-                        <span>@atz91117</span>
-
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>❤️ 主擔</label>
-
-                        <span>星化</span>
-
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>💛 副擔</label>
-
-                        <span>弘中、呂尚</span>
-
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>🟢 官方LINE</label>
-
-                        <span>已加入</span>
-
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>📍 加入來源</label>
-
-                        <span>Threads（買圖千日）</span>
-
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>👥 推薦人</label>
-
-                        <span>無</span>
-
-                    </div>
-
-                    <div class="profile-item">
-
-                        <label>📝 備註</label>
-
-                        <span>-</span>
-
-                    </div>
-
-                                    </div>
-
-                <div class="profile-tabs">
-
-                    <button class="tab active">
-
-                        👤 基本資料
+                        ✏ 編輯
 
                     </button>
 
-                    <button class="tab">
+                    <button
+                        id="saveMember">
 
-                        🛒 購買紀錄
-
-                    </button>
-
-                    <button class="tab">
-
-                        💰 儲值金
+                        💾 儲存
 
                     </button>
 
-                    <button class="tab">
+                </div>
 
-                        📥 下載紀錄
+            </div>
 
-                    </button>
+            <!-- 右側 -->
 
-                    <button class="tab">
+            <div class="side-panel">
 
-                        📝 操作紀錄
+                <!-- 今日待辦 -->
 
-                    </button>
+                <div class="side-card">
+
+                    <div class="panel-header">
+
+                        <h2>
+
+                            📌 今日待辦
+
+                        </h2>
+
+                        <button id="addTask">
+
+                            ＋
+
+                        </button>
+
+                    </div>
+
+                    <div class="task-list">
+
+                        <!-- JS -->
+
+                    </div>
+
+                </div>
+
+                <!-- 最近查看 -->
+
+                <div class="side-card">
+
+                    <div class="panel-header">
+
+                        <h2>
+
+                            🕒 最近查看
+
+                        </h2>
+
+                    </div>
+
+                    <div
+                        class="recent-list"
+                        id="recentList">
+
+                        尚無資料
+
+                    </div>
 
                 </div>
 
@@ -458,128 +458,10 @@
 
         </section>
 
-    </main>
+        <footer>
 
-</div>
-
-<script type="module" src="admin2.js"></script>
+<script>
 
 </body>
 
 </html>
-
-/* ==========================
-   Todo Note
-========================== */
-
-.todo-section{
-
-    margin:30px 0;
-
-}
-
-.todo-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:18px;
-
-}
-
-.add-note{
-
-    border:none;
-
-    background:#5d68ff;
-
-    color:white;
-
-    padding:10px 18px;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.add-note:hover{
-
-    opacity:.9;
-
-}
-
-.todo-list{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-
-    gap:18px;
-
-}
-
-.todo-card{
-
-    background:white;
-
-    border-radius:16px;
-
-    padding:18px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,.05);
-
-    border-left:6px solid #ddd;
-
-}
-
-.todo-card.high{
-
-    border-color:#ef4444;
-
-}
-
-.todo-card.medium{
-
-    border-color:#f59e0b;
-
-}
-
-.todo-card.low{
-
-    border-color:#22c55e;
-
-}
-
-.todo-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    margin-bottom:12px;
-
-    color:#777;
-
-    font-size:13px;
-
-}
-
-.todo-card h3{
-
-    margin-bottom:8px;
-
-}
-
-.todo-card p{
-
-    color:#666;
-
-    margin-bottom:6px;
-
-}
