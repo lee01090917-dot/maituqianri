@@ -594,3 +594,143 @@ body{
     }
 
 }
+
+/* ==========================
+   UI Upgrade V1
+========================== */
+
+.header{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px 30px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+}
+
+.header h1{
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+.header p{
+
+    margin-top:6px;
+
+    color:#888;
+
+}
+
+.stat-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.stat-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:5px;
+
+    height:100%;
+
+    background:#5d68ff;
+
+}
+
+.member-card{
+
+    position:relative;
+
+}
+
+.member-card::after{
+
+    content:"›";
+
+    position:absolute;
+
+    right:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#bbb;
+
+    font-size:22px;
+
+}
+
+.member-card:hover{
+
+    box-shadow:0 10px 25px rgba(93,104,255,.12);
+
+}
+
+.profile-card{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:18px 40px;
+
+}
+
+.profile-item{
+
+    display:block;
+
+    border:none;
+
+    padding:0;
+
+}
+
+.profile-item label{
+
+    display:block;
+
+    font-size:13px;
+
+    color:#888;
+
+    margin-bottom:6px;
+
+}
+
+.profile-item span{
+
+    display:block;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    color:#222;
+
+}
+
+.profile-tabs{
+
+    background:#fafafa;
+
+}
