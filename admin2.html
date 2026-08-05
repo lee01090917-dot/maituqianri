@@ -3,13 +3,13 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🧞🧚 神燈精靈 管理後台</title>
+    <title>🧞🧚 神燈精靈 管理後台</title>
 
-<link rel="stylesheet" href="admin2.css">
+    <link rel="stylesheet" href="admin2.css">
 
 </head>
 
@@ -17,75 +17,88 @@
 
 <div class="layout">
 
+    <!-- 左側選單 -->
     <aside class="sidebar">
 
         <div class="logo">
 
-            <h2>🧞🧚</h2>
+            <div class="logo-icon">🧞🧚</div>
 
-            <h3>神燈精靈</h3>
+            <h2>神燈精靈</h2>
 
-            <p>管理後台</p>
+            <p>Management Center</p>
 
         </div>
 
-        <ul class="menu">
+        <nav>
 
-            <li class="active" data-page="dashboard">
+            <ul class="menu">
 
-                📊 今日概況
+                <li class="active">
+                    <span>📊</span>
+                    <span>今日概況</span>
+                </li>
 
-            </li>
+                <li>
+                    <span>👥</span>
+                    <span>會員管理</span>
+                </li>
 
-            <li data-page="members">
+                <li>
+                    <span>📢</span>
+                    <span>公告管理</span>
+                </li>
 
-                👥 會員管理
+                <li>
+                    <span>🔗</span>
+                    <span>快速連結</span>
+                </li>
 
-            </li>
+                <li>
+                    <span>📸</span>
+                    <span>場次管理</span>
+                </li>
 
-            <li data-page="notice">
+                <li>
+                    <span>💰</span>
+                    <span>儲值金</span>
+                </li>
 
-                📢 公告管理
+                <li>
+                    <span>📦</span>
+                    <span>訂單管理</span>
+                </li>
 
-            </li>
+                <li>
+                    <span>⚙️</span>
+                    <span>系統設定</span>
+                </li>
 
-            <li data-page="links">
+            </ul>
 
-                🔗 快速連結
+        </nav>
 
-            </li>
+        <div class="admin-profile">
 
-            <li data-page="events">
+            <div class="avatar">🧚</div>
 
-                📸 場次管理
+            <div>
 
-            </li>
+                <strong>精靈</strong>
 
-            <li data-page="deposit">
+                <p>管理員</p>
 
-                💰 儲值金
+            </div>
 
-            </li>
-
-            <li data-page="orders">
-
-                📦 訂單管理
-
-            </li>
-
-            <li data-page="settings">
-
-                ⚙️ 系統設定
-
-            </li>
-
-        </ul>
+        </div>
 
     </aside>
 
-        <main class="content">
+    <!-- 右側 -->
+    <main class="main-content">
 
-        <header class="topbar">
+        <!-- Header -->
+        <header class="header">
 
             <div>
 
@@ -95,117 +108,287 @@
 
             </div>
 
-            <div class="user-box">
-
-                🧚 精靈
-
-            </div>
-
         </header>
 
-        <div id="page-content">
+        <!-- Dashboard -->
+        <section class="dashboard">
 
-<div class="crm">
+            <div class="stat-card">
 
-    <div class="member-list">
+                <span>👥</span>
 
-        <div class="search-box">
+                <h3>會員總數</h3>
 
-            <input
-                type="text"
-                placeholder="🔍 搜尋會員">
-
-        </div>
-
-        <div class="member-item active">
-
-            <div>
-
-                <strong>MQ0001</strong>
-
-                <br>
-
-                迪迪
+                <h2>126</h2>
 
             </div>
 
-            <span>❤️ 星化</span>
+            <div class="stat-card">
 
-        </div>
+                <span>🟡</span>
 
-        <div class="member-item">
+                <h3>待審核</h3>
 
-            <div>
-
-                <strong>MQ0002</strong>
-
-                <br>
-
-                ATINY小花
+                <h2>8</h2>
 
             </div>
 
-            <span>❤️ 傘尼</span>
+            <div class="stat-card">
 
-        </div>
+                <span>🟢</span>
 
-        <div class="member-item">
+                <h3>官賴加入</h3>
 
-            <div>
-
-                <strong>MQ0003</strong>
-
-                <br>
-
-                測試會員
+                <h2>102</h2>
 
             </div>
 
-            <span>❤️ 弘中</span>
+            <div class="stat-card">
 
-        </div>
+                <span>📅</span>
 
-    </div>
+                <h3>今日新增</h3>
 
-    <div class="member-detail">
+                <h2>3</h2>
 
-        <h2>👤 會員檔案</h2>
+            </div>
 
-        <hr>
+        </section>
 
-        <p><b>MQ：</b>MQ0001</p>
+                <!-- CRM -->
 
-        <p><b>暱稱：</b>迪迪</p>
+        <section class="crm-container">
 
-        <p><b>平台：</b>Instagram</p>
+            <!-- 中間：會員列表 -->
 
-        <p><b>帳號：</b>@atz91117</p>
+            <div class="member-panel">
 
-        <p><b>主擔：</b>❤️ 星化</p>
+                <div class="panel-header">
 
-        <p><b>副擔：</b>弘中、呂尚</p>
+                    <h2>👥 會員管理</h2>
 
-        <p><b>官方LINE：</b>🟢 已加入</p>
+                    <input
+                        type="text"
+                        placeholder="🔍 搜尋 MQ、暱稱、IG..."
+                    >
 
-        <p><b>加入來源：</b>Threads</p>
+                </div>
 
-        <p><b>推薦人：</b>無</p>
+                <div class="member-list">
 
-        <p><b>備註：</b>-</p>
+                    <div class="member-card active">
 
-    </div>
+                        <div class="member-top">
 
-</div>
+                            <strong>MQ0001</strong>
 
-</div>
+                            <span class="status approved">已通過</span>
 
-        </div>
+                        </div>
+
+                        <div class="member-name">
+
+                            迪迪
+
+                        </div>
+
+                        <div class="member-info">
+
+                            ❤️ 星化
+
+                        </div>
+
+                    </div>
+
+                    <div class="member-card">
+
+                        <div class="member-top">
+
+                            <strong>MQ0002</strong>
+
+                            <span class="status pending">待審核</span>
+
+                        </div>
+
+                        <div class="member-name">
+
+                            小花
+
+                        </div>
+
+                        <div class="member-info">
+
+                            ❤️ 傘尼
+
+                        </div>
+
+                    </div>
+
+                    <div class="member-card">
+
+                        <div class="member-top">
+
+                            <strong>MQ0003</strong>
+
+                            <span class="status approved">已通過</span>
+
+                        </div>
+
+                        <div class="member-name">
+
+                            ATINY
+
+                        </div>
+
+                        <div class="member-info">
+
+                            ❤️ 弘中
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- 右側：會員檔案 -->
+
+            <div class="profile-panel">
+
+                <div class="panel-header">
+
+                    <h2>👤 會員檔案</h2>
+
+                </div>
+
+                <div class="profile-card">
+
+                    <div class="profile-item">
+
+                        <label>MQ編號</label>
+
+                        <span>MQ0001</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>暱稱</label>
+
+                        <span>迪迪</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>平台</label>
+
+                        <span>Instagram</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>帳號</label>
+
+                        <span>@atz91117</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>❤️ 主擔</label>
+
+                        <span>星化</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>💛 副擔</label>
+
+                        <span>弘中、呂尚</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>🟢 官方LINE</label>
+
+                        <span>已加入</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>📍 加入來源</label>
+
+                        <span>Threads（買圖千日）</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>👥 推薦人</label>
+
+                        <span>無</span>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <label>📝 備註</label>
+
+                        <span>-</span>
+
+                    </div>
+
+                                    </div>
+
+                <div class="profile-tabs">
+
+                    <button class="tab active">
+
+                        👤 基本資料
+
+                    </button>
+
+                    <button class="tab">
+
+                        🛒 購買紀錄
+
+                    </button>
+
+                    <button class="tab">
+
+                        💰 儲值金
+
+                    </button>
+
+                    <button class="tab">
+
+                        📥 下載紀錄
+
+                    </button>
+
+                    <button class="tab">
+
+                        📝 操作紀錄
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
 
     </main>
 
 </div>
 
-    <script type="module" src="admin2.js"></script>
+<script type="module" src="admin2.js"></script>
 
 </body>
 
