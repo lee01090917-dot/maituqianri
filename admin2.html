@@ -155,6 +155,80 @@
 
         </section>
 
+        <section class="todo-section">
+
+    <div class="todo-header">
+
+        <h2>📌 管理員便利貼</h2>
+
+        <button class="add-note">
+
+            ＋ 新增便利貼
+
+        </button>
+
+    </div>
+
+    <div class="todo-list">
+
+        <div class="todo-card high">
+
+            <div class="todo-top">
+
+                <span class="priority">🔴 緊急</span>
+
+                <span>2026/08/06</span>
+
+            </div>
+
+            <h3>MQ0008｜迪迪</h3>
+
+            <p>❤️ 星化</p>
+
+            <p>提醒加入官方 LINE</p>
+
+        </div>
+
+        <div class="todo-card medium">
+
+            <div class="todo-top">
+
+                <span class="priority">🟡 待辦</span>
+
+                <span>2026/08/06</span>
+
+            </div>
+
+            <h3>MQ0015｜小花</h3>
+
+            <p>❤️ 傘尼</p>
+
+            <p>等匯款完成</p>
+
+        </div>
+
+        <div class="todo-card low">
+
+            <div class="todo-top">
+
+                <span class="priority">🟢 一般</span>
+
+                <span>2026/08/05</span>
+
+            </div>
+
+            <h3>MQ0033｜ATINY</h3>
+
+            <p>❤️ 弘中</p>
+
+            <p>下次提醒加入官方群</p>
+
+        </div>
+
+    </div>
+
+</section>
+
                 <!-- CRM -->
 
         <section class="crm-container">
@@ -393,3 +467,119 @@
 </body>
 
 </html>
+
+/* ==========================
+   Todo Note
+========================== */
+
+.todo-section{
+
+    margin:30px 0;
+
+}
+
+.todo-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+}
+
+.add-note{
+
+    border:none;
+
+    background:#5d68ff;
+
+    color:white;
+
+    padding:10px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.add-note:hover{
+
+    opacity:.9;
+
+}
+
+.todo-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+
+    gap:18px;
+
+}
+
+.todo-card{
+
+    background:white;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+    border-left:6px solid #ddd;
+
+}
+
+.todo-card.high{
+
+    border-color:#ef4444;
+
+}
+
+.todo-card.medium{
+
+    border-color:#f59e0b;
+
+}
+
+.todo-card.low{
+
+    border-color:#22c55e;
+
+}
+
+.todo-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+.todo-card h3{
+
+    margin-bottom:8px;
+
+}
+
+.todo-card p{
+
+    color:#666;
+
+    margin-bottom:6px;
+
+}
