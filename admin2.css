@@ -1,1 +1,79 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Microsoft JhengHei",sans-serif;
+}
 
+body{
+    background:#f5f7fb;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+/* 左側 */
+
+.sidebar{
+    width:250px;
+    background:#23263b;
+    color:white;
+    padding:30px 20px;
+}
+
+.logo{
+    margin-bottom:40px;
+}
+
+.logo h2{
+    line-height:1.5;
+    margin-bottom:8px;
+}
+
+.logo p{
+    color:#b7bfd8;
+    font-size:14px;
+}
+
+.menu{
+    list-style:none;
+}
+
+.menu li{
+    padding:14px 16px;
+    border-radius:12px;
+    margin-bottom:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.menu li:hover{
+    background:#343955;
+}
+
+.menu .active{
+    background:#5b63ff;
+}
+
+/* 右側 */
+
+.content{
+    flex:1;
+    padding:40px;
+}
+
+.content h1{
+    margin-bottom:10px;
+}
+
+.content hr{
+    margin:25px 0;
+    border:none;
+    border-top:1px solid #ddd;
+}
+
+.content h2{
+    margin-bottom:15px;
+}
