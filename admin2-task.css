@@ -1,1 +1,223 @@
+/* ==========================================
+   Side Panel
+========================================== */
 
+.side-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+}
+
+.side-card{
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    border:1px solid #eceff5;
+
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
+
+    overflow:hidden;
+
+}
+
+.side-card .panel-header{
+
+    padding:20px 22px;
+
+    border-bottom:1px solid #eef2f7;
+
+}
+
+.side-card .panel-header h2{
+
+    font-size:17px;
+
+    color:#111827;
+
+}
+
+.side-card .panel-header button{
+
+    width:34px;
+
+    height:34px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#5d68ff;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.side-card .panel-header button:hover{
+
+    transform:scale(1.08);
+
+}
+
+/* ==========================================
+   Task List
+========================================== */
+
+.task-list{
+
+    padding:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.task-item{
+
+    background:#fafafa;
+
+    border:1px solid #eceff5;
+
+    border-left:5px solid #5d68ff;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    transition:.25s;
+
+    cursor:pointer;
+
+}
+
+.task-item:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 24px rgba(0,0,0,.08);
+
+}
+
+.task-title{
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#111827;
+
+    margin-bottom:6px;
+
+}
+
+.task-member{
+
+    font-size:13px;
+
+    color:#64748b;
+
+}
+
+.task-date{
+
+    margin-top:8px;
+
+    font-size:12px;
+
+    color:#94a3b8;
+
+}
+
+/* ==========================================
+   Recent List
+========================================== */
+
+.recent-list{
+
+    padding:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    min-height:220px;
+
+}
+
+.recent-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    transition:.2s;
+
+    cursor:pointer;
+
+}
+
+.recent-item:hover{
+
+    background:#f8f9ff;
+
+}
+
+.recent-avatar{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#5d68ff;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+}
+
+.recent-info strong{
+
+    display:block;
+
+    color:#111827;
+
+    font-size:14px;
+
+}
+
+.recent-info small{
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+}
