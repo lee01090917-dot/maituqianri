@@ -425,3 +425,5 @@ addTaskBtn?.addEventListener("click", () => {
 closeTaskModal?.addEventListener("click", () => {
     taskModal.classList.add("hidden");
 });
+
+console.log("admin2.js 已載入");
