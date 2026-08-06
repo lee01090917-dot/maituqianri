@@ -59,3 +59,367 @@
     margin:0;
 
 }
+
+/* ==========================================
+   搜尋框
+========================================== */
+
+.search-box{
+
+    padding:18px 24px;
+
+    border-bottom:1px solid #eef2f7;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+    padding:12px 16px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    outline:none;
+
+    font-size:14px;
+
+    transition:.2s;
+
+    background:#fafafa;
+
+}
+
+.search-box input:focus{
+
+    border-color:#5d68ff;
+
+    background:white;
+
+    box-shadow:0 0 0 4px rgba(93,104,255,.08);
+
+}
+
+/* ==========================================
+   會員列表
+========================================== */
+
+.member-list{
+
+    padding:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    max-height:720px;
+
+    overflow:auto;
+
+}
+
+.member-card{
+
+    background:#fafafa;
+
+    border:1px solid #eceff5;
+
+    border-radius:16px;
+
+    padding:16px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.member-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:#5d68ff;
+
+    box-shadow:0 12px 30px rgba(93,104,255,.10);
+
+}
+
+.member-card.active{
+
+    background:#5d68ff;
+
+    color:white;
+
+    border-color:#5d68ff;
+
+}
+
+.member-card.active .member-info,
+
+.member-card.active .status{
+
+    color:white;
+
+}
+
+/* ==========================================
+   會員卡內容
+========================================== */
+
+.member-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:12px;
+
+}
+
+.member-top strong{
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#111827;
+
+}
+
+.member-card.active .member-top strong{
+
+    color:white;
+
+}
+
+.member-name{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+    color:#1f2937;
+
+}
+
+.member-card.active .member-name{
+
+    color:white;
+
+}
+
+.member-info{
+
+    font-size:13px;
+
+    color:#64748b;
+
+    margin-top:4px;
+
+}
+
+/* ==========================================
+   Status Badge
+========================================== */
+
+.status{
+
+    padding:5px 10px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.status.approved{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.status.pending{
+
+    background:#fef3c7;
+
+    color:#b45309;
+
+}
+
+.status.rejected{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+.status.hold{
+
+    background:#e0e7ff;
+
+    color:#4338ca;
+
+}
+
+/* ==========================================
+   Profile Panel
+========================================== */
+
+.profile-card{
+
+    padding:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.profile-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    background:#fafbfc;
+
+    border:1px solid #eef2f7;
+
+    transition:.2s;
+
+}
+
+.profile-item:hover{
+
+    background:#f5f7ff;
+
+    border-color:#5d68ff;
+
+}
+
+.profile-item label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#64748b;
+
+}
+
+.profile-item span{
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#111827;
+
+    text-align:right;
+
+    word-break:break-word;
+
+}
+
+.empty{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:350px;
+
+    color:#94a3b8;
+
+    font-size:16px;
+
+    text-align:center;
+
+}
+
+/* ==========================================
+   Profile Actions
+========================================== */
+
+.profile-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    padding:20px 24px 24px;
+
+}
+
+.profile-actions button{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+#editMember{
+
+    background:#eef2ff;
+
+    color:#4f46e5;
+
+}
+
+#editMember:hover{
+
+    background:#dbe4ff;
+
+}
+
+#saveMember{
+
+    background:#5d68ff;
+
+    color:white;
+
+}
+
+#saveMember:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 24px rgba(93,104,255,.25);
+
+}
