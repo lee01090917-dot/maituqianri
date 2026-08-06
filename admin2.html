@@ -3,13 +3,28 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>🧞🧚 神燈精靈 管理中心</title>
+    <title>
+        🧞🧚 神燈精靈 管理後台
+    </title>
 
-<link rel="stylesheet" href="admin.css">
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="admin2.css">
+
+    <link rel="stylesheet" href="admin2-sidebar.css">
+
+    <link rel="stylesheet" href="admin2-header.css">
+
+    <link rel="stylesheet" href="admin2-dashboard.css">
+
+    <link rel="stylesheet" href="admin2-member.css">
+
+    <link rel="stylesheet" href="admin2-task.css">
 
 </head>
 
@@ -29,7 +44,7 @@
 
             </div>
 
-            <h2>
+                        <h2>
 
                 神燈精靈
 
@@ -71,7 +86,7 @@
 
                 </li>
 
-                <li data-page="notice">
+                                <li data-page="notice">
 
                     <span>📢</span>
 
@@ -115,7 +130,7 @@
 
         </nav>
 
-        <div class="admin-profile">
+                <div class="admin-profile">
 
             <div class="avatar">
 
@@ -143,11 +158,11 @@
 
     </aside>
 
-    <!-- Main -->
+    <!-- Main Content -->
 
-    <main class="main">
+    <main class="main-content">
 
-        <header class="topbar">
+        <header class="header">
 
             <div>
 
@@ -165,15 +180,21 @@
 
             </div>
 
-            <div class="topbar-right">
+                        <div class="header-right">
 
-                <button class="top-btn">
+                <button class="header-btn">
+
+                    🔍
+
+                </button>
+
+                <button class="header-btn">
 
                     🔔
 
                 </button>
 
-                <button class="top-btn">
+                <button class="header-btn">
 
                     ⚙️
 
@@ -213,7 +234,7 @@
 
             </div>
 
-            <div class="stat-card">
+                        <div class="stat-card">
 
                 <div class="icon">
 
@@ -251,7 +272,7 @@
 
                     <small>
 
-                        LINE加入
+                        LINE 加入
 
                     </small>
 
@@ -297,15 +318,20 @@
 
         <section class="workspace">
 
-            <!-- 左側：會員 -->
+            <!-- 左側：會員列表 -->
 
-            <div class="member-panel">
+            <aside class="member-panel">
 
                 <div class="panel-header">
 
-                    <h2>👥 會員管理</h2>
+                    <h2>
 
-                    <button id="addMember">
+                        👥 會員管理
+
+                    </h2>
+
+                    <button
+                        id="addMember">
 
                         ＋ 新增
 
@@ -324,15 +350,15 @@
 
                 <div class="member-list">
 
-                    <!-- JS產生 -->
+                    <!-- JS 動態產生 -->
 
                 </div>
 
-            </div>
+            </aside>
 
-            <!-- 中間：會員資料 -->
+                        <!-- 中間：會員資料 -->
 
-            <div class="profile-panel">
+            <section class="profile-panel">
 
                 <div class="panel-header">
 
@@ -352,17 +378,13 @@
 
                     </div>
 
-                    <div>
+                    <span
+                        id="memberStatus"
+                        class="status">
 
-                        <span
-                            id="memberStatus"
-                            class="status">
+                        -
 
-                            -
-
-                        </span>
-
-                    </div>
+                    </span>
 
                 </div>
 
@@ -396,11 +418,11 @@
 
                 </div>
 
-            </div>
+            </section>
 
-            <!-- 右側 -->
+                        <!-- 右側：資訊面板 -->
 
-            <div class="side-panel">
+            <aside class="side-panel">
 
                 <!-- 今日待辦 -->
 
@@ -414,7 +436,8 @@
 
                         </h2>
 
-                        <button id="addTask">
+                        <button
+                            id="addTask">
 
                             ＋
 
@@ -422,9 +445,11 @@
 
                     </div>
 
-                    <div class="task-list">
+                    <div
+                        class="task-list"
+                        id="taskList">
 
-                        <!-- JS -->
+                        <!-- JS 動態產生 -->
 
                     </div>
 
@@ -454,14 +479,214 @@
 
                 </div>
 
+            </aside>
+
+        </section>
+
+                <!-- 最近加入會員 -->
+
+        <section class="recent-section">
+
+            <div class="panel-header">
+
+                <h2>
+
+                    🆕 最近加入會員
+
+                </h2>
+
+                <button id="viewAllMembers">
+
+                    查看全部
+
+                </button>
+
+            </div>
+
+            <div
+                class="recent-members"
+                id="recentMembers">
+
+                <!-- JS 動態產生 -->
+
             </div>
 
         </section>
 
-        <footer>
+        <!-- 快速操作 -->
 
-<script>
+        <section class="quick-actions">
 
-</body>
+            <button id="quickAddMember">
+
+                👥 新增會員
+
+            </button>
+
+            <button id="quickAddTask">
+
+                📌 新增待辦
+
+            </button>
+
+            <button id="quickAddNotice">
+
+                📢 發布公告
+
+            </button>
+
+            <button id="quickCreateEvent">
+
+                📸 新增場次
+
+            </button>
+
+        </section>
+
+                <!-- Modal：新增 / 編輯會員 -->
+
+        <div
+            class="modal"
+            id="memberModal">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h2>
+
+                        👤 會員資料
+
+                    </h2>
+
+                    <button
+                        class="close-modal"
+                        id="closeMemberModal">
+
+                        ✕
+
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- 之後放表單 -->
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        class="btn-secondary">
+
+                        取消
+
+                    </button>
+
+                    <button
+                        class="btn-primary">
+
+                        儲存
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+                <!-- Modal：新增待辦 -->
+
+        <div
+            class="modal"
+            id="taskModal">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h2>
+
+                        📌 新增待辦
+
+                    </h2>
+
+                    <button
+                        class="close-modal"
+                        id="closeTaskModal">
+
+                        ✕
+
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- 之後放待辦表單 -->
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        class="btn-secondary">
+
+                        取消
+
+                    </button>
+
+                    <button
+                        class="btn-primary">
+
+                        新增
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Toast -->
+
+        <div
+            id="toast"
+            class="toast">
+
+        </div>
+
+                <!-- Overlay -->
+
+        <div
+            class="modal-overlay"
+            id="modalOverlay">
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Firebase -->
+
+<script
+type="module"
+src="./firebase.js">
+
+</script>
+
+<!-- Admin -->
+
+<script
+type="module"
+src="./admin2.js">
+
+</script>
+
+    </body>
 
 </html>
