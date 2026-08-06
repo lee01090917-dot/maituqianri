@@ -1,1 +1,97 @@
+/* ==========================
+   Header
+========================== */
 
+.main-content{
+
+    flex:1;
+
+    padding:30px;
+
+    background:#f8fafc;
+
+    overflow:auto;
+
+}
+
+.header{
+
+    background:rgba(255,255,255,.85);
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid #ececec;
+
+    border-radius:20px;
+
+    padding:24px 30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+
+}
+
+.header h1{
+
+    font-size:32px;
+
+    color:#111827;
+
+    margin-bottom:6px;
+
+}
+
+.header p{
+
+    color:#94a3b8;
+
+    font-size:15px;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.header-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:14px;
+
+    border:none;
+
+    background:white;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.05);
+
+    font-size:18px;
+
+}
+
+.header-btn:hover{
+
+    transform:translateY(-2px);
+
+    background:#5d68ff;
+
+    color:white;
+
+}
