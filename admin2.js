@@ -14,8 +14,26 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+// ==========================
+// DOM
+// ==========================
+
 const memberList = document.querySelector(".member-list");
 const profileCard = document.querySelector(".profile-card");
+
+const memberCount = document.getElementById("memberCount");
+const pendingCount = document.getElementById("pendingCount");
+const lineCount = document.getElementById("lineCount");
+const todayCount = document.getElementById("todayCount");
+
+const memberSearch = document.getElementById("memberSearch");
+
+// ==========================
+// 全域資料
+// ==========================
+
+let members = [];
+let currentMember = null;
 
 // ==========================
 // 權限檢查
@@ -24,23 +42,34 @@ const profileCard = document.querySelector(".profile-card");
 onAuthStateChanged(auth, async (user) => {
 
     if (!user) {
+
         location.href = "login.html";
         return;
+
     }
 
     const memberRef = doc(db, "members", user.uid);
+
     const memberSnap = await getDoc(memberRef);
 
     if (!memberSnap.exists()) {
+
         alert("找不到會員資料");
+
         location.href = "app.html";
+
         return;
+
     }
 
     if (memberSnap.data().role !== "管理員") {
+
         alert("沒有權限");
+
         location.href = "app.html";
+
         return;
+
     }
 
     loadMembers();
@@ -53,25 +82,141 @@ onAuthStateChanged(auth, async (user) => {
 
 async function loadMembers() {
 
-    const querySnapshot = await getDocs(collection(db, "members"));
+    const snapshot = await getDocs(collection(db, "members"));
+
+    members = [];
+
+    snapshot.forEach(memberDoc => {
+
+        members.push({
+
+            id: memberDoc.id,
+
+            ...memberDoc.data()
+
+        });
+
+    });
+
+    renderDashboard();
+
+    renderMemberList();
+
+}
+
+// ==========================
+// Dashboard
+// ==========================
+
+function renderDashboard() {
+
+    let total = members.length;
+
+    let pending = 0;
+
+    let line = 0;
+
+    let today = 0;
+
+    const todayString = new Date().toLocaleDateString("sv-SE");
+
+    members.forEach(member => {
+
+        if (member.status !== "已通過") {
+
+            pending++;
+
+        }
+
+        if (member.officialLine) {
+
+            line++;
+
+        }
+
+        if (member.joinDate) {
+
+            let joinDate = "";
+
+            if (member.joinDate.toDate) {
+
+                joinDate = member.joinDate
+                    .toDate()
+                    .toLocaleDateString("sv-SE");
+
+            } else {
+
+                joinDate = String(member.joinDate).slice(0,10);
+
+            }
+
+            if (joinDate === todayString) {
+
+                today++;
+
+            }
+
+        }
+
+    });
+
+    memberCount.textContent = total;
+
+    pendingCount.textContent = pending;
+
+    lineCount.textContent = line;
+
+    todayCount.textContent = today;
+
+}
+
+// ==========================
+// 左側會員列表
+// ==========================
+
+function renderMemberList(keyword = "") {
 
     memberList.innerHTML = "";
 
-    querySnapshot.forEach((memberDoc) => {
+    const list = members.filter(member => {
 
-        const data = memberDoc.data();
+        const text = (
+
+            (member.memberNo || "") +
+
+            (member.nickname || "") +
+
+            (member.socialPlatform || "") +
+
+            (member.socialAccount || "") +
+
+            (member.favoriteMember || "")
+
+        ).toLowerCase();
+
+        return text.includes(keyword.toLowerCase());
+
+    });
+
+    list.forEach(member => {
 
         memberList.innerHTML += `
 
-<div class="member-card" data-id="${memberDoc.id}">
+<div class="member-card"
+
+data-id="${member.id}">
 
     <div class="member-top">
 
-        <strong>${data.memberNo || "待發號"}</strong>
+        <strong>
 
-        <span class="status ${data.status === "已通過" ? "approved" : "pending"}">
+            ${member.memberNo || "待發號"}
 
-            ${data.status || "-"}
+        </strong>
+
+        <span class="status ${member.status === "已通過" ? "approved" : "pending"}">
+
+            ${member.status || "-"}
 
         </span>
 
@@ -79,19 +224,19 @@ async function loadMembers() {
 
     <div class="member-name">
 
-        ${data.nickname || "-"}
+        ${member.nickname || "-"}
 
     </div>
 
     <div class="member-info">
 
-        ❤️ ${data.favoriteMember || "-"}
+        ❤️ ${member.favoriteMember || "-"}
 
     </div>
 
     <div class="member-info">
 
-        ${data.socialPlatform || ""}
+        ${member.socialPlatform || ""}
 
     </div>
 
@@ -115,73 +260,134 @@ function bindMemberClick() {
 
     cards.forEach(card => {
 
-        card.addEventListener("click", async () => {
+        card.onclick = () => {
 
             cards.forEach(c => c.classList.remove("active"));
 
             card.classList.add("active");
 
-            const snap = await getDoc(
-                doc(db, "members", card.dataset.id)
+            currentMember = members.find(
+                m => m.id === card.dataset.id
             );
 
-            const data = snap.data();
+            renderProfile();
 
-            profileCard.innerHTML = `
+        };
+
+    });
+
+    // 第一次自動選第一位會員
+    if (cards.length > 0 && !currentMember) {
+
+        cards[0].click();
+
+    }
+
+}
+
+// ==========================
+// 右側會員資料
+// ==========================
+
+function renderProfile() {
+
+    if (!currentMember) return;
+
+    profileCard.innerHTML = `
 
 <div class="profile-item">
+
 <label>MQ編號</label>
-<span>${data.memberNo || "-"}</span>
+
+<span>${currentMember.memberNo || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>暱稱</label>
-<span>${data.nickname || "-"}</span>
+
+<span>${currentMember.nickname || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>平台</label>
-<span>${data.socialPlatform || "-"}</span>
+
+<span>${currentMember.socialPlatform || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>帳號</label>
-<span>${data.socialAccount || "-"}</span>
+
+<span>${currentMember.socialAccount || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>❤️ 主擔</label>
-<span>${data.favoriteMember || "-"}</span>
+
+<span>${currentMember.favoriteMember || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>💛 副擔</label>
-<span>${(data.subFavoriteMembers || []).join("、") || "-"}</span>
+
+<span>${(currentMember.subFavoriteMembers || []).join("、") || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>🟢 官方LINE</label>
-<span>${data.officialLine ? "已加入" : "未加入"}</span>
+
+<span>${currentMember.officialLine ? "已加入" : "未加入"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>📍 加入來源</label>
-<span>${data.joinSource || "-"}</span>
+
+<span>${currentMember.joinSource || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>👥 推薦人</label>
-<span>${data.referrerNickname || "-"}</span>
+
+<span>${currentMember.referrerNickname || "-"}</span>
+
 </div>
 
 <div class="profile-item">
+
 <label>📝 備註</label>
-<span>${data.adminNote || "-"}</span>
+
+<span>${currentMember.adminNote || "-"}</span>
+
 </div>
 
 `;
 
-        });
+}
+
+// ==========================
+// 搜尋
+// ==========================
+
+if (memberSearch) {
+
+    memberSearch.addEventListener("input", e => {
+
+        renderMemberList(e.target.value);
 
     });
 
