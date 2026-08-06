@@ -125,3 +125,47 @@
     font-weight:600;
 
 }
+
+.stat-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+.stat-content small{
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    margin-bottom:6px;
+
+    font-weight:600;
+
+}
+
+.stat-content h2{
+
+    margin:0;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#111827;
+
+}
+
+.stat-content p{
+
+    margin-top:8px;
+
+    font-size:13px;
+
+    color:#22c55e;
+
+}
