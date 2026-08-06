@@ -222,13 +222,21 @@
 
 }
 
-.btn-cancel{
+.btn-secondary{
 
     background:#f3f4f6;
 
+    color:#374151;
+
 }
 
-.btn-save{
+.btn-secondary:hover{
+
+    background:#e5e7eb;
+
+}
+
+.btn-primary{
 
     background:#5d68ff;
 
@@ -236,7 +244,7 @@
 
 }
 
-.btn-save:hover{
+.btn-primary:hover{
 
     transform:translateY(-2px);
 
