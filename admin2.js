@@ -392,3 +392,36 @@ if (memberSearch) {
     });
 
 }
+
+// ==========================
+// Modal
+// ==========================
+
+const memberModal = document.getElementById("memberModal");
+const taskModal = document.getElementById("taskModal");
+
+const addMemberBtn = document.getElementById("addMember");
+const addTaskBtn = document.getElementById("addTask");
+
+const closeMemberModal = document.getElementById("closeMemberModal");
+const closeTaskModal = document.getElementById("closeTaskModal");
+
+// 開啟會員 Modal
+addMemberBtn?.addEventListener("click", () => {
+    memberModal.classList.remove("hidden");
+});
+
+// 關閉會員 Modal
+closeMemberModal?.addEventListener("click", () => {
+    memberModal.classList.add("hidden");
+});
+
+// 開啟待辦 Modal
+addTaskBtn?.addEventListener("click", () => {
+    taskModal.classList.remove("hidden");
+});
+
+// 關閉待辦 Modal
+closeTaskModal?.addEventListener("click", () => {
+    taskModal.classList.add("hidden");
+});
