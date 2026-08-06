@@ -1,1 +1,167 @@
+/* ==========================
+   Sidebar
+========================== */
 
+.sidebar{
+
+    width:260px;
+
+    background:#ffffff;
+
+    border-right:1px solid #ececec;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    padding:28px 18px;
+
+}
+
+.logo{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+.logo-icon{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+}
+
+.logo h2{
+
+    font-size:24px;
+
+    margin-bottom:5px;
+
+    color:#1f2937;
+
+}
+
+.logo p{
+
+    font-size:13px;
+
+    color:#94a3b8;
+
+}
+
+.menu{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+}
+
+.menu li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:15px 18px;
+
+    margin-bottom:8px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    font-weight:600;
+
+    color:#475569;
+
+}
+
+.menu li:hover{
+
+    background:#f3f5ff;
+
+    color:#5d68ff;
+
+}
+
+.menu li.active{
+
+    background:#5d68ff;
+
+    color:white;
+
+    box-shadow:0 10px 25px rgba(93,104,255,.28);
+
+}
+
+.menu li span:first-child{
+
+    font-size:20px;
+
+}
+
+.admin-profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    border-top:1px solid #ececec;
+
+    padding-top:20px;
+
+    margin-top:30px;
+
+}
+
+.avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    background:#5d68ff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:22px;
+
+}
+
+.admin-profile strong{
+
+    display:block;
+
+    font-size:15px;
+
+}
+
+.admin-profile p{
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+}
