@@ -257,3 +257,11 @@ body{
     background:red !important;
 
 }
+
+.modal{
+    outline:10px solid red !important;
+}
+
+.modal.hidden{
+    display:none !important;
+}
