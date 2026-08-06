@@ -6,33 +6,49 @@
 
     display:grid;
 
-    grid-template-columns:320px 1fr 320px;
+    grid-template-columns:340px minmax(720px,1fr) 360px;
 
-    gap:24px;
+    gap:28px;
 
     align-items:start;
 
-    margin-top:30px;
+    margin-top:28px;
 
 }
 
 /* ==========================================
-   共用 Panel
+   Panel
 ========================================== */
 
 .member-panel,
 .profile-panel,
 .side-panel{
 
-    background:#ffffff;
+    background:#fff;
+
+    border:1px solid #edf0f7;
 
     border-radius:22px;
 
-    border:1px solid #eceff5;
-
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
+    box-shadow:0 10px 30px rgba(15,23,42,.06);
 
     overflow:hidden;
+
+}
+
+.member-panel{
+
+    position:sticky;
+
+    top:24px;
+
+}
+
+.side-panel{
+
+    position:sticky;
+
+    top:24px;
 
 }
 
@@ -48,20 +64,32 @@
 
     border-bottom:1px solid #eef2f7;
 
+    background:#fff;
+
 }
 
 .panel-header h2{
 
     font-size:18px;
 
+    font-weight:700;
+
     color:#111827;
 
-    margin:0;
+}
+
+.panel-header p{
+
+    margin-top:4px;
+
+    color:#94a3b8;
+
+    font-size:13px;
 
 }
 
 /* ==========================================
-   搜尋框
+   Search
 ========================================== */
 
 .search-box{
@@ -76,34 +104,36 @@
 
     width:100%;
 
-    padding:12px 16px;
+    height:46px;
+
+    padding:0 16px;
 
     border:1px solid #e5e7eb;
 
-    border-radius:12px;
+    border-radius:14px;
 
-    outline:none;
+    background:#fafbff;
 
     font-size:14px;
 
-    transition:.2s;
-
-    background:#fafafa;
+    transition:.25s;
 
 }
 
 .search-box input:focus{
 
-    border-color:#5d68ff;
+    outline:none;
 
-    background:white;
+    background:#fff;
+
+    border-color:#5d68ff;
 
     box-shadow:0 0 0 4px rgba(93,104,255,.08);
 
 }
 
 /* ==========================================
-   會員列表
+   Member List
 ========================================== */
 
 .member-list{
@@ -116,21 +146,21 @@
 
     gap:14px;
 
-    max-height:720px;
+    max-height:calc(100vh - 260px);
 
-    overflow:auto;
+    overflow-y:auto;
 
 }
 
 .member-card{
 
-    background:#fafafa;
+    background:#ffffff;
 
     border:1px solid #eceff5;
 
-    border-radius:16px;
+    border-radius:18px;
 
-    padding:16px;
+    padding:18px;
 
     cursor:pointer;
 
@@ -144,7 +174,7 @@
 
     border-color:#5d68ff;
 
-    box-shadow:0 12px 30px rgba(93,104,255,.10);
+    box-shadow:0 14px 30px rgba(93,104,255,.12);
 
 }
 
@@ -152,23 +182,11 @@
 
     background:#5d68ff;
 
-    color:white;
-
     border-color:#5d68ff;
 
-}
-
-.member-card.active .member-info,
-
-.member-card.active .status{
-
     color:white;
 
 }
-
-/* ==========================================
-   會員卡內容
-========================================== */
 
 .member-top{
 
@@ -178,7 +196,7 @@
 
     align-items:center;
 
-    margin-bottom:12px;
+    margin-bottom:14px;
 
 }
 
@@ -204,9 +222,9 @@
 
     font-weight:700;
 
-    margin-bottom:10px;
+    color:#111827;
 
-    color:#1f2937;
+    margin-bottom:8px;
 
 }
 
@@ -222,7 +240,13 @@
 
     color:#64748b;
 
-    margin-top:4px;
+    line-height:1.6;
+
+}
+
+.member-card.active .member-info{
+
+    color:rgba(255,255,255,.88);
 
 }
 
@@ -232,13 +256,19 @@
 
 .status{
 
-    padding:5px 10px;
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:5px 12px;
 
     border-radius:999px;
 
     font-size:12px;
 
-    font-weight:600;
+    font-weight:700;
 
 }
 
@@ -274,39 +304,61 @@
 
 }
 
+.member-card.active .status{
+
+    background:rgba(255,255,255,.2);
+
+    color:white;
+
+}
+
 /* ==========================================
    Profile Panel
 ========================================== */
 
-.profile-card{
-
-    padding:24px;
+.profile-panel{
 
     display:flex;
 
     flex-direction:column;
 
-    gap:18px;
+    min-height:760px;
+
+}
+
+.profile-card{
+
+    flex:1;
+
+    padding:28px;
+
+    display:grid;
+
+    gap:14px;
+
+    align-content:start;
 
 }
 
 .profile-item{
 
-    display:flex;
+    display:grid;
 
-    justify-content:space-between;
+    grid-template-columns:130px 1fr;
 
     align-items:center;
 
-    padding:14px 16px;
+    gap:20px;
 
-    border-radius:14px;
-
-    background:#fafbfc;
+    padding:16px 18px;
 
     border:1px solid #eef2f7;
 
-    transition:.2s;
+    border-radius:16px;
+
+    background:#fafbfc;
+
+    transition:.25s;
 
 }
 
@@ -320,9 +372,9 @@
 
 .profile-item label{
 
-    font-size:14px;
+    font-size:13px;
 
-    font-weight:600;
+    font-weight:700;
 
     color:#64748b;
 
@@ -332,11 +384,9 @@
 
     font-size:15px;
 
-    font-weight:700;
+    font-weight:600;
 
     color:#111827;
-
-    text-align:right;
 
     word-break:break-word;
 
@@ -350,7 +400,7 @@
 
     align-items:center;
 
-    min-height:350px;
+    min-height:420px;
 
     color:#94a3b8;
 
@@ -361,16 +411,20 @@
 }
 
 /* ==========================================
-   Profile Actions
+   Actions
 ========================================== */
 
 .profile-actions{
 
     display:flex;
 
-    gap:12px;
+    gap:14px;
 
-    padding:20px 24px 24px;
+    padding:24px;
+
+    border-top:1px solid #eef2f7;
+
+    background:#fff;
 
 }
 
@@ -378,17 +432,15 @@
 
     flex:1;
 
+    height:48px;
+
     border:none;
 
     border-radius:14px;
 
-    padding:14px;
-
     font-size:15px;
 
     font-weight:700;
-
-    cursor:pointer;
 
     transition:.25s;
 
@@ -421,5 +473,141 @@
     transform:translateY(-2px);
 
     box-shadow:0 12px 24px rgba(93,104,255,.25);
+
+}
+
+/* ==========================================
+   Side Panel
+========================================== */
+
+.side-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+    min-height:760px;
+
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:1600px){
+
+    .workspace{
+
+        grid-template-columns:300px 1fr 320px;
+
+    }
+
+}
+
+@media (max-width:1400px){
+
+    .workspace{
+
+        grid-template-columns:280px 1fr;
+
+    }
+
+    .side-panel{
+
+        grid-column:1 / -1;
+
+        position:static;
+
+        min-height:auto;
+
+    }
+
+}
+
+@media (max-width:992px){
+
+    .workspace{
+
+        grid-template-columns:1fr;
+
+        gap:20px;
+
+    }
+
+    .member-panel,
+    .profile-panel,
+    .side-panel{
+
+        position:static;
+
+        min-height:auto;
+
+    }
+
+    .member-list{
+
+        max-height:400px;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .profile-item{
+
+        grid-template-columns:1fr;
+
+        gap:8px;
+
+    }
+
+    .profile-item label{
+
+        font-size:12px;
+
+    }
+
+    .profile-item span{
+
+        text-align:left;
+
+    }
+
+    .profile-actions{
+
+        flex-direction:column;
+
+    }
+
+}
+
+@media (max-width:576px){
+
+    .workspace{
+
+        margin-top:18px;
+
+    }
+
+    .panel-header{
+
+        padding:18px;
+
+    }
+
+    .profile-card{
+
+        padding:18px;
+
+    }
+
+    .member-list{
+
+        padding:14px;
+
+    }
 
 }
