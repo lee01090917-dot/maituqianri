@@ -295,83 +295,129 @@ function renderProfile() {
 
     profileCard.innerHTML = `
 
-<div class="profile-item">
+<div class="profile-header">
 
-<label>MQ編號</label>
+    <div class="profile-avatar">
 
-<span>${currentMember.memberNo || "-"}</span>
+        👤
 
-</div>
+    </div>
 
-<div class="profile-item">
+    <div>
 
-<label>暱稱</label>
+        <h2>
 
-<span>${currentMember.nickname || "-"}</span>
+            ${currentMember.nickname || "-"}
 
-</div>
+        </h2>
 
-<div class="profile-item">
+        <p>
 
-<label>平台</label>
+            ${currentMember.memberNo || "-"}
 
-<span>${currentMember.socialPlatform || "-"}</span>
+        </p>
 
-</div>
-
-<div class="profile-item">
-
-<label>帳號</label>
-
-<span>${currentMember.socialAccount || "-"}</span>
+    </div>
 
 </div>
 
-<div class="profile-item">
+<div class="profile-grid">
 
-<label>❤️ 主擔</label>
+    <div class="profile-box">
 
-<span>${currentMember.favoriteMember || "-"}</span>
+        <small>📱 社群平台</small>
 
-</div>
+        <strong>
 
-<div class="profile-item">
+            ${currentMember.socialPlatform || "-"}
 
-<label>💛 副擔</label>
+        </strong>
 
-<span>${(currentMember.subFavoriteMembers || []).join("、") || "-"}</span>
+    </div>
 
-</div>
+    <div class="profile-box">
 
-<div class="profile-item">
+        <small>🔗 帳號</small>
 
-<label>🟢 官方LINE</label>
+        <strong>
 
-<span>${currentMember.officialLine ? "已加入" : "未加入"}</span>
+            ${currentMember.socialAccount || "-"}
 
-</div>
+        </strong>
 
-<div class="profile-item">
+    </div>
 
-<label>📍 加入來源</label>
+    <div class="profile-box">
 
-<span>${currentMember.joinSource || "-"}</span>
+        <small>❤️ 主擔</small>
 
-</div>
+        <strong>
 
-<div class="profile-item">
+            ${currentMember.favoriteMember || "-"}
 
-<label>👥 推薦人</label>
+        </strong>
 
-<span>${currentMember.referrerNickname || "-"}</span>
+    </div>
 
-</div>
+    <div class="profile-box">
 
-<div class="profile-item">
+        <small>💛 副擔</small>
 
-<label>📝 備註</label>
+        <strong>
 
-<span>${currentMember.adminNote || "-"}</span>
+            ${(currentMember.subFavoriteMembers || []).join("、") || "-"}
+
+        </strong>
+
+    </div>
+
+    <div class="profile-box">
+
+        <small>🟢 官方LINE</small>
+
+        <strong>
+
+            ${currentMember.officialLine ? "已加入" : "未加入"}
+
+        </strong>
+
+    </div>
+
+    <div class="profile-box">
+
+        <small>📍 加入來源</small>
+
+        <strong>
+
+            ${currentMember.joinSource || "-"}
+
+        </strong>
+
+    </div>
+
+    <div class="profile-box">
+
+        <small>👥 推薦人</small>
+
+        <strong>
+
+            ${currentMember.referrerNickname || "-"}
+
+        </strong>
+
+    </div>
+
+    <div class="profile-box full">
+
+        <small>📝 管理員備註</small>
+
+        <strong>
+
+            ${currentMember.adminNote || "目前沒有備註"}
+
+        </strong>
+
+    </div>
 
 </div>
 
