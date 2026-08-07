@@ -27,7 +27,7 @@ body{
 
 body{
 
-    overflow:auto;
+    overflow:hidden;
 
 }
 /* ==========================
@@ -60,8 +60,9 @@ body{
 
     overflow-y:auto;
 
-}
+    min-width:0;
 
+}
 /* ==========================
    Common
 ========================== */
