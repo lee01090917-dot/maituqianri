@@ -315,3 +315,107 @@ body{
     overflow-x:hidden;
 
 }
+
+/* ==========================================
+   Profile V2
+========================================== */
+
+.profile-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:26px;
+
+    border-bottom:1px solid #eef2f7;
+
+}
+
+.profile-avatar{
+
+    width:72px;
+
+    height:72px;
+
+    border-radius:50%;
+
+    background:#eef2ff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:34px;
+
+}
+
+.profile-header h2{
+
+    margin:0;
+
+    font-size:24px;
+
+    color:#111827;
+
+}
+
+.profile-header p{
+
+    margin-top:6px;
+
+    color:#94a3b8;
+
+}
+
+.profile-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:16px;
+
+    padding:24px;
+
+}
+
+.profile-box{
+
+    background:#f8fafc;
+
+    border:1px solid #eef2f7;
+
+    border-radius:18px;
+
+    padding:18px;
+
+}
+
+.profile-box small{
+
+    display:block;
+
+    color:#94a3b8;
+
+    margin-bottom:10px;
+
+}
+
+.profile-box strong{
+
+    color:#111827;
+
+    font-size:15px;
+
+}
+
+.profile-box.full{
+
+    grid-column:1 / -1;
+
+}
