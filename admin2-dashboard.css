@@ -4,25 +4,21 @@
 
 .dashboard{
 
-    width:100%;
-
     display:grid;
 
-    grid-template-columns:repeat(4,minmax(260px,1fr));
+    grid-template-columns:repeat(4,minmax(240px,1fr));
 
     gap:24px;
 
-    margin:30px 0;
+    margin-bottom:30px;
 
 }
 
+/* ==========================================
+   Stat Card
+========================================== */
+
 .stat-card{
-
-    background:#ffffff;
-
-    border-radius:20px;
-
-    padding:24px;
 
     display:flex;
 
@@ -30,29 +26,44 @@
 
     gap:18px;
 
+    padding:24px;
+
+    background:#ffffff;
+
     border:1px solid #eceff5;
+
+    border-radius:22px;
 
     box-shadow:0 8px 24px rgba(15,23,42,.05);
 
-    transition:.25s;
-
     cursor:pointer;
+
+    transition:
+        transform .25s,
+        box-shadow .25s,
+        border-color .25s;
 
 }
 
 .stat-card:hover{
 
-    transform:translateY(-4px);
+    transform:translateY(-5px);
 
-    box-shadow:0 18px 40px rgba(15,23,42,.12);
+    border-color:#d7ddff;
+
+    box-shadow:0 18px 40px rgba(15,23,42,.10);
 
 }
 
+/* ==========================================
+   Icon
+========================================== */
+
 .icon{
 
-    width:62px;
+    width:64px;
 
-    height:62px;
+    height:64px;
 
     border-radius:18px;
 
@@ -63,6 +74,16 @@
     align-items:center;
 
     font-size:30px;
+
+    flex-shrink:0;
+
+    background:#eef2ff;
+
+}
+
+/* 四種顏色 */
+
+.stat-card:nth-child(1) .icon{
 
     background:#eef2ff;
 
@@ -86,63 +107,25 @@
 
 }
 
-.stat-card small{
-
-    display:block;
-
-    color:#94a3b8;
-
-    font-size:13px;
-
-    margin-bottom:6px;
-
-    font-weight:600;
-
-}
-
-.stat-card h2{
-
-    font-size:34px;
-
-    color:#111827;
-
-    margin:0;
-
-    font-weight:700;
-
-    line-height:1;
-
-}
-
-.stat-card p{
-
-    margin-top:8px;
-
-    color:#22c55e;
-
-    font-size:13px;
-
-    font-weight:600;
-
-}
+/* ==========================================
+   Text
+========================================== */
 
 .stat-content{
 
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
+    flex:1;
 
 }
 
 .stat-content small{
 
+    display:block;
+
+    margin-bottom:6px;
+
     color:#94a3b8;
 
     font-size:13px;
-
-    margin-bottom:6px;
 
     font-weight:600;
 
@@ -154,6 +137,8 @@
 
     font-size:34px;
 
+    line-height:1;
+
     font-weight:700;
 
     color:#111827;
@@ -162,10 +147,36 @@
 
 .stat-content p{
 
-    margin-top:8px;
+    margin-top:10px;
 
     font-size:13px;
 
     color:#22c55e;
+
+    font-weight:600;
+
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:1400px){
+
+    .dashboard{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .dashboard{
+
+        grid-template-columns:1fr;
+
+    }
 
 }
