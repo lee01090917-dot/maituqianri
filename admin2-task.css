@@ -1,42 +1,34 @@
 /* ==========================================
-   Workspace
+   Task Section
 ========================================== */
 
-.workspace{
+.task-section{
 
-    display:grid;
-
-    grid-template-columns:340px minmax(720px,1fr) 340px;
-
-    gap:24px;
-
-    align-items:start;
-
-    margin-bottom:30px;
+    margin:0 0 28px;
 
 }
 
 /* ==========================================
-   共用 Panel
+   Card
 ========================================== */
 
-.member-panel,
-.profile-panel,
-.side-panel{
+.task-card{
 
-    background:#ffffff;
+    background:transparent;
 
-    border:1px solid #eceff5;
+    box-shadow:none;
 
-    border-radius:22px;
-
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
-
-    overflow:hidden;
+    border:none;
 
 }
 
-.panel-header{
+/* ==========================================
+   Header
+========================================== */
+
+.task-card .panel-header{
+
+    padding:0 6px 18px;
 
     display:flex;
 
@@ -44,109 +36,37 @@
 
     align-items:center;
 
-    padding:22px 24px;
+    border:none;
 
-    border-bottom:1px solid #eef2f7;
-
-    background:#ffffff;
+    background:transparent;
 
 }
 
-.panel-header h2{
+.task-card .panel-header h2{
 
-    font-size:18px;
+    font-size:24px;
 
     font-weight:700;
 
-    color:#111827;
-
-    margin:0;
+    color:#1f2937;
 
 }
 
-.panel-header p{
+.task-card .panel-header button{
 
-    margin-top:4px;
+    width:42px;
 
-    font-size:13px;
+    height:42px;
 
-    color:#94a3b8;
+    border:none;
 
-}
+    border-radius:12px;
 
-/* ==========================================
-   Search
-========================================== */
+    background:#5d68ff;
 
-.search-box{
+    color:#fff;
 
-    padding:18px 24px;
-
-    border-bottom:1px solid #eef2f7;
-
-}
-
-.search-box input{
-
-    width:100%;
-
-    height:46px;
-
-    border:1px solid #e5e7eb;
-
-    border-radius:14px;
-
-    padding:0 16px;
-
-    font-size:14px;
-
-    background:#fafbff;
-
-    transition:.25s;
-
-}
-
-.search-box input:focus{
-
-    outline:none;
-
-    background:#ffffff;
-
-    border-color:#5d68ff;
-
-    box-shadow:0 0 0 4px rgba(93,104,255,.08);
-
-}
-
-/* ==========================================
-   Member List
-========================================== */
-
-.member-list{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:14px;
-
-    padding:18px;
-
-    max-height:calc(100vh - 270px);
-
-    overflow-y:auto;
-
-}
-
-.member-card{
-
-    padding:18px;
-
-    border:1px solid #eceff5;
-
-    border-radius:18px;
-
-    background:#ffffff;
+    font-size:22px;
 
     cursor:pointer;
 
@@ -154,320 +74,84 @@
 
 }
 
-.member-card:hover{
-
-    transform:translateY(-3px);
-
-    border-color:#5d68ff;
-
-    box-shadow:0 12px 28px rgba(93,104,255,.10);
-
-}
-
-.member-card.active{
-
-    background:#5d68ff;
-
-    color:#ffffff;
-
-    border-color:#5d68ff;
-
-}
-
-.member-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:12px;
-
-}
-
-.member-top strong{
-
-    font-size:15px;
-
-    color:#111827;
-
-}
-
-.member-card.active .member-top strong{
-
-    color:#ffffff;
-
-}
-
-.member-name{
-
-    font-size:18px;
-
-    font-weight:700;
-
-    margin-bottom:8px;
-
-    color:#111827;
-
-}
-
-.member-card.active .member-name{
-
-    color:#ffffff;
-
-}
-
-.member-info{
-
-    font-size:13px;
-
-    color:#64748b;
-
-    line-height:1.6;
-
-}
-
-.member-card.active .member-info{
-
-    color:rgba(255,255,255,.88);
-
-}
-
-/* ==========================================
-   Status
-========================================== */
-
-.status{
-
-    display:inline-flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:5px 12px;
-
-    border-radius:999px;
-
-    font-size:12px;
-
-    font-weight:700;
-
-}
-
-.status.approved{
-
-    background:#dcfce7;
-
-    color:#15803d;
-
-}
-
-.status.pending{
-
-    background:#fef3c7;
-
-    color:#b45309;
-
-}
-
-.status.rejected{
-
-    background:#fee2e2;
-
-    color:#dc2626;
-
-}
-
-.member-card.active .status{
-
-    background:rgba(255,255,255,.2);
-
-    color:#ffffff;
-
-}
-
-/* ==========================================
-   Profile
-========================================== */
-
-.profile-panel{
-
-    display:flex;
-
-    flex-direction:column;
-
-    min-height:760px;
-
-}
-
-.profile-card{
-
-    flex:1;
-
-    display:grid;
-
-    gap:14px;
-
-    padding:24px;
-
-    align-content:start;
-
-}
-
-.profile-item{
-
-    display:grid;
-
-    grid-template-columns:130px 1fr;
-
-    gap:20px;
-
-    align-items:center;
-
-    padding:16px 18px;
-
-    border:1px solid #eef2f7;
-
-    border-radius:16px;
-
-    background:#fafbfc;
-
-    transition:.25s;
-
-}
-
-.profile-item:hover{
-
-    border-color:#5d68ff;
-
-    background:#f6f8ff;
-
-}
-
-.profile-item label{
-
-    font-size:13px;
-
-    font-weight:700;
-
-    color:#64748b;
-
-}
-
-.profile-item span{
-
-    font-size:15px;
-
-    font-weight:600;
-
-    color:#111827;
-
-    word-break:break-word;
-
-}
-
-.empty{
-
-    min-height:420px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    color:#94a3b8;
-
-    font-size:16px;
-
-}
-
-/* ==========================================
-   Actions
-========================================== */
-
-.profile-actions{
-
-    display:flex;
-
-    gap:14px;
-
-    padding:24px;
-
-    border-top:1px solid #eef2f7;
-
-}
-
-.profile-actions button{
-
-    flex:1;
-
-    height:48px;
-
-    border:none;
-
-    border-radius:14px;
-
-    font-size:15px;
-
-    font-weight:700;
-
-    transition:.25s;
-
-}
-
-#editMember{
-
-    background:#eef2ff;
-
-    color:#4f46e5;
-
-}
-
-#editMember:hover{
-
-    background:#dbe4ff;
-
-}
-
-#saveMember{
-
-    background:#5d68ff;
-
-    color:#ffffff;
-
-}
-
-#saveMember:hover{
+.task-card .panel-header button:hover{
 
     transform:translateY(-2px);
 
-    box-shadow:0 12px 24px rgba(93,104,255,.25);
+    box-shadow:0 10px 20px rgba(93,104,255,.25);
 
 }
 
 /* ==========================================
-   Responsive
+   Task List
 ========================================== */
 
-@media (max-width:1500px){
+.task-list{
 
-    .workspace{
+    display:grid;
 
-        grid-template-columns:300px 1fr 300px;
+    grid-template-columns:repeat(3,1fr);
 
-    }
+    gap:18px;
 
 }
 
-@media (max-width:1200px){
+/* ==========================================
+   Task Item
+========================================== */
 
-    .workspace{
+.task-item{
 
-        grid-template-columns:1fr;
+    background:#fff;
 
-    }
+    border:1px solid #eceff5;
+
+    border-radius:20px;
+
+    padding:22px;
+
+    transition:.25s;
+
+    cursor:pointer;
+
+    box-shadow:0 8px 20px rgba(15,23,42,.05);
+
+}
+
+.task-item:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 18px 32px rgba(15,23,42,.08);
+
+}
+
+.task-title{
+
+    font-size:17px;
+
+    font-weight:700;
+
+    color:#111827;
+
+    margin-bottom:10px;
+
+}
+
+.task-member{
+
+    color:#64748b;
+
+    font-size:14px;
+
+    margin-bottom:10px;
+
+}
+
+.task-date{
+
+    color:#94a3b8;
+
+    font-size:13px;
 
 }
