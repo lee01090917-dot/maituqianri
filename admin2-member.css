@@ -6,49 +6,33 @@
 
     display:grid;
 
-    grid-template-columns:340px minmax(720px,1fr) 360px;
+    grid-template-columns:340px minmax(720px,1fr) 340px;
 
-    gap:28px;
+    gap:24px;
 
     align-items:start;
 
-    margin-top:28px;
+    margin-bottom:30px;
 
 }
 
 /* ==========================================
-   Panel
+   共用 Panel
 ========================================== */
 
 .member-panel,
 .profile-panel,
 .side-panel{
 
-    background:#fff;
+    background:#ffffff;
 
-    border:1px solid #edf0f7;
+    border:1px solid #eceff5;
 
     border-radius:22px;
 
-    box-shadow:0 10px 30px rgba(15,23,42,.06);
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
 
     overflow:hidden;
-
-}
-
-.member-panel{
-
-    position:sticky;
-
-    top:24px;
-
-}
-
-.side-panel{
-
-    position:sticky;
-
-    top:24px;
 
 }
 
@@ -64,7 +48,7 @@
 
     border-bottom:1px solid #eef2f7;
 
-    background:#fff;
+    background:#ffffff;
 
 }
 
@@ -76,15 +60,17 @@
 
     color:#111827;
 
+    margin:0;
+
 }
 
 .panel-header p{
 
     margin-top:4px;
 
-    color:#94a3b8;
-
     font-size:13px;
+
+    color:#94a3b8;
 
 }
 
@@ -106,15 +92,15 @@
 
     height:46px;
 
-    padding:0 16px;
-
     border:1px solid #e5e7eb;
 
     border-radius:14px;
 
-    background:#fafbff;
+    padding:0 16px;
 
     font-size:14px;
+
+    background:#fafbff;
 
     transition:.25s;
 
@@ -124,7 +110,7 @@
 
     outline:none;
 
-    background:#fff;
+    background:#ffffff;
 
     border-color:#5d68ff;
 
@@ -138,15 +124,15 @@
 
 .member-list{
 
-    padding:18px;
-
     display:flex;
 
     flex-direction:column;
 
     gap:14px;
 
-    max-height:calc(100vh - 260px);
+    padding:18px;
+
+    max-height:calc(100vh - 270px);
 
     overflow-y:auto;
 
@@ -154,13 +140,13 @@
 
 .member-card{
 
-    background:#ffffff;
+    padding:18px;
 
     border:1px solid #eceff5;
 
     border-radius:18px;
 
-    padding:18px;
+    background:#ffffff;
 
     cursor:pointer;
 
@@ -174,7 +160,7 @@
 
     border-color:#5d68ff;
 
-    box-shadow:0 14px 30px rgba(93,104,255,.12);
+    box-shadow:0 12px 28px rgba(93,104,255,.10);
 
 }
 
@@ -182,9 +168,9 @@
 
     background:#5d68ff;
 
-    border-color:#5d68ff;
+    color:#ffffff;
 
-    color:white;
+    border-color:#5d68ff;
 
 }
 
@@ -196,7 +182,7 @@
 
     align-items:center;
 
-    margin-bottom:14px;
+    margin-bottom:12px;
 
 }
 
@@ -204,15 +190,13 @@
 
     font-size:15px;
 
-    font-weight:700;
-
     color:#111827;
 
 }
 
 .member-card.active .member-top strong{
 
-    color:white;
+    color:#ffffff;
 
 }
 
@@ -222,15 +206,15 @@
 
     font-weight:700;
 
-    color:#111827;
-
     margin-bottom:8px;
+
+    color:#111827;
 
 }
 
 .member-card.active .member-name{
 
-    color:white;
+    color:#ffffff;
 
 }
 
@@ -251,16 +235,16 @@
 }
 
 /* ==========================================
-   Status Badge
+   Status
 ========================================== */
 
 .status{
 
     display:inline-flex;
 
-    align-items:center;
-
     justify-content:center;
+
+    align-items:center;
 
     padding:5px 12px;
 
@@ -296,24 +280,16 @@
 
 }
 
-.status.hold{
-
-    background:#e0e7ff;
-
-    color:#4338ca;
-
-}
-
 .member-card.active .status{
 
     background:rgba(255,255,255,.2);
 
-    color:white;
+    color:#ffffff;
 
 }
 
 /* ==========================================
-   Profile Panel
+   Profile
 ========================================== */
 
 .profile-panel{
@@ -330,11 +306,11 @@
 
     flex:1;
 
-    padding:28px;
-
     display:grid;
 
     gap:14px;
+
+    padding:24px;
 
     align-content:start;
 
@@ -346,9 +322,9 @@
 
     grid-template-columns:130px 1fr;
 
-    align-items:center;
-
     gap:20px;
+
+    align-items:center;
 
     padding:16px 18px;
 
@@ -364,9 +340,9 @@
 
 .profile-item:hover{
 
-    background:#f5f7ff;
-
     border-color:#5d68ff;
+
+    background:#f6f8ff;
 
 }
 
@@ -394,19 +370,17 @@
 
 .empty{
 
+    min-height:420px;
+
     display:flex;
 
     justify-content:center;
 
     align-items:center;
 
-    min-height:420px;
-
     color:#94a3b8;
 
     font-size:16px;
-
-    text-align:center;
 
 }
 
@@ -423,8 +397,6 @@
     padding:24px;
 
     border-top:1px solid #eef2f7;
-
-    background:#fff;
 
 }
 
@@ -464,7 +436,7 @@
 
     background:#5d68ff;
 
-    color:white;
+    color:#ffffff;
 
 }
 
@@ -477,136 +449,24 @@
 }
 
 /* ==========================================
-   Side Panel
-========================================== */
-
-.side-panel{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:24px;
-
-    min-height:760px;
-
-}
-
-/* ==========================================
    Responsive
 ========================================== */
 
-@media (max-width:1600px){
+@media (max-width:1500px){
 
     .workspace{
 
-        grid-template-columns:300px 1fr 320px;
+        grid-template-columns:300px 1fr 300px;
 
     }
 
 }
 
-@media (max-width:1400px){
-
-    .workspace{
-
-        grid-template-columns:280px 1fr;
-
-    }
-
-    .side-panel{
-
-        grid-column:1 / -1;
-
-        position:static;
-
-        min-height:auto;
-
-    }
-
-}
-
-@media (max-width:992px){
+@media (max-width:1200px){
 
     .workspace{
 
         grid-template-columns:1fr;
-
-        gap:20px;
-
-    }
-
-    .member-panel,
-    .profile-panel,
-    .side-panel{
-
-        position:static;
-
-        min-height:auto;
-
-    }
-
-    .member-list{
-
-        max-height:400px;
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .profile-item{
-
-        grid-template-columns:1fr;
-
-        gap:8px;
-
-    }
-
-    .profile-item label{
-
-        font-size:12px;
-
-    }
-
-    .profile-item span{
-
-        text-align:left;
-
-    }
-
-    .profile-actions{
-
-        flex-direction:column;
-
-    }
-
-}
-
-@media (max-width:576px){
-
-    .workspace{
-
-        margin-top:18px;
-
-    }
-
-    .panel-header{
-
-        padding:18px;
-
-    }
-
-    .profile-card{
-
-        padding:18px;
-
-    }
-
-    .member-list{
-
-        padding:14px;
 
     }
 
