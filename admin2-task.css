@@ -1,24 +1,34 @@
 /* ==========================================
-   Side Panel
+   Workspace
 ========================================== */
 
-.side-panel{
+.workspace{
 
-    display:flex;
+    display:grid;
 
-    flex-direction:column;
+    grid-template-columns:340px minmax(720px,1fr) 340px;
 
     gap:24px;
 
+    align-items:start;
+
+    margin-bottom:30px;
+
 }
 
-.side-card{
+/* ==========================================
+   共用 Panel
+========================================== */
+
+.member-panel,
+.profile-panel,
+.side-panel{
 
     background:#ffffff;
 
-    border-radius:22px;
-
     border:1px solid #eceff5;
+
+    border-radius:22px;
 
     box-shadow:0 8px 24px rgba(15,23,42,.05);
 
@@ -26,278 +36,438 @@
 
 }
 
-.side-card .panel-header{
+.panel-header{
 
-    padding:20px 22px;
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px 24px;
+
+    border-bottom:1px solid #eef2f7;
+
+    background:#ffffff;
+
+}
+
+.panel-header h2{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#111827;
+
+    margin:0;
+
+}
+
+.panel-header p{
+
+    margin-top:4px;
+
+    font-size:13px;
+
+    color:#94a3b8;
+
+}
+
+/* ==========================================
+   Search
+========================================== */
+
+.search-box{
+
+    padding:18px 24px;
 
     border-bottom:1px solid #eef2f7;
 
 }
 
-.side-card .panel-header h2{
+.search-box input{
 
-    font-size:17px;
+    width:100%;
 
-    color:#111827;
+    height:46px;
 
-}
+    border:1px solid #e5e7eb;
 
-.side-card .panel-header button{
+    border-radius:14px;
 
-    width:34px;
+    padding:0 16px;
 
-    height:34px;
+    font-size:14px;
 
-    border:none;
-
-    border-radius:10px;
-
-    background:#5d68ff;
-
-    color:white;
-
-    cursor:pointer;
+    background:#fafbff;
 
     transition:.25s;
 
 }
 
-.side-card .panel-header button:hover{
+.search-box input:focus{
 
-    transform:scale(1.08);
+    outline:none;
+
+    background:#ffffff;
+
+    border-color:#5d68ff;
+
+    box-shadow:0 0 0 4px rgba(93,104,255,.08);
 
 }
 
 /* ==========================================
-   Task List
+   Member List
 ========================================== */
 
-.task-list{
-
-    padding:18px;
+.member-list{
 
     display:flex;
 
     flex-direction:column;
 
-    gap:12px;
+    gap:14px;
+
+    padding:18px;
+
+    max-height:calc(100vh - 270px);
+
+    overflow-y:auto;
 
 }
 
-.task-item{
+.member-card{
 
-    background:#fafafa;
+    padding:18px;
 
     border:1px solid #eceff5;
 
-    border-left:5px solid #5d68ff;
+    border-radius:18px;
 
-    border-radius:14px;
-
-    padding:14px;
-
-    transition:.25s;
+    background:#ffffff;
 
     cursor:pointer;
 
-}
-
-.task-item:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:0 10px 24px rgba(0,0,0,.08);
+    transition:.25s;
 
 }
 
-.task-title{
+.member-card:hover{
 
-    font-size:14px;
+    transform:translateY(-3px);
 
-    font-weight:700;
+    border-color:#5d68ff;
+
+    box-shadow:0 12px 28px rgba(93,104,255,.10);
+
+}
+
+.member-card.active{
+
+    background:#5d68ff;
+
+    color:#ffffff;
+
+    border-color:#5d68ff;
+
+}
+
+.member-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:12px;
+
+}
+
+.member-top strong{
+
+    font-size:15px;
 
     color:#111827;
 
-    margin-bottom:6px;
+}
+
+.member-card.active .member-top strong{
+
+    color:#ffffff;
 
 }
 
-.task-member{
+.member-name{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+    color:#111827;
+
+}
+
+.member-card.active .member-name{
+
+    color:#ffffff;
+
+}
+
+.member-info{
 
     font-size:13px;
 
     color:#64748b;
 
+    line-height:1.6;
+
 }
 
-.task-date{
+.member-card.active .member-info{
 
-    margin-top:8px;
-
-    font-size:12px;
-
-    color:#94a3b8;
+    color:rgba(255,255,255,.88);
 
 }
 
 /* ==========================================
-   Recent List
+   Status
 ========================================== */
 
-.recent-list{
+.status{
 
-    padding:18px;
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:5px 12px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+}
+
+.status.approved{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.status.pending{
+
+    background:#fef3c7;
+
+    color:#b45309;
+
+}
+
+.status.rejected{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+.member-card.active .status{
+
+    background:rgba(255,255,255,.2);
+
+    color:#ffffff;
+
+}
+
+/* ==========================================
+   Profile
+========================================== */
+
+.profile-panel{
 
     display:flex;
 
     flex-direction:column;
 
-    gap:12px;
-
-    min-height:220px;
+    min-height:760px;
 
 }
 
-.recent-item{
+.profile-card{
 
-    display:flex;
+    flex:1;
+
+    display:grid;
+
+    gap:14px;
+
+    padding:24px;
+
+    align-content:start;
+
+}
+
+.profile-item{
+
+    display:grid;
+
+    grid-template-columns:130px 1fr;
+
+    gap:20px;
 
     align-items:center;
 
-    gap:12px;
+    padding:16px 18px;
 
-    padding:12px;
+    border:1px solid #eef2f7;
 
-    border-radius:12px;
+    border-radius:16px;
 
-    transition:.2s;
+    background:#fafbfc;
 
-    cursor:pointer;
-
-}
-
-.recent-item:hover{
-
-    background:#f8f9ff;
+    transition:.25s;
 
 }
 
-.recent-avatar{
+.profile-item:hover{
 
-    width:42px;
+    border-color:#5d68ff;
 
-    height:42px;
+    background:#f6f8ff;
 
-    border-radius:50%;
+}
 
-    background:#5d68ff;
+.profile-item label{
 
-    color:white;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
+    font-size:13px;
 
     font-weight:700;
 
+    color:#64748b;
+
 }
 
-.recent-info strong{
+.profile-item span{
 
-    display:block;
+    font-size:15px;
+
+    font-weight:600;
 
     color:#111827;
 
-    font-size:14px;
+    word-break:break-word;
 
 }
 
-.recent-info small{
+.empty{
+
+    min-height:420px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     color:#94a3b8;
 
-    font-size:12px;
+    font-size:16px;
 
 }
 
 /* ==========================================
-   Recent Members
+   Actions
 ========================================== */
 
-.recent-section{
+.profile-actions{
 
-    margin-top:28px;
+    display:flex;
 
-    background:#fff;
+    gap:14px;
 
-    border:1px solid #eceff5;
+    padding:24px;
 
-    border-radius:22px;
-
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
-
-    overflow:hidden;
+    border-top:1px solid #eef2f7;
 
 }
 
-.recent-members{
+.profile-actions button{
 
-    display:grid;
+    flex:1;
 
-    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-
-    gap:18px;
-
-    padding:22px;
-
-}
-
-/* ==========================================
-   Quick Actions
-========================================== */
-
-.quick-actions{
-
-    display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-    gap:18px;
-
-    margin-top:28px;
-
-}
-
-.quick-actions button{
-
-    height:60px;
+    height:48px;
 
     border:none;
 
-    border-radius:18px;
-
-    background:#5d68ff;
-
-    color:white;
+    border-radius:14px;
 
     font-size:15px;
 
     font-weight:700;
 
-    cursor:pointer;
-
     transition:.25s;
-
-    box-shadow:0 10px 24px rgba(93,104,255,.22);
 
 }
 
-.quick-actions button:hover{
+#editMember{
 
-    transform:translateY(-3px);
+    background:#eef2ff;
 
-    box-shadow:0 16px 32px rgba(93,104,255,.3);
+    color:#4f46e5;
+
+}
+
+#editMember:hover{
+
+    background:#dbe4ff;
+
+}
+
+#saveMember{
+
+    background:#5d68ff;
+
+    color:#ffffff;
+
+}
+
+#saveMember:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 24px rgba(93,104,255,.25);
+
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:1500px){
+
+    .workspace{
+
+        grid-template-columns:300px 1fr 300px;
+
+    }
+
+}
+
+@media (max-width:1200px){
+
+    .workspace{
+
+        grid-template-columns:1fr;
+
+    }
 
 }
