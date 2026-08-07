@@ -27,7 +27,7 @@ body{
 
 body{
 
-    overflow:hidden;
+    overflow:auto;
 
 }
 /* ==========================
@@ -58,7 +58,7 @@ body{
 
     padding:28px;
 
-    overflow-y:auto;
+      overflow:visible;
 
     min-width:0;
 
