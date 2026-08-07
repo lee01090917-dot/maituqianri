@@ -6,13 +6,15 @@
 
     display:grid;
 
-    grid-template-columns:340px minmax(720px,1fr) 340px;
+    grid-template-columns:320px minmax(0,1fr) 300px;
 
     gap:24px;
 
     align-items:start;
 
     margin-bottom:30px;
+
+    width:100%;
 
 }
 
@@ -23,7 +25,9 @@
 .member-panel,
 .profile-panel,
 .side-panel{
+ min-width:0;
 
+}
     background:#ffffff;
 
     border:1px solid #eceff5;
@@ -132,7 +136,7 @@
 
     padding:18px;
 
-    max-height:calc(100vh - 270px);
+    max-height:650px;
 
     overflow-y:auto;
 
@@ -298,7 +302,7 @@
 
     flex-direction:column;
 
-    min-height:760px;
+    min-width:0;
 
 }
 
