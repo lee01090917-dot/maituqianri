@@ -6,19 +6,21 @@
 
     display:grid;
 
-    grid-template-columns:repeat(4,minmax(240px,1fr));
+    grid-template-columns:repeat(4,1fr);
 
-    gap:24px;
+    gap:22px;
 
-    margin-bottom:30px;
+    margin-bottom:32px;
 
 }
 
 /* ==========================================
-   Stat Card
+   Card
 ========================================== */
 
 .stat-card{
+
+    position:relative;
 
     display:flex;
 
@@ -30,28 +32,69 @@
 
     background:#ffffff;
 
-    border:1px solid #eceff5;
-
     border-radius:22px;
 
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
+    border:1px solid #eef2f7;
 
-    cursor:pointer;
+    box-shadow:0 10px 30px rgba(15,23,42,.05);
 
-    transition:
-        transform .25s,
-        box-shadow .25s,
-        border-color .25s;
+    transition:.25s;
+
+    overflow:hidden;
 
 }
 
 .stat-card:hover{
 
-    transform:translateY(-5px);
+    transform:translateY(-4px);
 
-    border-color:#d7ddff;
+    box-shadow:0 18px 36px rgba(15,23,42,.08);
 
-    box-shadow:0 18px 40px rgba(15,23,42,.10);
+    border-color:#d8deff;
+
+}
+
+/* 左側彩色線 */
+
+.stat-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:6px;
+
+    height:100%;
+
+    border-radius:6px;
+
+}
+
+.stat-card:nth-child(1)::before{
+
+    background:#6366f1;
+
+}
+
+.stat-card:nth-child(2)::before{
+
+    background:#f59e0b;
+
+}
+
+.stat-card:nth-child(3)::before{
+
+    background:#22c55e;
+
+}
+
+.stat-card:nth-child(4)::before{
+
+    background:#3b82f6;
 
 }
 
@@ -61,9 +104,9 @@
 
 .icon{
 
-    width:64px;
+    width:60px;
 
-    height:64px;
+    height:60px;
 
     border-radius:18px;
 
@@ -73,15 +116,11 @@
 
     align-items:center;
 
-    font-size:30px;
+    font-size:28px;
 
     flex-shrink:0;
 
-    background:#eef2ff;
-
 }
-
-/* 四種顏色 */
 
 .stat-card:nth-child(1) .icon{
 
@@ -91,13 +130,13 @@
 
 .stat-card:nth-child(2) .icon{
 
-    background:#fff7ed;
+    background:#fff8eb;
 
 }
 
 .stat-card:nth-child(3) .icon{
 
-    background:#ecfdf5;
+    background:#edfdf4;
 
 }
 
@@ -121,11 +160,11 @@
 
     display:block;
 
-    margin-bottom:6px;
-
     color:#94a3b8;
 
     font-size:13px;
+
+    margin-bottom:8px;
 
     font-weight:600;
 
@@ -135,9 +174,7 @@
 
     margin:0;
 
-    font-size:34px;
-
-    line-height:1;
+    font-size:36px;
 
     font-weight:700;
 
@@ -147,13 +184,11 @@
 
 .stat-content p{
 
-    margin-top:10px;
+    margin-top:8px;
 
     font-size:13px;
 
-    color:#22c55e;
-
-    font-weight:600;
+    color:#64748b;
 
 }
 
@@ -161,7 +196,7 @@
    Responsive
 ========================================== */
 
-@media (max-width:1400px){
+@media (max-width:1200px){
 
     .dashboard{
 
