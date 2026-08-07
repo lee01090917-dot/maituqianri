@@ -283,177 +283,120 @@
     </div>
 
 </section>
-                <!-- Workspace -->
+             <!-- Workspace -->
 
-        <section class="workspace">
+<section class="task-section">
 
-            <!-- 左側：會員列表 -->
+    <div class="task-card">
 
-            <aside class="member-panel">
+        <div class="panel-header">
 
-                <div class="panel-header">
+            <h2>📌 今日待辦</h2>
 
-                    <h2>
+            <button id="addTask">＋</button>
 
-                        👥 會員管理
+        </div>
 
-                    </h2>
+        <div
+            class="task-list"
+            id="taskList">
 
-                    <button
-                        id="addMember">
+            <!-- JS 動態產生 -->
 
-                        ＋ 新增
+        </div>
 
-                    </button>
+    </div>
 
-                </div>
+</section>
 
-                <div class="search-box">
+<section class="workspace">
 
-                    <input
-                        id="memberSearch"
-                        type="text"
-                        placeholder="🔍 搜尋 MQ、暱稱、IG、Threads">
+    <!-- 左側會員 -->
 
-                </div>
+    <aside class="member-panel">
 
-                <div class="member-list">
+        <div class="panel-header">
 
-                    <!-- JS 動態產生 -->
+            <div>
 
-                </div>
+                <h2>👥 會員管理</h2>
 
-            </aside>
+                <p>目前會員</p>
 
-                        <!-- 中間：會員資料 -->
+            </div>
 
-            <section class="profile-panel">
+            <button id="addMember">
 
-                <div class="panel-header">
+                ＋
 
-                    <div>
+            </button>
 
-                        <h2>
+        </div>
 
-                            👤 會員資料
+        <div class="search-box">
 
-                        </h2>
+            <input
+                id="memberSearch"
+                type="text"
+                placeholder="搜尋 MQ、暱稱、IG、Threads">
 
-                        <p id="memberTitle">
+        </div>
 
-                            尚未選擇會員
+        <div
+            class="member-list"
+            id="memberList">
 
-                        </p>
+        </div>
 
-                    </div>
+    </aside>
 
-                    <span
-                        id="memberStatus"
-                        class="status">
+    <!-- 中間會員資料 -->
 
-                        -
+    <section class="profile-panel">
 
-                    </span>
+        <div class="panel-header">
 
-                </div>
+            <div>
 
-                <div
-                    class="profile-card"
-                    id="profileCard">
+                <h2>👤 會員資料</h2>
 
-                    <div class="empty">
+                <p>點選左側會員查看</p>
 
-                        👈 請從左側選擇會員
+            </div>
 
-                    </div>
+        </div>
 
-                </div>
+        <div
+            class="profile-card"
+            id="profileCard">
 
-                <div class="profile-actions">
+            <div class="empty">
 
-                    <button
-                        id="editMember">
+                請先選擇一位會員
 
-                        ✏ 編輯
+            </div>
 
-                    </button>
+        </div>
 
-                    <button
-                        id="saveMember">
+        <div class="profile-actions">
 
-                        💾 儲存
+            <button id="editMember">
 
-                    </button>
+                ✏️ 編輯
 
-                </div>
+            </button>
 
-            </section>
+            <button id="saveMember">
 
-                        <!-- 右側：資訊面板 -->
+                💾 儲存
 
-            <aside class="side-panel">
+            </button>
 
-                <!-- 今日待辦 -->
+        </div>
 
-                <div class="side-card">
+    </section>
 
-                    <div class="panel-header">
-
-                        <h2>
-
-                            📌 今日待辦
-
-                        </h2>
-
-                        <button
-                            id="addTask">
-
-                            ＋
-
-                        </button>
-
-                    </div>
-
-                    <div
-                        class="task-list"
-                        id="taskList">
-
-                        <!-- JS 動態產生 -->
-
-                    </div>
-
-                </div>
-
-                <!-- 最近查看 -->
-
-                <div class="side-card">
-
-                    <div class="panel-header">
-
-                        <h2>
-
-                            🕒 最近查看
-
-                        </h2>
-
-                    </div>
-
-                    <div
-                        class="recent-list"
-                        id="recentList">
-
-                        尚無資料
-
-                    </div>
-
-                </div>
-
-            </aside>
-
-        </section>
-
-                <!-- 最近加入會員 -->
-
+</section>
         <section class="recent-section">
 
             <div class="panel-header">
