@@ -6,9 +6,10 @@
 
     width:100%;
 
-    margin:0 0 28px 0;
+    margin:0 0 28px;
 
 }
+
 
 /* ==========================================
    Task Card
@@ -22,13 +23,14 @@
 
     border:1px solid #eceff5;
 
-    border-radius:20px;
+    border-radius:22px;
 
-    box-shadow:0 8px 24px rgba(15,23,42,.04);
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
 
     overflow:hidden;
 
 }
+
 
 /* ==========================================
    Header
@@ -36,15 +38,17 @@
 
 .task-card .panel-header{
 
+    min-height:72px;
+
     display:flex;
 
     align-items:center;
 
     justify-content:space-between;
 
-    min-height:68px;
+    padding:18px 24px;
 
-    padding:16px 22px;
+    box-sizing:border-box;
 
     border-bottom:1px solid #eef2f7;
 
@@ -61,6 +65,7 @@
     color:#111827;
 
 }
+
 
 /* ==========================================
    新增按鈕
@@ -104,25 +109,39 @@
 
 }
 
+
 /* ==========================================
    Task List
 ========================================== */
 
 .task-list{
 
-    min-height:72px;
+    display:flex;
 
-    padding:12px 18px;
+    flex-direction:column;
+
+    gap:10px;
+
+    padding:14px 18px;
+
+}
+
+
+/* ==========================================
+   空白狀態
+========================================== */
+
+.task-list:empty{
+
+    min-height:72px;
 
     display:flex;
 
     align-items:center;
 
-}
+    justify-content:center;
 
-/* ==========================================
-   沒有待辦
-========================================== */
+}
 
 .task-list:empty::before{
 
@@ -134,31 +153,202 @@
 
 }
 
+
 /* ==========================================
    待辦項目
 ========================================== */
 
 .task-item{
 
-    width:100%;
-
     display:flex;
 
     align-items:center;
 
-    justify-content:space-between;
+    gap:12px;
 
-    gap:14px;
+    width:100%;
 
-    padding:12px 14px;
+    min-height:54px;
 
-    background:#fafbff;
+    padding:10px 14px;
+
+    box-sizing:border-box;
+
+    background:#f8fafc;
 
     border:1px solid #eef2f7;
 
     border-radius:14px;
 
+    transition:.2s;
+
 }
+
+.task-item:hover{
+
+    background:#f6f7ff;
+
+    border-color:#dfe4ff;
+
+}
+
+
+/* ==========================================
+   Checkbox
+========================================== */
+
+.task-checkbox{
+
+    width:20px;
+
+    height:20px;
+
+    flex-shrink:0;
+
+    cursor:pointer;
+
+    accent-color:#5d68ff;
+
+}
+
+
+/* ==========================================
+   Task Content
+========================================== */
+
+.task-content{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+.task-title{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#111827;
+
+    line-height:1.4;
+
+}
+
+.task-meta{
+
+    margin-top:3px;
+
+    font-size:12px;
+
+    color:#94a3b8;
+
+}
+
+
+/* ==========================================
+   Completed
+========================================== */
+
+.task-item.completed{
+
+    opacity:.6;
+
+}
+
+.task-item.completed .task-title{
+
+    text-decoration:line-through;
+
+    color:#94a3b8;
+
+}
+
+
+/* ==========================================
+   Delete
+========================================== */
+
+.task-delete{
+
+    width:32px;
+
+    height:32px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:none;
+
+    border-radius:9px;
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.task-delete:hover{
+
+    background:#fecaca;
+
+}
+
+
+/* ==========================================
+   優先程度
+========================================== */
+
+.task-priority{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    height:23px;
+
+    padding:0 8px;
+
+    border-radius:999px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+.task-priority.high{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+.task-priority.medium{
+
+    background:#fef3c7;
+
+    color:#b45309;
+
+}
+
+.task-priority.low{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
 
 /* ==========================================
    Responsive
@@ -166,15 +356,15 @@
 
 @media (max-width:768px){
 
-    .task-section{
+    .task-card .panel-header{
 
-        margin-bottom:20px;
+        padding:16px;
 
     }
 
-    .task-card .panel-header{
+    .task-list{
 
-        padding:14px 16px;
+        padding:12px;
 
     }
 
