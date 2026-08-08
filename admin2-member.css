@@ -1056,6 +1056,42 @@
 
 }
 
+.platform-options,
+.source-options{
+
+    width:100%;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+    min-width:0;
+
+}
+
+.platform-option{
+
+    width:100%;
+
+    min-width:0;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+}
+
+.platform-option span{
+
+    width:100%;
+
+    min-width:0;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+}
 
 /* ==========================================
    加入來源
@@ -1209,6 +1245,118 @@
 
 /* ==========================================
    Responsive
+========================================== */
+
+@media (max-width:900px){
+
+    .platform-options,
+    .source-options{
+
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+
+    }
+
+}
+
+
+@media (max-width:600px){
+
+    .platform-options,
+    .source-options{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+    }
+
+}
+
+/* ==========================================
+   修正選項按鈕超出卡片
+========================================== */
+
+.platform-options,
+.source-options{
+
+    width:100%;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+    min-width:0;
+
+}
+
+
+/* 每一顆選項都不准把 Grid 撐出去 */
+
+.platform-option{
+
+    width:100%;
+
+    min-width:0;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+}
+
+
+/* 按鈕本體 */
+
+.platform-option span{
+
+    width:100%;
+
+    min-width:0;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+}
+
+
+/* Profile Box 本身也不能被內容撐開 */
+
+.profile-box{
+
+    min-width:0;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+}
+
+
+/* 確保左右兩欄不會互相擠出去 */
+
+.profile-grid{
+
+    min-width:0;
+
+}
+
+
+.profile-grid > .profile-box{
+
+    min-width:0;
+
+}
+
+
+/* ==========================================
+   小螢幕
 ========================================== */
 
 @media (max-width:900px){
