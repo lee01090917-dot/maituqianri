@@ -1574,36 +1574,39 @@ function renderEditProfile() {
 
 
     otherSourceRadio?.addEventListener(
-        "change",
-        () => {
+    "change",
+    () => {
 
-            if (
-                otherSourceRadio.checked
-            ) {
+        if (
+            otherSourceRadio.checked
+        ) {
+
+            setTimeout(() => {
 
                 otherSourceInput?.focus();
 
-            }
+            }, 50);
 
         }
-    );
 
+    }
+);
 
-    otherSourceInput?.addEventListener(
-        "focus",
-        () => {
+  otherSourceInput?.addEventListener(
+    "focus",
+    () => {
 
-            if (
-                otherSourceRadio
-            ) {
+        if (
+            otherSourceRadio
+        ) {
 
-                otherSourceRadio.checked =
-                    true;
-
-            }
+            otherSourceRadio.checked =
+                true;
 
         }
-    );
+
+    }
+);
 
 
     // ==================================================
