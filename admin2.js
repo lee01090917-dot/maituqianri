@@ -46,6 +46,22 @@ const memberSearch =
 
 
 // ==================================================
+// ATEEZ 成員
+// ==================================================
+
+const ateezMembers = [
+    "星化",
+    "弘中",
+    "潤浩",
+    "呂尚",
+    "傘尼",
+    "旼琦",
+    "友榮",
+    "鍾浩"
+];
+
+
+// ==================================================
 // 全域資料
 // ==================================================
 
@@ -489,8 +505,6 @@ function bindMemberClick() {
     });
 
 
-    // 自動選第一位
-
     if (
         cards.length > 0 &&
         !currentMember
@@ -601,16 +615,6 @@ function renderProfile() {
                     type="button">
 
                     ✏️ 編輯
-
-                </button>
-
-
-                <button
-                    id="saveMember"
-                    type="button"
-                    style="display:none;">
-
-                    💾 儲存
 
                 </button>
 
@@ -810,6 +814,71 @@ function renderProfile() {
 // ==================================================
 
 function renderEditProfile() {
+
+    const currentSubFavorites =
+        Array.isArray(
+            currentMember.subFavoriteMembers
+        )
+            ? currentMember.subFavoriteMembers
+            : [];
+
+
+    // ==========================================
+    // 主擔選項
+    // ==========================================
+
+    const favoriteOptions =
+        ateezMembers
+            .map(member => `
+
+                <option
+                    value="${escapeAttribute(member)}"
+                    ${
+                        currentMember.favoriteMember === member
+                            ? "selected"
+                            : ""
+                    }>
+
+                    ${escapeHTML(member)}
+
+                </option>
+
+            `)
+            .join("");
+
+
+    // ==========================================
+    // 副擔選項
+    // ==========================================
+
+    const subFavoriteOptions =
+        ateezMembers
+            .map(member => `
+
+                <label class="member-multi-option">
+
+                    <input
+                        type="checkbox"
+                        name="subFavoriteMember"
+                        value="${escapeAttribute(member)}"
+                        ${
+                            currentSubFavorites.includes(member)
+                                ? "checked"
+                                : ""
+                        }
+                    >
+
+                    <span>
+
+                        ${escapeHTML(member)}
+
+                    </span>
+
+                </label>
+
+            `)
+            .join("");
+
 
     profileCard.innerHTML = `
 
@@ -1014,14 +1083,19 @@ function renderEditProfile() {
                     ❤️ 主擔
                 </small>
 
-                <input
-                    class="member-edit-input"
-                    id="editFavoriteMember"
-                    type="text"
-                    value="${escapeAttribute(
-                        currentMember.favoriteMember || ""
-                    )}"
-                >
+                <select
+                    class="member-edit-input member-select"
+                    id="editFavoriteMember">
+
+                    <option value="">
+
+                        尚未選擇
+
+                    </option>
+
+                    ${favoriteOptions}
+
+                </select>
 
             </div>
 
@@ -1034,21 +1108,44 @@ function renderEditProfile() {
                     💛 副擔
                 </small>
 
-                <input
-                    class="member-edit-input"
-                    id="editSubFavoriteMembers"
-                    type="text"
-                    placeholder="例如：弘中、呂尚"
-                    value="${escapeAttribute(
-                        Array.isArray(
-                            currentMember.subFavoriteMembers
-                        )
-                            ? currentMember
-                                .subFavoriteMembers
-                                .join("、")
-                            : ""
-                    )}"
-                >
+
+                <div
+                    class="member-multi-select"
+                    id="subFavoriteSelect">
+
+                    <button
+                        type="button"
+                        class="member-multi-toggle"
+                        id="subFavoriteToggle">
+
+                        <span
+                            id="subFavoriteText">
+
+                            ${
+                                currentSubFavorites.length
+                                    ? currentSubFavorites.join("、")
+                                    : "選擇副擔"
+
+                            }
+
+                        </span>
+
+                        <span>
+                            ▾
+                        </span>
+
+                    </button>
+
+
+                    <div
+                        class="member-multi-menu"
+                        id="subFavoriteMenu">
+
+                        ${subFavoriteOptions}
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -1210,7 +1307,109 @@ function renderEditProfile() {
 
 
     // ==================================================
-    // 取消編輯
+    // 副擔下拉選單
+    // ==================================================
+
+    const toggle =
+        document.getElementById(
+            "subFavoriteToggle"
+        );
+
+    const menu =
+        document.getElementById(
+            "subFavoriteMenu"
+        );
+
+    const text =
+        document.getElementById(
+            "subFavoriteText"
+        );
+
+
+    toggle?.addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            menu?.classList.toggle(
+                "show"
+            );
+
+        }
+    );
+
+
+    // 點選副擔
+
+    menu?.querySelectorAll(
+        'input[name="subFavoriteMember"]'
+    ).forEach(checkbox => {
+
+        checkbox.addEventListener(
+            "change",
+            updateSubFavoriteText
+        );
+
+    });
+
+
+    function updateSubFavoriteText() {
+
+        const selected =
+            [...menu.querySelectorAll(
+                'input[name="subFavoriteMember"]:checked'
+            )]
+                .map(
+                    checkbox =>
+                        checkbox.value
+                );
+
+
+        if (selected.length) {
+
+            text.textContent =
+                selected.join("、");
+
+        } else {
+
+            text.textContent =
+                "選擇副擔";
+
+        }
+
+    }
+
+
+    // 點外面關閉副擔選單
+
+    document.addEventListener(
+        "click",
+        function closeSubFavorite(event) {
+
+            if (
+                !event.target.closest(
+                    "#subFavoriteSelect"
+                )
+            ) {
+
+                menu?.classList.remove(
+                    "show"
+                );
+
+                document.removeEventListener(
+                    "click",
+                    closeSubFavorite
+                );
+
+            }
+
+        }
+    );
+
+
+    // ==================================================
+    // 取消
     // ==================================================
 
     document
@@ -1234,7 +1433,9 @@ function renderEditProfile() {
     // ==================================================
 
     document
-        .getElementById("saveMember")
+        .getElementById(
+            "saveMember"
+        )
         ?.addEventListener(
             "click",
             saveMember
@@ -1260,7 +1461,8 @@ async function saveMember() {
 
     if (saveButton) {
 
-        saveButton.disabled = true;
+        saveButton.disabled =
+            true;
 
         saveButton.textContent =
             "儲存中…";
@@ -1272,7 +1474,7 @@ async function saveMember() {
 
 
         // ==========================================
-        // 取得資料
+        // 基本資料
         // ==========================================
 
         const memberNo =
@@ -1310,32 +1512,37 @@ async function saveMember() {
                 .trim() || "";
 
 
+        // ==========================================
+        // 主擔
+        // ==========================================
+
         const favoriteMember =
             document
                 .getElementById(
                     "editFavoriteMember"
                 )
-                ?.value
-                .trim() || "";
+                ?.value || "";
 
 
-        const subFavoriteText =
-            document
-                .getElementById(
-                    "editSubFavoriteMembers"
-                )
-                ?.value
-                .trim() || "";
-
+        // ==========================================
+        // 副擔
+        // ==========================================
 
         const subFavoriteMembers =
-            subFavoriteText
-                ? subFavoriteText
-                    .split(/[、,，]/)
-                    .map(item => item.trim())
-                    .filter(Boolean)
-                : [];
+            [
+                ...document.querySelectorAll(
+                    'input[name="subFavoriteMember"]:checked'
+                )
+            ]
+                .map(
+                    checkbox =>
+                        checkbox.value
+                );
 
+
+        // ==========================================
+        // 其他資料
+        // ==========================================
 
         const officialLine =
             document
@@ -1368,7 +1575,8 @@ async function saveMember() {
                 .getElementById(
                     "editStatus"
                 )
-                ?.value || "待審核";
+                ?.value ||
+                "待審核";
 
 
         const adminNote =
@@ -1486,8 +1694,6 @@ async function saveMember() {
         renderProfile();
 
 
-        // 找回目前選中的會員
-
         setTimeout(() => {
 
             const selectedCard =
@@ -1572,9 +1778,6 @@ function renderRecentMembers() {
 
     }
 
-
-    // 有 joinDate 就按照加入時間排序
-    // 沒有日期的放後面
 
     const sortedMembers =
         [...members]
@@ -1662,9 +1865,7 @@ function renderRecentMembers() {
                 currentMember =
                     member;
 
-
                 editingMember = false;
-
 
                 renderProfile();
 
@@ -1876,7 +2077,7 @@ addTaskBtn?.addEventListener(
 
 
 // ==================================================
-// 關閉待辦 Modal
+// 關閉新增待辦
 // ==================================================
 
 closeTaskModal?.addEventListener(
@@ -1954,10 +2155,6 @@ function escapeAttribute(value) {
 }
 
 
-// ==================================================
-// 完成
-// ==================================================
-
 console.log(
-    "admin2.js V5 已載入"
+    "admin2.js V6 已載入"
 );
