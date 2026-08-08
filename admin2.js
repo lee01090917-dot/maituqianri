@@ -983,76 +983,98 @@ function renderEditProfile() {
             </div>
 
 
-            <!-- 社群平台 -->
+          <!-- 社群平台 -->
 
-            <div class="profile-box">
+<div class="profile-box">
 
-                <small>
-                    📱 社群平台
-                </small>
+    <small>
+        📱 社群平台
+    </small>
 
-                <select
-                    class="member-edit-input"
-                    id="editSocialPlatform">
+    <div class="platform-options">
 
-                    <option value="Instagram"
-                        ${
-                            currentMember.socialPlatform === "Instagram"
-                                ? "selected"
-                                : ""
-                        }>
+        <label class="platform-option">
 
-                        Instagram
+            <input
+                type="radio"
+                name="socialPlatform"
+                value="Instagram"
+                ${
+                    currentMember.socialPlatform === "Instagram"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-                    </option>
+            <span>
+                📷 Instagram
+            </span>
 
-                    <option value="Threads"
-                        ${
-                            currentMember.socialPlatform === "Threads"
-                                ? "selected"
-                                : ""
-                        }>
+        </label>
 
-                        Threads
 
-                    </option>
+        <label class="platform-option">
 
-                    <option value="Twitter"
-                        ${
-                            currentMember.socialPlatform === "Twitter"
-                                ? "selected"
-                                : ""
-                        }>
+            <input
+                type="radio"
+                name="socialPlatform"
+                value="Threads"
+                ${
+                    currentMember.socialPlatform === "Threads"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-                        Twitter / X
+            <span>
+                🧵 Threads
+            </span>
 
-                    </option>
+        </label>
 
-                    <option value="Facebook"
-                        ${
-                            currentMember.socialPlatform === "Facebook"
-                                ? "selected"
-                                : ""
-                        }>
 
-                        Facebook
+        <label class="platform-option">
 
-                    </option>
+            <input
+                type="radio"
+                name="socialPlatform"
+                value="Twitter"
+                ${
+                    currentMember.socialPlatform === "Twitter"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-                    <option value=""
-                        ${
-                            !currentMember.socialPlatform
-                                ? "selected"
-                                : ""
-                        }>
+            <span>
+                𝕏 Twitter
+            </span>
 
-                        未填寫
+        </label>
 
-                    </option>
 
-                </select>
+        <label class="platform-option">
 
-            </div>
+            <input
+                type="radio"
+                name="socialPlatform"
+                value="Facebook"
+                ${
+                    currentMember.socialPlatform === "Facebook"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                📘 Facebook
+            </span>
+
+        </label>
+
+    </div>
+
+</div>
 
 
             <!-- 帳號 -->
