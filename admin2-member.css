@@ -1,81 +1,72 @@
 /* ==========================================
-   Workspace
+   Member Workspace V2
 ========================================== */
 
 .workspace{
-
     display:grid;
-
-    grid-template-columns:320px minmax(0,1fr) 280px;
-
-    gap:24px;
-
+    grid-template-columns:340px minmax(0,1fr);
+    gap:28px;
     width:100%;
-
     align-items:start;
-
-    margin-bottom:32px;
-
+    margin-bottom:36px;
 }
 
-/* ==========================================
-   Panel
-========================================== */
-
-.member-panel,
-.profile-panel,
-.side-panel{
-
-    background:#ffffff;
-
+.member-panel{
+    background:#fff;
     border:1px solid #eceff5;
-
     border-radius:22px;
-
     box-shadow:0 8px 24px rgba(15,23,42,.05);
-
     overflow:hidden;
-
     min-width:0;
+}
 
+.profile-panel{
+    min-width:0;
+    background:transparent;
+    border:0;
+    box-shadow:none;
 }
 
 .panel-header{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
+    gap:16px;
     padding:22px 24px;
-
     border-bottom:1px solid #eef2f7;
-
-    background:#ffffff;
-
+    background:#fff;
 }
 
 .panel-header h2{
-
     margin:0;
-
     font-size:18px;
-
     font-weight:700;
-
     color:#111827;
-
 }
 
 .panel-header p{
-
     margin-top:4px;
-
     font-size:13px;
-
     color:#94a3b8;
+}
 
+.panel-header button{
+    width:40px;
+    height:40px;
+    flex-shrink:0;
+    border:0;
+    border-radius:12px;
+    background:#eef2ff;
+    color:#4f46e5;
+    font-size:20px;
+    transition:.2s;
+}
+
+.panel-header button:hover{
+    background:#5d68ff;
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(93,104,255,.22);
 }
 
 /* ==========================================
@@ -83,43 +74,29 @@
 ========================================== */
 
 .search-box{
-
-    padding:18px 24px;
-
+    padding:16px 18px;
     border-bottom:1px solid #eef2f7;
-
 }
 
 .search-box input{
-
     width:100%;
-
-    height:46px;
-
-    padding:0 16px;
-
+    height:44px;
+    padding:0 15px;
     border:1px solid #e5e7eb;
-
-    border-radius:14px;
-
-    background:#fafbff;
-
+    border-radius:13px;
+    background:#f8fafc;
+    color:#111827;
     font-size:14px;
-
-    transition:.25s;
-
+    transition:.2s;
 }
 
+.search-box input::placeholder{color:#a1a8b5}
+
 .search-box input:focus{
-
     outline:none;
-
-    background:#ffffff;
-
-    border-color:#5d68ff;
-
+    background:#fff;
+    border-color:#8b93ff;
     box-shadow:0 0 0 4px rgba(93,104,255,.08);
-
 }
 
 /* ==========================================
@@ -127,295 +104,295 @@
 ========================================== */
 
 .member-list{
-
     display:flex;
-
     flex-direction:column;
-
-    gap:14px;
-
-    padding:18px;
-
-    height:650px;
-
+    gap:10px;
+    padding:14px;
+    max-height:650px;
     overflow-y:auto;
-
 }
 
 .member-card{
-
-    padding:18px;
-
-    background:#ffffff;
-
-    border:1px solid #eceff5;
-
-    border-radius:18px;
-
+    position:relative;
+    display:grid;
+    grid-template-columns:44px minmax(0,1fr) auto;
+    grid-template-rows:auto auto;
+    column-gap:12px;
+    padding:15px;
+    background:#fff;
+    border:1px solid #eef2f7;
+    border-radius:17px;
     cursor:pointer;
-
-    transition:
-        transform .25s,
-        box-shadow .25s,
-        border-color .25s;
-
+    transition:transform .2s,box-shadow .2s,border-color .2s,background .2s;
 }
 
 .member-card:hover{
-
-    transform:translateY(-3px);
-
-    border-color:#5d68ff;
-
-    box-shadow:0 12px 28px rgba(93,104,255,.10);
-
+    transform:translateY(-2px);
+    border-color:#cfd5ff;
+    box-shadow:0 10px 24px rgba(93,104,255,.10);
 }
 
 .member-card.active{
-
-    background:#5d68ff;
-
-    border-color:#5d68ff;
-
-    color:#ffffff;
-
+    background:#f5f7ff;
+    border-color:#737cff;
+    box-shadow:0 10px 24px rgba(93,104,255,.10);
 }
 
-.member-top{
-
+.member-avatar{
+    grid-row:1 / span 2;
+    width:44px;
+    height:44px;
+    border-radius:14px;
     display:flex;
-
-    justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:12px;
-
-}
-
-.member-top strong{
-
-    font-size:15px;
-
+    justify-content:center;
+    background:linear-gradient(135deg,#eef2ff,#e0e7ff);
+    color:#4f46e5;
+    font-size:21px;
     font-weight:700;
-
-    color:#111827;
-
 }
 
-.member-card.active .member-top strong{
-
-    color:#ffffff;
-
+.member-main{
+    min-width:0;
+    align-self:center;
 }
 
 .member-name{
-
-    font-size:18px;
-
-    font-weight:700;
-
-    margin-bottom:8px;
-
+    margin:0 0 3px;
     color:#111827;
-
+    font-size:15px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.member-card.active .member-name{
-
-    color:#ffffff;
-
+.member-number{
+    color:#94a3b8;
+    font-size:12px;
 }
 
-.member-info{
-
-    font-size:13px;
-
+.member-meta{
+    grid-column:2 / 3;
+    margin-top:7px;
     color:#64748b;
-
-    line-height:1.6;
-
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.member-card.active .member-info{
-
-    color:rgba(255,255,255,.88);
-
+.member-status{
+    align-self:start;
+    justify-self:end;
 }
-
-/* ==========================================
-   Status
-========================================== */
 
 .status{
-
     display:inline-flex;
-
     align-items:center;
-
     justify-content:center;
-
-    min-width:68px;
-
-    height:28px;
-
-    padding:0 12px;
-
+    min-width:62px;
+    height:25px;
+    padding:0 9px;
     border-radius:999px;
-
-    font-size:12px;
-
+    font-size:11px;
     font-weight:700;
-
+    white-space:nowrap;
 }
 
-.status.approved{
-
-    background:#dcfce7;
-
-    color:#15803d;
-
-}
-
-.status.pending{
-
-    background:#fef3c7;
-
-    color:#b45309;
-
-}
-
-.status.rejected{
-
-    background:#fee2e2;
-
-    color:#dc2626;
-
-}
-
-.status.hold{
-
-    background:#e0e7ff;
-
-    color:#4338ca;
-
-}
+.status.approved{background:#dcfce7;color:#15803d}
+.status.pending{background:#fef3c7;color:#b45309}
+.status.rejected{background:#fee2e2;color:#dc2626}
+.status.hold{background:#e0e7ff;color:#4338ca}
 
 .member-card.active .status{
-
-    background:rgba(255,255,255,.18);
-
-    color:#ffffff;
-
+    background:#e9eaff;
+    color:#4f46e5;
 }
 
-html,
-body{
-
-    overflow-x:hidden;
-
+.empty-members{
+    padding:42px 18px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:14px;
 }
 
 /* ==========================================
-   Profile V2
+   Profile Card / Hero
 ========================================== */
 
-.profile-header{
+.profile-card{
+    position:relative;
+    background:#fff;
+    border:1px solid #eceff5;
+    border-radius:22px;
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
+    overflow:hidden;
+}
 
+.profile-hero{
     display:flex;
-
     align-items:center;
-
     gap:18px;
-
-    padding:26px;
-
+    padding:26px 28px;
     border-bottom:1px solid #eef2f7;
-
 }
 
 .profile-avatar{
-
-    width:72px;
-
-    height:72px;
-
-    border-radius:50%;
-
-    background:#eef2ff;
-
+    width:76px;
+    height:76px;
+    flex-shrink:0;
+    border-radius:22px;
     display:flex;
-
-    justify-content:center;
-
     align-items:center;
-
+    justify-content:center;
+    background:linear-gradient(135deg,#eef2ff,#e0e7ff);
+    color:#4f46e5;
     font-size:34px;
-
+    box-shadow:inset 0 0 0 1px rgba(99,102,241,.08);
 }
 
-.profile-header h2{
+.profile-hero-info{
+    min-width:0;
+    flex:1;
+}
 
+.profile-hero-top{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.profile-hero h2{
     margin:0;
-
-    font-size:24px;
-
     color:#111827;
-
+    font-size:25px;
+    line-height:1.2;
 }
 
-.profile-header p{
-
-    margin-top:6px;
-
+.profile-hero p{
+    margin-top:7px;
     color:#94a3b8;
-
+    font-size:13px;
 }
+
+.profile-status{flex-shrink:0}
 
 .profile-grid{
-
     display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:16px;
-
-    padding:24px;
-
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+    padding:22px 24px 24px;
 }
 
 .profile-box{
-
+    min-width:0;
+    padding:17px 18px;
     background:#f8fafc;
-
     border:1px solid #eef2f7;
+    border-radius:17px;
+    transition:.2s;
+}
 
-    border-radius:18px;
-
-    padding:18px;
-
+.profile-box:hover{
+    background:#f6f8ff;
+    border-color:#dfe3ff;
 }
 
 .profile-box small{
-
     display:block;
-
+    margin-bottom:8px;
     color:#94a3b8;
-
-    margin-bottom:10px;
-
+    font-size:12px;
+    font-weight:600;
 }
 
 .profile-box strong{
-
+    display:block;
     color:#111827;
-
     font-size:15px;
-
+    line-height:1.5;
+    word-break:break-word;
 }
 
-.profile-box.full{
+.profile-box.full{grid-column:1 / -1}
 
-    grid-column:1 / -1;
+.profile-note{min-height:72px}
 
+.profile-note strong{
+    color:#475569;
+    font-weight:600;
 }
+
+.profile-updated{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:16px 24px;
+    border-top:1px solid #eef2f7;
+    color:#94a3b8;
+    font-size:12px;
+}
+
+/* ==========================================
+   Actions
+========================================== */
+
+.profile-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    padding:14px 0 0;
+}
+
+.profile-actions button{
+    height:42px;
+    padding:0 17px;
+    border:0;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:700;
+    transition:.2s;
+}
+
+#editMember{background:#eef2ff;color:#4f46e5}
+#editMember:hover{background:#e0e7ff;transform:translateY(-1px)}
+
+#saveMember{background:#5d68ff;color:#fff}
+#saveMember:hover{
+    transform:translateY(-1px);
+    box-shadow:0 9px 20px rgba(93,104,255,.23);
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:1050px){
+    .workspace{
+        grid-template-columns:300px minmax(0,1fr);
+        gap:20px;
+    }
+}
+
+@media (max-width:800px){
+    .workspace{grid-template-columns:1fr}
+    .member-list{max-height:420px}
+}
+
+@media (max-width:560px){
+    .profile-grid{grid-template-columns:1fr}
+    .profile-box.full{grid-column:auto}
+    .profile-hero{padding:22px 18px}
+    .profile-avatar{
+        width:62px;
+        height:62px;
+        border-radius:18px;
+        font-size:28px;
+    }
+    .profile-hero h2{font-size:21px}
+}
+
+html,body{overflow-x:hidden}
