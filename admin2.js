@@ -1203,7 +1203,7 @@ function renderEditProfile() {
             </div>
 
 
-          <!-- 加入來源 -->
+        <!-- 加入來源 -->
 
 <div class="profile-box">
 
@@ -1211,99 +1211,191 @@ function renderEditProfile() {
         📍 加入來源
     </small>
 
-    <select
-        class="member-edit-input"
-        id="editJoinSource">
+    <div class="platform-options source-options">
 
-        <option value="">
-            尚未選擇
-        </option>
+        <label class="platform-option">
 
-        <option value="官方 LINE"
-            ${
-                currentMember.joinSource === "官方 LINE"
-                    ? "selected"
-                    : ""
-            }>
-            🟢 官方 LINE
-        </option>
+            <input
+                type="radio"
+                name="joinSource"
+                value="官方 LINE"
+                ${
+                    currentMember.joinSource === "官方 LINE"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-        <option value="Instagram"
-            ${
-                currentMember.joinSource === "Instagram"
-                    ? "selected"
-                    : ""
-            }>
-            📷 Instagram
-        </option>
+            <span>
+                🟢 官方 LINE
+            </span>
 
-        <option value="Threads"
-            ${
-                currentMember.joinSource === "Threads"
-                    ? "selected"
-                    : ""
-            }>
-            🧵 Threads
-        </option>
+        </label>
 
-        <option value="Facebook"
-            ${
-                currentMember.joinSource === "Facebook"
-                    ? "selected"
-                    : ""
-            }>
-            📘 Facebook
-        </option>
 
-        <option value="X / Twitter"
-            ${
-                currentMember.joinSource === "X / Twitter"
-                    ? "selected"
-                    : ""
-            }>
-            𝕏 X / Twitter
-        </option>
+        <label class="platform-option">
 
-        <option value="社群群組"
-            ${
-                currentMember.joinSource === "社群群組"
-                    ? "selected"
-                    : ""
-            }>
-            👥 社群群組
-        </option>
+            <input
+                type="radio"
+                name="joinSource"
+                value="Instagram"
+                ${
+                    currentMember.joinSource === "Instagram"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-        <option value="朋友推薦"
-            ${
-                currentMember.joinSource === "朋友推薦"
-                    ? "selected"
-                    : ""
-            }>
-            👤 朋友推薦
-        </option>
+            <span>
+                📷 Instagram
+            </span>
 
-        <option value="活動現場"
-            ${
-                currentMember.joinSource === "活動現場"
-                    ? "selected"
-                    : ""
-            }>
-            🎪 活動現場
-        </option>
+        </label>
 
-        <option value="其他"
-            ${
-                currentMember.joinSource === "其他"
-                    ? "selected"
-                    : ""
-            }>
-            ✨ 其他
-        </option>
 
-    </select>
+        <label class="platform-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="Threads"
+                ${
+                    currentMember.joinSource === "Threads"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                🧵 Threads
+            </span>
+
+        </label>
+
+
+        <label class="platform-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="Twitter"
+                ${
+                    currentMember.joinSource === "Twitter" ||
+currentMember.joinSource === "X / Twitter"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                𝕏 Twitter
+            </span>
+
+        </label>
+
+
+        <label class="platform-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="Facebook"
+                ${
+                    currentMember.joinSource === "Facebook"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                📘 Facebook
+            </span>
+
+        </label>
+
+
+        <label class="platform-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="社群群組"
+                ${
+                    currentMember.joinSource === "社群群組"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                👥 社群群組
+            </span>
+
+        </label>
+
+
+        <label class="platform-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="朋友推薦"
+                ${
+                    currentMember.joinSource === "朋友推薦"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                👤 朋友推薦
+            </span>
+
+        </label>
+
+
+        <label class="platform-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="活動現場"
+                ${
+                    currentMember.joinSource === "活動現場"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                🎪 活動現場
+            </span>
+
+        </label>
+
+
+        <label class="platform-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="其他"
+                ${
+                    currentMember.joinSource === "其他"
+                        ? "checked"
+                        : ""
+                }
+            >
+
+            <span>
+                ✨ 其他
+            </span>
+
+        </label>
+
+    </div>
 
 </div>
-
 
             <!-- 推薦人 -->
 
@@ -1600,11 +1692,9 @@ async function saveMember() {
 
 
         const socialPlatform =
-            document
-                .getElementById(
-                    "editSocialPlatform"
-                )
-                ?.value || "";
+    document.querySelector(
+        'input[name="socialPlatform"]:checked'
+    )?.value || "";
 
 
         const socialAccount =
@@ -1657,12 +1747,9 @@ async function saveMember() {
 
 
         const joinSource =
-            document
-                .getElementById(
-                    "editJoinSource"
-                )
-                ?.value
-                .trim() || "";
+    document.querySelector(
+        'input[name="joinSource"]:checked'
+    )?.value || "";
 
 
         const referrerNickname =
