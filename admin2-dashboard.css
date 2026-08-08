@@ -3,67 +3,569 @@
 ========================================== */
 
 .dashboard{
+
     display:grid;
+
     grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:20px;
+
+    gap:24px;
+
     margin-bottom:30px;
+
 }
+
+
+/* ==========================================
+   Stat Card
+========================================== */
 
 .stat-card{
-    position:relative;
-    display:flex;
-    align-items:center;
-    gap:18px;
-    min-width:0;
-    padding:22px;
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:20px;
-    box-shadow:0 10px 30px rgba(15,23,42,.05);
-    overflow:hidden;
-    transition:.25s;
-}
 
-.stat-card:hover{
-    transform:translateY(-4px);
-    border-color:#d8deff;
-    box-shadow:0 18px 36px rgba(15,23,42,.08);
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:24px;
+
+    background:#ffffff;
+
+    border:1px solid #eceff5;
+
+    border-radius:22px;
+
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
+
+    cursor:pointer;
+
+    overflow:hidden;
+
+    transition:
+        transform .25s,
+        box-shadow .25s,
+        border-color .25s;
+
 }
 
 .stat-card::before{
+
     content:"";
+
     position:absolute;
+
     left:0;
+
     top:0;
+
+    bottom:0;
+
     width:5px;
-    height:100%;
+
+    background:#6366f1;
+
 }
 
-.stat-card:nth-child(1)::before{background:#6366f1}
-.stat-card:nth-child(2)::before{background:#f59e0b}
-.stat-card:nth-child(3)::before{background:#22c55e}
-.stat-card:nth-child(4)::before{background:#3b82f6}
+.stat-card:nth-child(2)::before{
 
-.icon{
-    width:58px;
-    height:58px;
+    background:#f59e0b;
+
+}
+
+.stat-card:nth-child(3)::before{
+
+    background:#22c55e;
+
+}
+
+.stat-card:nth-child(4)::before{
+
+    background:#3b82f6;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#dce1ff;
+
+    box-shadow:0 16px 34px rgba(15,23,42,.09);
+
+}
+
+
+/* ==========================================
+   Stat Icon
+========================================== */
+
+.stat-card .icon{
+
+    width:64px;
+
+    height:64px;
+
     flex-shrink:0;
+
     display:flex;
-    justify-content:center;
+
     align-items:center;
-    border-radius:17px;
-    font-size:27px;
+
+    justify-content:center;
+
+    border-radius:18px;
+
+    font-size:30px;
+
+    background:#eef2ff;
+
 }
 
-.stat-card:nth-child(1) .icon{background:#eef2ff}
-.stat-card:nth-child(2) .icon{background:#fff8eb}
-.stat-card:nth-child(3) .icon{background:#edfdf4}
-.stat-card:nth-child(4) .icon{background:#eff6ff}
+.stat-card:nth-child(2) .icon{
 
-.stat-content{min-width:0;flex:1}
-.stat-content small{display:block;margin-bottom:7px;color:#94a3b8;font-size:13px;font-weight:600}
-.stat-content h2{margin:0;color:#111827;font-size:34px;line-height:1;font-weight:700}
-.stat-content p{margin-top:8px;color:#64748b;font-size:12px}
+    background:#fff7ed;
 
-@media(max-width:1200px){.dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.dashboard{grid-template-columns:1fr}}
+}
+
+.stat-card:nth-child(3) .icon{
+
+    background:#ecfdf5;
+
+}
+
+.stat-card:nth-child(4) .icon{
+
+    background:#eff6ff;
+
+}
+
+
+/* ==========================================
+   Stat Text
+========================================== */
+
+.stat-content{
+
+    min-width:0;
+
+    flex:1;
+
+}
+
+.stat-content small{
+
+    display:block;
+
+    margin-bottom:7px;
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.stat-content h2{
+
+    margin:0;
+
+    color:#111827;
+
+    font-size:34px;
+
+    line-height:1;
+
+    font-weight:700;
+
+}
+
+.stat-content p{
+
+    margin:9px 0 0;
+
+    color:#22c55e;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+/* ==========================================
+   最近加入會員
+========================================== */
+
+.recent-section{
+
+    width:100%;
+
+    margin-top:4px;
+
+    margin-bottom:28px;
+
+    background:#ffffff;
+
+    border:1px solid #eceff5;
+
+    border-radius:22px;
+
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
+
+    overflow:hidden;
+
+}
+
+
+/* ==========================================
+   Recent Header
+========================================== */
+
+.recent-section .panel-header{
+
+    min-height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:18px 24px;
+
+    background:#ffffff;
+
+    border-bottom:1px solid #eef2f7;
+
+}
+
+.recent-section .panel-header h2{
+
+    margin:0;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#111827;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+.recent-section .panel-header button{
+
+    border:none;
+
+    background:#f1f3ff;
+
+    color:#5964e8;
+
+    padding:9px 14px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.recent-section .panel-header button:hover{
+
+    background:#e5e8ff;
+
+    transform:translateY(-1px);
+
+}
+
+
+/* ==========================================
+   Recent Members
+========================================== */
+
+.recent-members{
+
+    min-height:110px;
+
+    padding:18px 22px;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,minmax(0,1fr));
+
+    gap:14px;
+
+    box-sizing:border-box;
+
+}
+
+
+/* ==========================================
+   沒有會員資料
+========================================== */
+
+.recent-members:empty::before{
+
+    content:"目前尚無最近加入的會員";
+
+    grid-column:1 / -1;
+
+    min-height:70px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+}
+
+
+/* ==========================================
+   Recent Member Card
+========================================== */
+
+.recent-member-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    min-width:0;
+
+    padding:14px 16px;
+
+    background:#f8fafc;
+
+    border:1px solid #eef2f7;
+
+    border-radius:16px;
+
+    transition:.2s;
+
+}
+
+.recent-member-card:hover{
+
+    background:#f6f7ff;
+
+    border-color:#dfe4ff;
+
+    transform:translateY(-2px);
+
+}
+
+
+/* ==========================================
+   Recent Avatar
+========================================== */
+
+.recent-member-avatar{
+
+    width:44px;
+
+    height:44px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:14px;
+
+    background:#eef2ff;
+
+    font-size:21px;
+
+}
+
+
+/* ==========================================
+   Recent Info
+========================================== */
+
+.recent-member-info{
+
+    min-width:0;
+
+}
+
+.recent-member-info strong{
+
+    display:block;
+
+    margin-bottom:3px;
+
+    color:#111827;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+.recent-member-info span{
+
+    display:block;
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+
+/* ==========================================
+   快速操作
+========================================== */
+
+.quick-actions{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,minmax(0,1fr));
+
+    gap:14px;
+
+    width:100%;
+
+    margin-top:0;
+
+    margin-bottom:36px;
+
+}
+
+
+/* ==========================================
+   Quick Action Button
+========================================== */
+
+.quick-actions button{
+
+    min-height:54px;
+
+    padding:0 18px;
+
+    border:1px solid #e6e9f2;
+
+    border-radius:16px;
+
+    background:#ffffff;
+
+    color:#475569;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    box-shadow:0 5px 16px rgba(15,23,42,.04);
+
+    transition:
+        transform .2s,
+        box-shadow .2s,
+        border-color .2s,
+        background .2s;
+
+}
+
+.quick-actions button:hover{
+
+    transform:translateY(-2px);
+
+    background:#f7f8ff;
+
+    border-color:#cfd5ff;
+
+    color:#4f46e5;
+
+    box-shadow:0 10px 24px rgba(93,104,255,.09);
+
+}
+
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:1400px){
+
+    .dashboard{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .recent-members{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media (max-width:900px){
+
+    .quick-actions{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .dashboard{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .recent-members{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .quick-actions{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
