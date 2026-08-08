@@ -797,3 +797,243 @@
     cursor:pointer;
 
 }
+
+/* ==========================================
+   副擔多選
+========================================== */
+
+.member-multi-select{
+
+    position:relative;
+
+    width:100%;
+
+}
+
+
+/* 選單按鈕 */
+
+.member-multi-toggle{
+
+    width:100%;
+
+    min-height:46px;
+
+    padding:11px 14px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    border:1px solid #dbe1ea;
+
+    border-radius:14px;
+
+    background:#ffffff;
+
+    color:#334155;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+
+.member-multi-toggle:hover{
+
+    border-color:#6366f1;
+
+    background:#fafbff;
+
+}
+
+
+.member-multi-toggle:focus{
+
+    outline:none;
+
+    border-color:#5d68ff;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(93,104,255,.08);
+
+}
+
+
+/* 下拉內容 */
+
+.member-multi-menu{
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    top:calc(100% + 8px);
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:8px;
+
+    padding:12px;
+
+    background:#ffffff;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:16px;
+
+    box-shadow:
+        0 18px 40px
+        rgba(15,23,42,.12);
+
+    z-index:100;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:
+        translateY(-5px);
+
+    transition:
+        opacity .2s,
+        transform .2s,
+        visibility .2s;
+
+}
+
+
+.member-multi-menu.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateY(0);
+
+}
+
+
+/* 成員選項 */
+
+.member-multi-option{
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:40px;
+
+    padding:0 6px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:10px;
+
+    background:#f8fafc;
+
+    color:#475569;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+/* 隱藏原本 checkbox */
+
+.member-multi-option input{
+
+    position:absolute;
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
+
+
+/* 滑過 */
+
+.member-multi-option:hover{
+
+    border-color:#a5b4fc;
+
+    background:#f5f7ff;
+
+    color:#4f46e5;
+
+}
+
+
+/* 選中 */
+
+.member-multi-option:has(
+    input:checked
+){
+
+    background:#eef2ff;
+
+    border-color:#6366f1;
+
+    color:#4f46e5;
+
+    box-shadow:
+        0 4px 10px
+        rgba(99,102,241,.10);
+
+}
+
+
+/* 選中前的小圓點 */
+
+.member-multi-option:has(
+    input:checked
+)::before{
+
+    content:"✓";
+
+    margin-right:4px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+}
+
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:500px){
+
+    .member-multi-menu{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
