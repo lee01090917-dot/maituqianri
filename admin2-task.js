@@ -52,7 +52,6 @@ async function loadTasks() {
         const snapshot =
             await getDocs(taskQuery);
 
-
         if (snapshot.empty) {
 
             renderEmpty();
@@ -60,7 +59,6 @@ async function loadTasks() {
             return;
 
         }
-
 
         snapshot.forEach(taskDoc => {
 
@@ -148,6 +146,10 @@ function renderTask(id, task) {
                 : "medium";
 
 
+    const assignee =
+        task.assignee || "未指定";
+
+
     item.innerHTML = `
 
         <input
@@ -178,6 +180,7 @@ function renderTask(id, task) {
 
                 </span>
 
+
                 ${
                     task.dueDate
                         ? `
@@ -189,6 +192,21 @@ function renderTask(id, task) {
                           `
                         : ""
                 }
+
+
+                <span class="task-assignee">
+
+                    ${
+                        assignee === "精靈"
+                            ? "🧚"
+                            : assignee === "神燈"
+                                ? "🧞"
+                                : "👤"
+                    }
+
+                    ${escapeHTML(assignee)}
+
+                </span>
 
             </div>
 
@@ -230,11 +248,13 @@ function renderTask(id, task) {
                         id
                     ),
                     {
+
                         completed:
                             checkbox.checked,
 
                         updatedAt:
                             serverTimestamp()
+
                     }
                 );
 
@@ -387,6 +407,9 @@ function renderTaskForm() {
 
         <div class="task-form">
 
+
+            <!-- 待辦內容 -->
+
             <label>
 
                 待辦內容
@@ -400,28 +423,39 @@ function renderTaskForm() {
             </label>
 
 
+            <!-- 優先程度 -->
+
             <label>
 
                 優先程度
 
-                <select id="taskPriorityInput">
+                <select
+                    id="taskPriorityInput">
 
                     <option value="高">
                         🔴 高
                     </option>
 
-                    <option value="中" selected>
+                    <option
+                        value="中"
+                        selected>
+
                         🟡 中
+
                     </option>
 
                     <option value="低">
+
                         🟢 低
+
                     </option>
 
                 </select>
 
             </label>
 
+
+            <!-- 截止日期 -->
 
             <label>
 
@@ -433,6 +467,33 @@ function renderTaskForm() {
                 >
 
             </label>
+
+
+            <!-- 負責人 -->
+
+            <label>
+
+                負責人
+
+                <select
+                    id="taskAssigneeInput">
+
+                    <option value="精靈">
+
+                        🧚 精靈
+
+                    </option>
+
+                    <option value="神燈">
+
+                        🧞 神燈
+
+                    </option>
+
+                </select>
+
+            </label>
+
 
         </div>
 
@@ -516,6 +577,11 @@ async function saveTask() {
             "taskDueDateInput"
         );
 
+    const assigneeInput =
+        document.getElementById(
+            "taskAssigneeInput"
+        );
+
 
     const title =
         titleInput?.value.trim();
@@ -569,6 +635,10 @@ async function saveTask() {
                 dueDate:
                     dueDateInput?.value ||
                     "",
+
+                assignee:
+                    assigneeInput?.value ||
+                    "精靈",
 
                 completed:false,
 
@@ -662,5 +732,5 @@ function escapeHTML(value) {
 loadTasks();
 
 console.log(
-    "admin2-task.js 已載入"
+    "admin2-task.js V2 已載入"
 );
