@@ -1435,3 +1435,66 @@
     padding-right:8px;
 
 }
+
+/* ==========================================
+   社群平台文字修正
+========================================== */
+
+/* Instagram 選項稍微縮小 */
+
+.platform-option span{
+
+    font-size:13px;
+
+}
+
+
+/* 社群平台的文字不要被勾勾擠出去 */
+
+.platform-options .platform-option span{
+
+    padding-left:8px;
+
+    padding-right:8px;
+
+}
+
+
+/* 選中的 ✓ 固定在按鈕裡 */
+
+.platform-options
+.platform-option input:checked + span{
+
+    padding-left:8px;
+
+    padding-right:8px;
+
+}
+
+
+/* ✓ 不佔用文字寬度 */
+
+.platform-options
+.platform-option input:checked + span::before{
+
+    position:static;
+
+    transform:none;
+
+    display:inline-block;
+
+    margin-right:4px;
+
+    flex-shrink:0;
+
+}
+
+
+/* Instagram 這種比較長的文字稍微縮小 */
+
+.platform-options
+.platform-option:first-child span{
+
+    font-size:12px;
+
+}
