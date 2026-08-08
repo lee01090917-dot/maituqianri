@@ -1,55 +1,181 @@
 /* ==========================================
-   Task Section
+   今日待辦
 ========================================== */
 
-.task-section{margin:0 0 30px}
+.task-section{
 
-.task-card{background:transparent;border:0;box-shadow:none}
+    width:100%;
+
+    margin:0 0 28px 0;
+
+}
+
+/* ==========================================
+   Task Card
+========================================== */
+
+.task-card{
+
+    width:100%;
+
+    background:#ffffff;
+
+    border:1px solid #eceff5;
+
+    border-radius:20px;
+
+    box-shadow:0 8px 24px rgba(15,23,42,.04);
+
+    overflow:hidden;
+
+}
+
+/* ==========================================
+   Header
+========================================== */
 
 .task-card .panel-header{
-    padding:0 4px 16px;
-    border:0;
-    background:transparent;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    min-height:68px;
+
+    padding:16px 22px;
+
+    border-bottom:1px solid #eef2f7;
+
 }
 
 .task-card .panel-header h2{
-    color:#1f2937;
-    font-size:21px;
+
+    margin:0;
+
+    font-size:18px;
+
     font-weight:700;
+
+    color:#111827;
+
 }
 
-.task-card .panel-header button{
-    width:40px;
-    height:40px;
-    border:0;
-    border-radius:12px;
+/* ==========================================
+   新增按鈕
+========================================== */
+
+#addTask{
+
+    width:44px;
+
+    height:44px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:none;
+
+    border-radius:13px;
+
     background:#5d68ff;
-    color:#fff;
-    font-size:21px;
+
+    color:#ffffff;
+
+    font-size:24px;
+
+    line-height:1;
+
+    cursor:pointer;
+
     transition:.2s;
+
 }
 
-.task-card .panel-header button:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(93,104,255,.22)}
+#addTask:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(93,104,255,.25);
+
+}
+
+/* ==========================================
+   Task List
+========================================== */
 
 .task-list{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:16px;
+
+    min-height:72px;
+
+    padding:12px 18px;
+
+    display:flex;
+
+    align-items:center;
+
 }
+
+/* ==========================================
+   沒有待辦
+========================================== */
+
+.task-list:empty::before{
+
+    content:"目前沒有待辦事項";
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+}
+
+/* ==========================================
+   待辦項目
+========================================== */
 
 .task-item{
-    min-width:0;
-    padding:20px;
-    background:#fff;
-    border:1px solid #eceff5;
-    border-radius:18px;
-    box-shadow:0 8px 20px rgba(15,23,42,.05);
-    transition:.2s;
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:14px;
+
+    padding:12px 14px;
+
+    background:#fafbff;
+
+    border:1px solid #eef2f7;
+
+    border-radius:14px;
+
 }
 
-.task-item:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(15,23,42,.08)}
-.task-title{margin-bottom:8px;color:#111827;font-size:16px;font-weight:700}
-.task-member{margin-bottom:8px;color:#64748b;font-size:13px}
-.task-date{color:#94a3b8;font-size:12px}
+/* ==========================================
+   Responsive
+========================================== */
 
-@media(max-width:850px){.task-list{grid-template-columns:1fr}}
+@media (max-width:768px){
+
+    .task-section{
+
+        margin-bottom:20px;
+
+    }
+
+    .task-card .panel-header{
+
+        padding:14px 16px;
+
+    }
+
+}
