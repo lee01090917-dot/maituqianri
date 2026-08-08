@@ -15,32 +15,47 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
-// ==========================
+// ==================================================
 // DOM
-// ==========================
+// ==================================================
 
-const memberList = document.querySelector(".member-list");
-const profileCard = document.querySelector(".profile-card");
+const memberList =
+    document.querySelector(".member-list");
 
-const memberCount = document.getElementById("memberCount");
-const pendingCount = document.getElementById("pendingCount");
-const lineCount = document.getElementById("lineCount");
-const todayCount = document.getElementById("todayCount");
+const profileCard =
+    document.querySelector(".profile-card");
 
-const memberSearch = document.getElementById("memberSearch");
+const recentMembers =
+    document.getElementById("recentMembers");
+
+const memberCount =
+    document.getElementById("memberCount");
+
+const pendingCount =
+    document.getElementById("pendingCount");
+
+const lineCount =
+    document.getElementById("lineCount");
+
+const todayCount =
+    document.getElementById("todayCount");
+
+const memberSearch =
+    document.getElementById("memberSearch");
 
 
-// ==========================
+// ==================================================
 // 全域資料
-// ==========================
+// ==================================================
 
 let members = [];
+
 let currentMember = null;
 
 
-// ==========================
+// ==================================================
 // 權限檢查
-// ==========================
+// ==================================================
 
 onAuthStateChanged(auth, async (user) => {
 
@@ -54,9 +69,11 @@ onAuthStateChanged(auth, async (user) => {
 
     try {
 
-        const memberRef = doc(db, "members", user.uid);
+        const memberRef =
+            doc(db, "members", user.uid);
 
-        const memberSnap = await getDoc(memberRef);
+        const memberSnap =
+            await getDoc(memberRef);
 
         if (!memberSnap.exists()) {
 
@@ -82,23 +99,28 @@ onAuthStateChanged(auth, async (user) => {
 
     } catch (error) {
 
-        console.error("權限檢查失敗：", error);
+        console.error(
+            "權限檢查失敗：",
+            error
+        );
 
     }
 
 });
 
 
-// ==========================
+// ==================================================
 // 載入會員
-// ==========================
+// ==================================================
 
 async function loadMembers() {
 
     try {
 
         const snapshot =
-            await getDocs(collection(db, "members"));
+            await getDocs(
+                collection(db, "members")
+            );
 
         members = [];
 
@@ -118,22 +140,28 @@ async function loadMembers() {
 
         renderMemberList();
 
+        renderRecentMembers();
+
     } catch (error) {
 
-        console.error("會員資料載入失敗：", error);
+        console.error(
+            "會員資料載入失敗：",
+            error
+        );
 
     }
 
 }
 
 
-// ==========================
-// Dashboard
-// ==========================
+// ==================================================
+// Dashboard 統計
+// ==================================================
 
 function renderDashboard() {
 
-    const total = members.length;
+    const total =
+        members.length;
 
     let pending = 0;
 
@@ -142,7 +170,8 @@ function renderDashboard() {
     let today = 0;
 
     const todayString =
-        new Date().toLocaleDateString("sv-SE");
+        new Date()
+            .toLocaleDateString("sv-SE");
 
 
     members.forEach(member => {
@@ -163,7 +192,10 @@ function renderDashboard() {
 
             let joinDate = "";
 
-            if (member.joinDate.toDate) {
+            if (
+                member.joinDate &&
+                typeof member.joinDate.toDate === "function"
+            ) {
 
                 joinDate =
                     member.joinDate
@@ -173,11 +205,14 @@ function renderDashboard() {
             } else {
 
                 joinDate =
-                    String(member.joinDate).slice(0, 10);
+                    String(member.joinDate)
+                        .slice(0, 10);
 
             }
 
-            if (joinDate === todayString) {
+            if (
+                joinDate === todayString
+            ) {
 
                 today++;
 
@@ -188,70 +223,110 @@ function renderDashboard() {
     });
 
 
-    memberCount.textContent = total;
+    if (memberCount) {
 
-    pendingCount.textContent = pending;
+        memberCount.textContent =
+            total;
 
-    lineCount.textContent = line;
+    }
 
-    todayCount.textContent = today;
+    if (pendingCount) {
+
+        pendingCount.textContent =
+            pending;
+
+    }
+
+    if (lineCount) {
+
+        lineCount.textContent =
+            line;
+
+    }
+
+    if (todayCount) {
+
+        todayCount.textContent =
+            today;
+
+    }
 
 }
 
 
-// ==========================
+// ==================================================
 // 左側會員列表
-// ==========================
+// ==================================================
 
 function renderMemberList(keyword = "") {
+
+    if (!memberList) return;
 
     memberList.innerHTML = "";
 
     const searchKeyword =
-        keyword.trim().toLowerCase();
-
-
-    const list = members.filter(member => {
-
-        const text = [
-
-            member.memberNo || "",
-
-            member.nickname || "",
-
-            member.socialPlatform || "",
-
-            member.socialAccount || "",
-
-            member.favoriteMember || ""
-
-        ]
-
-            .join(" ")
-
+        keyword
+            .trim()
             .toLowerCase();
 
 
-        return text.includes(searchKeyword);
+    const list =
+        members.filter(member => {
 
-    });
+            const text = [
+
+                member.memberNo || "",
+
+                member.nickname || "",
+
+                member.socialPlatform || "",
+
+                member.socialAccount || "",
+
+                member.favoriteMember || ""
+
+            ]
+                .join(" ")
+                .toLowerCase();
+
+
+            return text.includes(
+                searchKeyword
+            );
+
+        });
 
 
     list.forEach(member => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
-        card.className = "member-card";
+        card.className =
+            "member-card";
 
-        card.dataset.id = member.id;
+        card.dataset.id =
+            member.id;
 
 
-        const statusClass =
+        let statusClass =
+            "pending";
+
+        if (
             member.status === "已通過"
-                ? "approved"
-                : member.status === "已拒絕"
-                    ? "rejected"
-                    : "pending";
+        ) {
+
+            statusClass =
+                "approved";
+
+        } else if (
+            member.status === "已拒絕"
+        ) {
+
+            statusClass =
+                "rejected";
+
+        }
 
 
         card.innerHTML = `
@@ -259,31 +334,36 @@ function renderMemberList(keyword = "") {
             <div class="member-top">
 
                 <strong>
-                    ${escapeHTML(member.memberNo || "待發號")}
+                    ${escapeHTML(
+                        member.memberNo ||
+                        "待發號"
+                    )}
                 </strong>
 
                 <span class="status ${statusClass}">
-                    ${escapeHTML(member.status || "-")}
+                    ${escapeHTML(
+                        member.status || "-"
+                    )}
                 </span>
 
             </div>
 
             <div class="member-name">
-
-                ${escapeHTML(member.nickname || "-")}
-
+                ${escapeHTML(
+                    member.nickname || "-"
+                )}
             </div>
 
             <div class="member-info">
-
-                ❤️ ${escapeHTML(member.favoriteMember || "-")}
-
+                ❤️ ${escapeHTML(
+                    member.favoriteMember || "-"
+                )}
             </div>
 
             <div class="member-info">
-
-                ${escapeHTML(member.socialPlatform || "-")}
-
+                ${escapeHTML(
+                    member.socialPlatform || "-"
+                )}
             </div>
 
         `;
@@ -299,32 +379,41 @@ function renderMemberList(keyword = "") {
 }
 
 
-// ==========================
-// 點會員
-// ==========================
+// ==================================================
+// 會員點擊
+// ==================================================
 
 function bindMemberClick() {
 
     const cards =
-        document.querySelectorAll(".member-card");
+        document.querySelectorAll(
+            ".member-card"
+        );
 
 
     cards.forEach(card => {
 
         card.onclick = () => {
 
-            cards.forEach(c =>
-                c.classList.remove("active")
+            cards.forEach(item => {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            card.classList.add(
+                "active"
             );
-
-
-            card.classList.add("active");
 
 
             currentMember =
                 members.find(
                     member =>
-                        member.id === card.dataset.id
+                        member.id ===
+                        card.dataset.id
                 );
 
 
@@ -335,7 +424,12 @@ function bindMemberClick() {
     });
 
 
-    if (cards.length > 0 && !currentMember) {
+    // 自動選第一位
+
+    if (
+        cards.length > 0 &&
+        !currentMember
+    ) {
 
         cards[0].click();
 
@@ -344,11 +438,14 @@ function bindMemberClick() {
 }
 
 
-// ==========================
-// 右側會員資料
-// ==========================
+// ==================================================
+// 會員資料
+// ==================================================
 
 function renderProfile() {
+
+    if (!profileCard) return;
+
 
     if (!currentMember) {
 
@@ -367,15 +464,24 @@ function renderProfile() {
     }
 
 
-    const subFavorites =
-        Array.isArray(currentMember.subFavoriteMembers)
-            ? currentMember.subFavoriteMembers.join("、")
-            : "-";
+    let subFavorites = "-";
+
+
+    if (
+        Array.isArray(
+            currentMember.subFavoriteMembers
+        )
+    ) {
+
+        subFavorites =
+            currentMember
+                .subFavoriteMembers
+                .join("、") || "-";
+
+    }
 
 
     profileCard.innerHTML = `
-
-        <!-- Profile Header -->
 
         <div class="profile-header">
 
@@ -390,19 +496,17 @@ function renderProfile() {
                 <div class="profile-title">
 
                     <h2>
-
                         ${escapeHTML(
-                            currentMember.nickname || "-"
+                            currentMember.nickname ||
+                            "-"
                         )}
-
                     </h2>
 
                     <p>
-
                         ${escapeHTML(
-                            currentMember.memberNo || "待發號"
+                            currentMember.memberNo ||
+                            "待發號"
                         )}
-
                     </p>
 
                 </div>
@@ -412,13 +516,17 @@ function renderProfile() {
 
             <div class="profile-actions">
 
-                <button id="editMember">
+                <button
+                    id="editMember"
+                    type="button">
 
                     ✏️ 編輯
 
                 </button>
 
-                <button id="saveMember">
+                <button
+                    id="saveMember"
+                    type="button">
 
                     💾 儲存
 
@@ -429,9 +537,8 @@ function renderProfile() {
         </div>
 
 
-        <!-- Profile Grid -->
-
         <div class="profile-grid">
+
 
             <div class="profile-box">
 
@@ -441,7 +548,8 @@ function renderProfile() {
 
                 <strong>
                     ${escapeHTML(
-                        currentMember.socialPlatform || "-"
+                        currentMember.socialPlatform ||
+                        "-"
                     )}
                 </strong>
 
@@ -456,7 +564,8 @@ function renderProfile() {
 
                 <strong>
                     ${escapeHTML(
-                        currentMember.socialAccount || "-"
+                        currentMember.socialAccount ||
+                        "-"
                     )}
                 </strong>
 
@@ -471,7 +580,8 @@ function renderProfile() {
 
                 <strong>
                     ${escapeHTML(
-                        currentMember.favoriteMember || "-"
+                        currentMember.favoriteMember ||
+                        "-"
                     )}
                 </strong>
 
@@ -485,7 +595,9 @@ function renderProfile() {
                 </small>
 
                 <strong>
-                    ${escapeHTML(subFavorites)}
+                    ${escapeHTML(
+                        subFavorites
+                    )}
                 </strong>
 
             </div>
@@ -498,9 +610,11 @@ function renderProfile() {
                 </small>
 
                 <strong>
-                    ${currentMember.officialLine
-                        ? "已加入"
-                        : "未加入"}
+                    ${
+                        currentMember.officialLine
+                            ? "已加入"
+                            : "未加入"
+                    }
                 </strong>
 
             </div>
@@ -514,7 +628,8 @@ function renderProfile() {
 
                 <strong>
                     ${escapeHTML(
-                        currentMember.joinSource || "-"
+                        currentMember.joinSource ||
+                        "-"
                     )}
                 </strong>
 
@@ -529,7 +644,8 @@ function renderProfile() {
 
                 <strong>
                     ${escapeHTML(
-                        currentMember.referrerNickname || "-"
+                        currentMember.referrerNickname ||
+                        "-"
                     )}
                 </strong>
 
@@ -544,11 +660,13 @@ function renderProfile() {
 
                 <strong>
                     ${escapeHTML(
-                        currentMember.adminNote || "-"
+                        currentMember.adminNote ||
+                        "-"
                     )}
                 </strong>
 
             </div>
+
 
         </div>
 
@@ -557,9 +675,218 @@ function renderProfile() {
 }
 
 
-// ==========================
+// ==================================================
+// 最近加入會員
+// ==================================================
+
+function renderRecentMembers() {
+
+    if (!recentMembers) return;
+
+
+    recentMembers.innerHTML = "";
+
+
+    if (members.length === 0) {
+
+        recentMembers.innerHTML = `
+
+            <div class="recent-empty">
+
+                目前尚無會員資料
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // 有 joinDate 就按照加入時間排序
+    // 沒有日期的放後面
+
+    const sortedMembers =
+        [...members]
+            .sort((a, b) => {
+
+                const dateA =
+                    getDateValue(a.joinDate);
+
+                const dateB =
+                    getDateValue(b.joinDate);
+
+                return dateB - dateA;
+
+            })
+            .slice(0, 3);
+
+
+    sortedMembers.forEach(member => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "recent-member-card";
+
+
+        card.innerHTML = `
+
+            <div class="recent-member-avatar">
+
+                👤
+
+            </div>
+
+
+            <div class="recent-member-info">
+
+                <strong>
+
+                    ${escapeHTML(
+                        member.nickname ||
+                        "待發號"
+                    )}
+
+                </strong>
+
+                <span>
+
+                    ${
+                        member.memberNo
+                            ? escapeHTML(
+                                member.memberNo
+                            )
+                            : "尚未發號"
+                    }
+
+                    ·
+
+                    ${
+                        member.socialPlatform
+                            ? escapeHTML(
+                                member.socialPlatform
+                            )
+                            : "尚未填寫平台"
+                    }
+
+                </span>
+
+            </div>
+
+        `;
+
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                currentMember =
+                    member;
+
+                renderProfile();
+
+                const target =
+                    document.querySelector(
+                        `.member-card[data-id="${member.id}"]`
+                    );
+
+                if (target) {
+
+                    document
+                        .querySelectorAll(
+                            ".member-card"
+                        )
+                        .forEach(item => {
+
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+                    target.classList.add(
+                        "active"
+                    );
+
+                }
+
+                window.scrollTo({
+
+                    top:
+                        document
+                            .querySelector(
+                                ".workspace"
+                            )
+                            ?.offsetTop || 0,
+
+                    behavior:"smooth"
+
+                });
+
+            }
+        );
+
+
+        recentMembers.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+// ==================================================
+// 日期轉換
+// ==================================================
+
+function getDateValue(value) {
+
+    if (!value) {
+
+        return 0;
+
+    }
+
+
+    if (
+        value &&
+        typeof value.toDate === "function"
+    ) {
+
+        return value
+            .toDate()
+            .getTime();
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return 0;
+
+    }
+
+
+    return date.getTime();
+
+}
+
+
+// ==================================================
 // 搜尋
-// ==========================
+// ==================================================
 
 if (memberSearch) {
 
@@ -569,7 +896,9 @@ if (memberSearch) {
 
             currentMember = null;
 
-            renderMemberList(event.target.value);
+            renderMemberList(
+                event.target.value
+            );
 
         }
     );
@@ -577,104 +906,141 @@ if (memberSearch) {
 }
 
 
-// ==========================
+// ==================================================
 // Modal
-// ==========================
+// ==================================================
 
 const memberModal =
-    document.getElementById("memberModal");
+    document.getElementById(
+        "memberModal"
+    );
 
 const taskModal =
-    document.getElementById("taskModal");
+    document.getElementById(
+        "taskModal"
+    );
 
 const addMemberBtn =
-    document.getElementById("addMember");
+    document.getElementById(
+        "addMember"
+    );
 
 const addTaskBtn =
-    document.getElementById("addTask");
+    document.getElementById(
+        "addTask"
+    );
 
 const closeMemberModal =
-    document.getElementById("closeMemberModal");
+    document.getElementById(
+        "closeMemberModal"
+    );
 
 const closeTaskModal =
-    document.getElementById("closeTaskModal");
+    document.getElementById(
+        "closeTaskModal"
+    );
 
 
-// ==========================
+// ==================================================
 // 新增會員
-// ==========================
+// ==================================================
 
 addMemberBtn?.addEventListener(
     "click",
     () => {
 
-        memberModal?.classList.remove("hidden");
+        memberModal?.classList.remove(
+            "hidden"
+        );
 
     }
 );
 
 
-// ==========================
+// ==================================================
 // 關閉會員 Modal
-// ==========================
+// ==================================================
 
 closeMemberModal?.addEventListener(
     "click",
     () => {
 
-        memberModal?.classList.add("hidden");
+        memberModal?.classList.add(
+            "hidden"
+        );
 
     }
 );
 
 
-// ==========================
+// ==================================================
 // 新增待辦
-// ==========================
+// ==================================================
 
 addTaskBtn?.addEventListener(
     "click",
     () => {
 
-        taskModal?.classList.remove("hidden");
+        taskModal?.classList.remove(
+            "hidden"
+        );
 
     }
 );
 
 
-// ==========================
+// ==================================================
 // 關閉待辦 Modal
-// ==========================
+// ==================================================
 
 closeTaskModal?.addEventListener(
     "click",
     () => {
 
-        taskModal?.classList.add("hidden");
+        taskModal?.classList.add(
+            "hidden"
+        );
 
     }
 );
 
 
-// ==========================
+// ==================================================
 // HTML 安全處理
-// ==========================
+// ==================================================
 
 function escapeHTML(value) {
 
     return String(value ?? "")
 
-        .replace(/&/g, "&amp;")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-        .replace(/</g, "&lt;")
+        .replace(
+            /</g,
+            "&lt;"
+        )
 
-        .replace(/>/g, "&gt;")
+        .replace(
+            />/g,
+            "&gt;"
+        )
 
-        .replace(/"/g, "&quot;")
+        .replace(
+            /"/g,
+            "&quot;"
+        )
 
-        .replace(/'/g, "&#039;");
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
 
-console.log("admin2.js V3 已載入");
+console.log(
+    "admin2.js V4 已載入"
+);
