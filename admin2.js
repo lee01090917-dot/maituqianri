@@ -823,28 +823,35 @@ function renderEditProfile() {
             : [];
 
 
-    // ==========================================
-    // 主擔選項
-    // ==========================================
+   // ==========================================
+// 主擔選項
+// ==========================================
 
-    const favoriteOptions =
-        ateezMembers
-            .map(member => `
+const favoriteOptions =
+    ateezMembers
+        .map(member => `
 
-                <option
+            <label class="platform-option">
+
+                <input
+                    type="radio"
+                    name="favoriteMember"
                     value="${escapeAttribute(member)}"
                     ${
                         currentMember.favoriteMember === member
-                            ? "selected"
+                            ? "checked"
                             : ""
-                    }>
+                    }
+                >
 
+                <span>
                     ${escapeHTML(member)}
+                </span>
 
-                </option>
+            </label>
 
-            `)
-            .join("");
+        `)
+        .join("");
 
 
     // ==========================================
@@ -1097,29 +1104,21 @@ function renderEditProfile() {
             </div>
 
 
-            <!-- 主擔 -->
+           <!-- 主擔 -->
 
-            <div class="profile-box">
+<div class="profile-box">
 
-                <small>
-                    ❤️ 主擔
-                </small>
+    <small>
+        ❤️ 主擔
+    </small>
 
-                <select
-                    class="member-edit-input member-select"
-                    id="editFavoriteMember">
+    <div class="platform-options">
 
-                    <option value="">
+        ${favoriteOptions}
 
-                        尚未選擇
+    </div>
 
-                    </option>
-
-                    ${favoriteOptions}
-
-                </select>
-
-            </div>
+</div>
 
 
             <!-- 副擔 -->
@@ -1710,12 +1709,10 @@ async function saveMember() {
         // 主擔
         // ==========================================
 
-        const favoriteMember =
-            document
-                .getElementById(
-                    "editFavoriteMember"
-                )
-                ?.value || "";
+       const favoriteMember =
+    document.querySelector(
+        'input[name="favoriteMember"]:checked'
+    )?.value || "";
 
 
         // ==========================================
