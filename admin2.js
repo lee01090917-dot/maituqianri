@@ -1181,24 +1181,106 @@ function renderEditProfile() {
             </div>
 
 
-            <!-- 加入來源 -->
+          <!-- 加入來源 -->
 
-            <div class="profile-box">
+<div class="profile-box">
 
-                <small>
-                    📍 加入來源
-                </small>
+    <small>
+        📍 加入來源
+    </small>
 
-                <input
-                    class="member-edit-input"
-                    id="editJoinSource"
-                    type="text"
-                    value="${escapeAttribute(
-                        currentMember.joinSource || ""
-                    )}"
-                >
+    <select
+        class="member-edit-input"
+        id="editJoinSource">
 
-            </div>
+        <option value="">
+            尚未選擇
+        </option>
+
+        <option value="官方 LINE"
+            ${
+                currentMember.joinSource === "官方 LINE"
+                    ? "selected"
+                    : ""
+            }>
+            🟢 官方 LINE
+        </option>
+
+        <option value="Instagram"
+            ${
+                currentMember.joinSource === "Instagram"
+                    ? "selected"
+                    : ""
+            }>
+            📷 Instagram
+        </option>
+
+        <option value="Threads"
+            ${
+                currentMember.joinSource === "Threads"
+                    ? "selected"
+                    : ""
+            }>
+            🧵 Threads
+        </option>
+
+        <option value="Facebook"
+            ${
+                currentMember.joinSource === "Facebook"
+                    ? "selected"
+                    : ""
+            }>
+            📘 Facebook
+        </option>
+
+        <option value="X / Twitter"
+            ${
+                currentMember.joinSource === "X / Twitter"
+                    ? "selected"
+                    : ""
+            }>
+            𝕏 X / Twitter
+        </option>
+
+        <option value="社群群組"
+            ${
+                currentMember.joinSource === "社群群組"
+                    ? "selected"
+                    : ""
+            }>
+            👥 社群群組
+        </option>
+
+        <option value="朋友推薦"
+            ${
+                currentMember.joinSource === "朋友推薦"
+                    ? "selected"
+                    : ""
+            }>
+            👤 朋友推薦
+        </option>
+
+        <option value="活動現場"
+            ${
+                currentMember.joinSource === "活動現場"
+                    ? "selected"
+                    : ""
+            }>
+            🎪 活動現場
+        </option>
+
+        <option value="其他"
+            ${
+                currentMember.joinSource === "其他"
+                    ? "selected"
+                    : ""
+            }>
+            ✨ 其他
+        </option>
+
+    </select>
+
+</div>
 
 
             <!-- 推薦人 -->
