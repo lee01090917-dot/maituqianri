@@ -1,33 +1,57 @@
 /* ==========================================
-   Member Workspace V3
+   Workspace
 ========================================== */
 
 .workspace{
+
     display:grid;
+
     grid-template-columns:340px minmax(0,1fr);
+
     gap:28px;
+
     width:100%;
+
     align-items:start;
+
     margin-bottom:36px;
+
 }
 
-.member-panel,
-.profile-panel{
-    min-width:0;
-}
+/* ==========================================
+   Member Panel
+========================================== */
 
 .member-panel{
-    background:#fff;
+
+    background:#ffffff;
+
     border:1px solid #eceff5;
+
     border-radius:22px;
+
     box-shadow:0 8px 24px rgba(15,23,42,.05);
+
     overflow:hidden;
+
+    min-width:0;
+
 }
 
+/* ==========================================
+   Profile Panel
+========================================== */
+
 .profile-panel{
+
     background:transparent;
-    border:0;
+
+    border:none;
+
     box-shadow:none;
+
+    min-width:0;
+
 }
 
 /* ==========================================
@@ -35,52 +59,77 @@
 ========================================== */
 
 .panel-header{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
-    gap:16px;
-    padding:22px 24px;
+
+    padding:20px 24px;
+
     border-bottom:1px solid #eef2f7;
-    background:#fff;
+
+    background:#ffffff;
+
 }
 
 .panel-header h2{
+
     margin:0;
-    color:#111827;
+
     font-size:18px;
+
     font-weight:700;
+
+    color:#111827;
+
 }
 
 .panel-header p{
+
     margin-top:5px;
-    color:#94a3b8;
+
     font-size:13px;
+
+    color:#94a3b8;
+
 }
 
-.panel-header button{
-    width:40px;
-    height:40px;
-    flex-shrink:0;
-    border:0;
-    border-radius:12px;
+/* ==========================================
+   Header Buttons
+========================================== */
+
+#addMember{
+
+    width:44px;
+
+    height:44px;
+
+    border:none;
+
+    border-radius:13px;
+
     background:#eef2ff;
-    color:#4f46e5;
-    font-size:20px;
+
+    color:#5d68ff;
+
+    font-size:23px;
+
+    cursor:pointer;
+
     transition:.2s;
+
 }
 
-.panel-header button:hover{
+#addMember:hover{
+
     background:#5d68ff;
-    color:#fff;
-    transform:translateY(-2px);
-    box-shadow:0 8px 18px rgba(93,104,255,.22);
-}
 
-.profile-panel-header{
-    border:1px solid #eceff5;
-    border-radius:22px;
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
-    margin-bottom:14px;
+    color:#ffffff;
+
+    transform:translateY(-2px);
+
 }
 
 /* ==========================================
@@ -88,30 +137,53 @@
 ========================================== */
 
 .search-box{
-    padding:16px 18px;
+
+    padding:18px 24px;
+
     border-bottom:1px solid #eef2f7;
+
 }
 
 .search-box input{
-    display:block;
+
     width:100%;
-    height:44px;
-    padding:0 15px;
+
+    height:46px;
+
+    padding:0 16px;
+
+    box-sizing:border-box;
+
     border:1px solid #e5e7eb;
-    border-radius:13px;
-    background:#f8fafc;
-    color:#111827;
+
+    border-radius:14px;
+
+    background:#fafbff;
+
     font-size:14px;
-    transition:.2s;
+
+    color:#111827;
+
+    transition:.25s;
+
 }
 
-.search-box input::placeholder{color:#a1a8b5}
+.search-box input::placeholder{
+
+    color:#94a3b8;
+
+}
 
 .search-box input:focus{
+
     outline:none;
-    background:#fff;
-    border-color:#8b93ff;
+
+    background:#ffffff;
+
+    border-color:#5d68ff;
+
     box-shadow:0 0 0 4px rgba(93,104,255,.08);
+
 }
 
 /* ==========================================
@@ -119,113 +191,143 @@
 ========================================== */
 
 .member-list{
+
     display:flex;
+
     flex-direction:column;
-    gap:10px;
-    padding:14px;
-    max-height:650px;
+
+    gap:12px;
+
+    padding:16px;
+
+    height:650px;
+
+    box-sizing:border-box;
+
     overflow-y:auto;
+
 }
 
+/* ==========================================
+   Member Card
+========================================== */
+
 .member-card{
+
     position:relative;
-    display:grid;
-    grid-template-columns:44px minmax(0,1fr) auto;
-    grid-template-rows:auto auto;
-    column-gap:12px;
-    row-gap:0;
-    padding:15px;
-    background:#fff;
-    border:1px solid #eef2f7;
-    border-radius:17px;
+
+    padding:18px;
+
+    background:#ffffff;
+
+    border:1px solid #e9edf5;
+
+    border-radius:18px;
+
     cursor:pointer;
-    transition:transform .2s,box-shadow .2s,border-color .2s,background .2s;
+
+    transition:.22s;
+
 }
 
 .member-card:hover{
+
     transform:translateY(-2px);
-    border-color:#cfd5ff;
+
+    border-color:#aeb6ff;
+
     box-shadow:0 10px 24px rgba(93,104,255,.10);
+
 }
+
+/* ==========================================
+   Active Member
+========================================== */
 
 .member-card.active{
-    background:#f5f7ff;
-    border-color:#737cff;
-    box-shadow:0 10px 24px rgba(93,104,255,.10);
+
+    background:#f6f7ff;
+
+    border:1.5px solid #6366f1;
+
+    box-shadow:0 8px 22px rgba(93,104,255,.08);
+
 }
 
-.member-avatar{
-    grid-column:1;
-    grid-row:1 / span 2;
-    width:44px;
-    height:44px;
-    border-radius:14px;
+/* ==========================================
+   Member Top
+========================================== */
+
+.member-top{
+
     display:flex;
+
     align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#eef2ff,#e0e7ff);
-    color:#4f46e5;
-    font-size:21px;
-    line-height:1;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:8px;
+
 }
 
-.member-main{
-    grid-column:2;
-    grid-row:1;
-    min-width:0;
-    align-self:center;
+.member-top strong{
+
+    display:block;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#64748b;
+
 }
+
+/* ==========================================
+   Member Name
+========================================== */
 
 .member-name{
-    display:block;
-    margin:0 0 3px;
-    color:#111827;
-    font-size:16px;
+
+    margin:0 0 10px 0;
+
+    font-size:19px;
+
     font-weight:700;
-    line-height:1.35;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
 
-.member-number{
-    display:block;
-    color:#94a3b8;
-    font-size:12px;
     line-height:1.3;
+
+    color:#111827;
+
 }
 
-.member-status{
-    grid-column:3;
-    grid-row:1;
-    align-self:start;
-    justify-self:end;
+.member-card.active .member-name{
+
+    color:#111827;
+
 }
 
-.member-meta{
-    grid-column:2 / 4;
-    grid-row:2;
-    display:flex;
-    gap:12px;
-    min-width:0;
-    margin-top:9px;
+/* ==========================================
+   Member Info
+========================================== */
+
+.member-info{
+
+    margin-top:5px;
+
+    font-size:13px;
+
+    line-height:1.5;
+
     color:#64748b;
-    font-size:12px;
-    line-height:1.4;
+
 }
 
-.member-meta span{
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
+.member-card.active .member-info{
 
-.empty-members{
-    padding:42px 18px;
-    text-align:center;
-    color:#94a3b8;
-    font-size:14px;
+    color:#64748b;
+
 }
 
 /* ==========================================
@@ -233,27 +335,59 @@
 ========================================== */
 
 .status{
+
     display:inline-flex;
+
     align-items:center;
+
     justify-content:center;
-    min-width:62px;
+
+    min-width:58px;
+
     height:25px;
-    padding:0 9px;
+
+    padding:0 10px;
+
+    box-sizing:border-box;
+
     border-radius:999px;
+
     font-size:11px;
+
     font-weight:700;
-    line-height:1;
-    white-space:nowrap;
+
 }
 
-.status.approved{background:#dcfce7;color:#15803d}
-.status.pending{background:#fef3c7;color:#b45309}
-.status.rejected{background:#fee2e2;color:#dc2626}
-.status.hold{background:#e0e7ff;color:#4338ca}
+.status.approved{
 
-.member-card.active .status{
-    background:#e9eaff;
+    background:#eef2ff;
+
     color:#4f46e5;
+
+}
+
+.status.pending{
+
+    background:#fef3c7;
+
+    color:#b45309;
+
+}
+
+.status.rejected{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+}
+
+.status.hold{
+
+    background:#e0e7ff;
+
+    color:#4338ca;
+
 }
 
 /* ==========================================
@@ -261,119 +395,99 @@
 ========================================== */
 
 .profile-card{
-    position:relative;
-    background:#fff;
+
+    background:#ffffff;
+
     border:1px solid #eceff5;
+
     border-radius:22px;
+
     box-shadow:0 8px 24px rgba(15,23,42,.05);
+
     overflow:hidden;
+
 }
 
-.profile-hero{
+/* ==========================================
+   Profile Header
+========================================== */
+
+.profile-header{
+
     display:flex;
+
     align-items:center;
+
+    justify-content:space-between;
+
     gap:18px;
-    padding:26px 28px;
+
+    padding:22px 24px;
+
     border-bottom:1px solid #eef2f7;
+
+}
+
+.profile-person{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    min-width:0;
+
 }
 
 .profile-avatar{
-    width:76px;
-    height:76px;
+
+    width:64px;
+
+    height:64px;
+
     flex-shrink:0;
-    border-radius:22px;
+
     display:flex;
-    align-items:center;
+
     justify-content:center;
-    background:linear-gradient(135deg,#eef2ff,#e0e7ff);
-    color:#4f46e5;
-    font-size:34px;
-    line-height:1;
-    box-shadow:inset 0 0 0 1px rgba(99,102,241,.08);
-}
 
-.profile-hero-info{
-    min-width:0;
-    flex:1;
-}
-
-.profile-hero-top{
-    display:flex;
     align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
+
+    border-radius:18px;
+
+    background:#eef2ff;
+
+    font-size:30px;
+
 }
 
-.profile-hero h2{
+.profile-title{
+
+    min-width:0;
+
+}
+
+.profile-title h2{
+
     margin:0;
+
+    font-size:22px;
+
+    font-weight:700;
+
     color:#111827;
-    font-size:25px;
-    line-height:1.2;
+
 }
 
-.profile-hero p{
-    margin-top:7px;
-    color:#94a3b8;
+.profile-title p{
+
+    margin-top:5px;
+
     font-size:13px;
-}
 
-.profile-status{flex-shrink:0}
-
-.profile-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:14px;
-    padding:22px 24px 24px;
-}
-
-.profile-box{
-    min-width:0;
-    padding:17px 18px;
-    background:#f8fafc;
-    border:1px solid #eef2f7;
-    border-radius:17px;
-    transition:.2s;
-}
-
-.profile-box:hover{
-    background:#f6f8ff;
-    border-color:#dfe3ff;
-}
-
-.profile-box small{
-    display:block;
-    margin-bottom:8px;
     color:#94a3b8;
-    font-size:12px;
-    font-weight:600;
-}
 
-.profile-box strong{
-    display:block;
-    color:#111827;
-    font-size:15px;
-    line-height:1.5;
-    word-break:break-word;
-}
-
-.profile-box.full{grid-column:1 / -1}
-
-.profile-note{min-height:72px}
-
-.profile-note strong{
-    color:#475569;
-    font-weight:600;
-}
-
-.profile-updated{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:16px;
-    padding:16px 24px;
-    border-top:1px solid #eef2f7;
-    color:#94a3b8;
-    font-size:12px;
 }
 
 /* ==========================================
@@ -381,89 +495,229 @@
 ========================================== */
 
 .profile-actions{
+
     display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:8px;
-    padding:0;
+
+    gap:10px;
+
+    flex-shrink:0;
+
 }
 
 .profile-actions button{
-    width:auto;
-    min-width:76px;
-    height:38px;
-    padding:0 14px;
-    border:0;
-    border-radius:11px;
-    font-size:13px;
+
+    height:42px;
+
+    padding:0 16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:14px;
+
     font-weight:700;
+
+    cursor:pointer;
+
     transition:.2s;
+
 }
 
-.profile-actions #editMember{
+#editMember{
+
     background:#eef2ff;
+
     color:#4f46e5;
+
 }
 
-.profile-actions #editMember:hover{
+#editMember:hover{
+
     background:#e0e7ff;
-    transform:translateY(-1px);
+
 }
 
-.profile-actions #saveMember{
+#saveMember{
+
     background:#5d68ff;
-    color:#fff;
+
+    color:#ffffff;
+
 }
 
-.profile-actions #saveMember:hover{
+#saveMember:hover{
+
     transform:translateY(-1px);
-    box-shadow:0 9px 20px rgba(93,104,255,.23);
+
+    box-shadow:0 8px 18px rgba(93,104,255,.22);
+
 }
 
 /* ==========================================
-   Empty Profile
+   Profile Grid
 ========================================== */
 
-.profile-card .empty{
-    min-height:300px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:30px;
+.profile-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:14px;
+
+    padding:20px 24px 24px;
+
+}
+
+/* ==========================================
+   Profile Box
+========================================== */
+
+.profile-box{
+
+    min-width:0;
+
+    padding:16px 18px;
+
+    background:#f8fafc;
+
+    border:1px solid #eef2f7;
+
+    border-radius:16px;
+
+    transition:.2s;
+
+}
+
+.profile-box:hover{
+
+    background:#f6f8ff;
+
+    border-color:#dfe4ff;
+
+}
+
+.profile-box small{
+
+    display:block;
+
+    margin-bottom:7px;
+
+    font-size:12px;
+
+    font-weight:600;
+
     color:#94a3b8;
+
+}
+
+.profile-box strong{
+
+    display:block;
+
     font-size:15px;
+
+    line-height:1.5;
+
+    color:#111827;
+
+    word-break:break-word;
+
+}
+
+.profile-box.full{
+
+    grid-column:1 / -1;
+
+}
+
+/* ==========================================
+   Profile Empty
+========================================== */
+
+.empty{
+
+    min-height:300px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#94a3b8;
+
+    font-size:15px;
+
+}
+
+/* ==========================================
+   Member Count
+========================================== */
+
+.member-count{
+
+    padding:0 18px 18px;
+
+    font-size:12px;
+
+    color:#94a3b8;
+
 }
 
 /* ==========================================
    Responsive
 ========================================== */
 
-@media(max-width:1050px){
+@media (max-width:1100px){
+
     .workspace{
-        grid-template-columns:300px minmax(0,1fr);
-        gap:20px;
+
+        grid-template-columns:1fr;
+
     }
-}
 
-@media(max-width:800px){
-    .workspace{grid-template-columns:1fr}
-    .member-list{max-height:420px}
-}
+    .member-list{
 
-@media(max-width:560px){
-    .profile-grid{grid-template-columns:1fr}
-    .profile-box.full{grid-column:auto}
-    .profile-hero{padding:22px 18px}
-    .profile-avatar{
-        width:62px;
-        height:62px;
-        border-radius:18px;
-        font-size:28px;
+        height:420px;
+
     }
-    .profile-hero h2{font-size:21px}
-    .profile-panel-header{align-items:flex-start}
-    .profile-actions{flex-wrap:wrap}
-    .profile-actions button{min-width:68px}
+
 }
 
-html,body{overflow-x:hidden}
+@media (max-width:700px){
+
+    .profile-header{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+    }
+
+    .profile-actions{
+
+        width:100%;
+
+    }
+
+    .profile-actions button{
+
+        flex:1;
+
+    }
+
+    .profile-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .profile-box.full{
+
+        grid-column:auto;
+
+    }
+
+}
