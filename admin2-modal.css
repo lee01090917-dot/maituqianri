@@ -24,11 +24,14 @@
 
     visibility:visible;
 
+    pointer-events:auto;
+
     transition:
         opacity .25s,
         visibility .25s;
 
 }
+
 
 /* ==========================================
    Hidden
@@ -44,11 +47,16 @@
 
 }
 
+
 /* ==========================================
    Modal Box
 ========================================== */
 
 .modal-content{
+
+    position:relative;
+
+    z-index:10000;
 
     width:min(680px,92vw);
 
@@ -67,6 +75,7 @@
     animation:modalShow .22s ease;
 
 }
+
 
 /* ==========================================
    Animation
@@ -91,6 +100,7 @@
     }
 
 }
+
 
 /* ==========================================
    Header
@@ -122,17 +132,32 @@
 
 }
 
+
+/* ==========================================
+   Close
+========================================== */
+
 .close-modal{
 
     width:42px;
 
     height:42px;
 
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
     border:none;
 
     border-radius:12px;
 
     background:#f3f4f6;
+
+    color:#475569;
+
+    font-size:18px;
 
     cursor:pointer;
 
@@ -144,7 +169,10 @@
 
     background:#e5e7eb;
 
+    transform:rotate(3deg);
+
 }
+
 
 /* ==========================================
    Body
@@ -160,8 +188,9 @@
 
 }
 
+
 /* ==========================================
-   Form
+   一般 Modal 表單
 ========================================== */
 
 .modal-group{
@@ -190,6 +219,8 @@
 
     width:100%;
 
+    box-sizing:border-box;
+
     padding:13px 15px;
 
     border:1px solid #dbe1ea;
@@ -198,7 +229,13 @@
 
     font-size:14px;
 
+    font-family:inherit;
+
+    color:#111827;
+
     background:#ffffff;
+
+    outline:none;
 
     transition:.25s;
 
@@ -212,17 +249,151 @@
 
 }
 
+
+/* ==========================================
+   待辦表單
+========================================== */
+
+.task-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    width:100%;
+
+}
+
+
+/* ==========================================
+   待辦表單 Label
+========================================== */
+
+.task-form label{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    width:100%;
+
+    color:#475569;
+
+    font-size:14px;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================
+   待辦 Input / Select
+========================================== */
+
+.task-form input,
+.task-form select{
+
+    display:block;
+
+    width:100%;
+
+    min-height:48px;
+
+    box-sizing:border-box;
+
+    padding:0 15px;
+
+    border:1px solid #dbe1ea;
+
+    border-radius:14px;
+
+    background:#ffffff;
+
+    color:#111827;
+
+    font-family:inherit;
+
+    font-size:14px;
+
+    line-height:1.4;
+
+    outline:none;
+
+    pointer-events:auto;
+
+    cursor:text;
+
+    transition:
+
+        border-color .2s,
+
+        box-shadow .2s,
+
+        background .2s;
+
+}
+
+
+/* ==========================================
+   Select
+========================================== */
+
+.task-form select{
+
+    cursor:pointer;
+
+}
+
+
+/* ==========================================
+   Date
+========================================== */
+
+.task-form input[type="date"]{
+
+    cursor:pointer;
+
+}
+
+
+/* ==========================================
+   Focus
+========================================== */
+
 .modal-group input:focus,
 .modal-group select:focus,
-.modal-group textarea:focus{
+.modal-group textarea:focus,
+.task-form input:focus,
+.task-form select:focus{
 
     outline:none;
 
     border-color:#5d68ff;
 
-    box-shadow:0 0 0 4px rgba(93,104,255,.08);
+    background:#ffffff;
+
+    box-shadow:
+
+        0 0 0 4px
+        rgba(93,104,255,.08);
 
 }
+
+
+/* ==========================================
+   Placeholder
+========================================== */
+
+.task-form input::placeholder{
+
+    color:#94a3b8;
+
+}
+
 
 /* ==========================================
    Footer
@@ -242,6 +413,11 @@
 
 }
 
+
+/* ==========================================
+   Footer Buttons
+========================================== */
+
 .modal-footer button{
 
     min-width:110px;
@@ -256,11 +432,18 @@
 
     font-weight:700;
 
+    font-family:inherit;
+
     cursor:pointer;
 
     transition:.25s;
 
 }
+
+
+/* ==========================================
+   Secondary
+========================================== */
 
 .btn-secondary{
 
@@ -276,6 +459,11 @@
 
 }
 
+
+/* ==========================================
+   Primary
+========================================== */
+
 .btn-primary{
 
     background:#5d68ff;
@@ -288,9 +476,24 @@
 
     transform:translateY(-2px);
 
-    box-shadow:0 12px 24px rgba(93,104,255,.25);
+    box-shadow:
+        0 12px 24px
+        rgba(93,104,255,.25);
 
 }
+
+.btn-primary:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    box-shadow:none;
+
+}
+
 
 /* ==========================================
    Responsive
