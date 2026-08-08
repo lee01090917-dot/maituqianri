@@ -745,3 +745,55 @@
     }
 
 }
+
+/* ==========================================
+   隱藏 HTML 原本那組重複按鈕
+========================================== */
+
+.profile-panel > .profile-actions{
+
+    display:none;
+
+}
+
+
+/* ==========================================
+   Profile Header 微調
+========================================== */
+
+.profile-card .profile-header{
+
+    min-height:86px;
+
+    box-sizing:border-box;
+
+}
+
+
+/* ==========================================
+   最近加入會員
+========================================== */
+
+.recent-empty{
+
+    grid-column:1 / -1;
+
+    min-height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+}
+
+.recent-member-card{
+
+    cursor:pointer;
+
+}
