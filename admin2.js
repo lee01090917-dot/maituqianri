@@ -7,6 +7,7 @@ import {
     collection,
     getDocs,
     getDoc,
+    updateDoc,
     doc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -52,6 +53,8 @@ let members = [];
 
 let currentMember = null;
 
+let editingMember = false;
+
 
 // ==================================================
 // 權限檢查
@@ -75,6 +78,7 @@ onAuthStateChanged(auth, async (user) => {
         const memberSnap =
             await getDoc(memberRef);
 
+
         if (!memberSnap.exists()) {
 
             alert("找不到會員資料");
@@ -85,7 +89,10 @@ onAuthStateChanged(auth, async (user) => {
 
         }
 
-        if (memberSnap.data().role !== "管理員") {
+
+        if (
+            memberSnap.data().role !== "管理員"
+        ) {
 
             alert("沒有權限");
 
@@ -95,7 +102,9 @@ onAuthStateChanged(auth, async (user) => {
 
         }
 
+
         await loadMembers();
+
 
     } catch (error) {
 
@@ -122,7 +131,9 @@ async function loadMembers() {
                 collection(db, "members")
             );
 
+
         members = [];
+
 
         snapshot.forEach(memberDoc => {
 
@@ -136,11 +147,13 @@ async function loadMembers() {
 
         });
 
+
         renderDashboard();
 
         renderMemberList();
 
         renderRecentMembers();
+
 
     } catch (error) {
 
@@ -169,6 +182,7 @@ function renderDashboard() {
 
     let today = 0;
 
+
     const todayString =
         new Date()
             .toLocaleDateString("sv-SE");
@@ -176,21 +190,31 @@ function renderDashboard() {
 
     members.forEach(member => {
 
-        if (member.status !== "已通過") {
+
+        if (
+            member.status !== "已通過"
+        ) {
 
             pending++;
 
         }
 
-        if (member.officialLine) {
+
+        if (
+            member.officialLine
+        ) {
 
             line++;
 
         }
 
-        if (member.joinDate) {
+
+        if (
+            member.joinDate
+        ) {
 
             let joinDate = "";
+
 
             if (
                 member.joinDate &&
@@ -209,6 +233,7 @@ function renderDashboard() {
                         .slice(0, 10);
 
             }
+
 
             if (
                 joinDate === todayString
@@ -230,6 +255,7 @@ function renderDashboard() {
 
     }
 
+
     if (pendingCount) {
 
         pendingCount.textContent =
@@ -237,12 +263,14 @@ function renderDashboard() {
 
     }
 
+
     if (lineCount) {
 
         lineCount.textContent =
             line;
 
     }
+
 
     if (todayCount) {
 
@@ -262,7 +290,9 @@ function renderMemberList(keyword = "") {
 
     if (!memberList) return;
 
+
     memberList.innerHTML = "";
+
 
     const searchKeyword =
         keyword
@@ -272,6 +302,7 @@ function renderMemberList(keyword = "") {
 
     const list =
         members.filter(member => {
+
 
             const text = [
 
@@ -299,11 +330,14 @@ function renderMemberList(keyword = "") {
 
     list.forEach(member => {
 
+
         const card =
             document.createElement("div");
 
+
         card.className =
             "member-card";
+
 
         card.dataset.id =
             member.id;
@@ -311,6 +345,7 @@ function renderMemberList(keyword = "") {
 
         let statusClass =
             "pending";
+
 
         if (
             member.status === "已通過"
@@ -326,6 +361,13 @@ function renderMemberList(keyword = "") {
             statusClass =
                 "rejected";
 
+        } else if (
+            member.status === "暫停"
+        ) {
+
+            statusClass =
+                "hold";
+
         }
 
 
@@ -334,36 +376,55 @@ function renderMemberList(keyword = "") {
             <div class="member-top">
 
                 <strong>
+
                     ${escapeHTML(
                         member.memberNo ||
                         "待發號"
                     )}
+
                 </strong>
 
-                <span class="status ${statusClass}">
+
+                <span
+                    class="status ${statusClass}">
+
                     ${escapeHTML(
-                        member.status || "-"
+                        member.status ||
+                        "-"
                     )}
+
                 </span>
 
             </div>
 
+
             <div class="member-name">
+
                 ${escapeHTML(
-                    member.nickname || "-"
+                    member.nickname ||
+                    "-"
                 )}
+
             </div>
 
+
             <div class="member-info">
+
                 ❤️ ${escapeHTML(
-                    member.favoriteMember || "-"
+                    member.favoriteMember ||
+                    "-"
                 )}
+
             </div>
 
+
             <div class="member-info">
+
                 ${escapeHTML(
-                    member.socialPlatform || "-"
+                    member.socialPlatform ||
+                    "-"
                 )}
+
             </div>
 
         `;
@@ -395,6 +456,7 @@ function bindMemberClick() {
 
         card.onclick = () => {
 
+
             cards.forEach(item => {
 
                 item.classList.remove(
@@ -415,6 +477,9 @@ function bindMemberClick() {
                         member.id ===
                         card.dataset.id
                 );
+
+
+            editingMember = false;
 
 
             renderProfile();
@@ -464,6 +529,15 @@ function renderProfile() {
     }
 
 
+    if (editingMember) {
+
+        renderEditProfile();
+
+        return;
+
+    }
+
+
     let subFavorites = "-";
 
 
@@ -493,20 +567,26 @@ function renderProfile() {
 
                 </div>
 
+
                 <div class="profile-title">
 
                     <h2>
+
                         ${escapeHTML(
                             currentMember.nickname ||
                             "-"
                         )}
+
                     </h2>
 
+
                     <p>
+
                         ${escapeHTML(
                             currentMember.memberNo ||
                             "待發號"
                         )}
+
                     </p>
 
                 </div>
@@ -524,9 +604,11 @@ function renderProfile() {
 
                 </button>
 
+
                 <button
                     id="saveMember"
-                    type="button">
+                    type="button"
+                    style="display:none;">
 
                     💾 儲存
 
@@ -547,10 +629,12 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${escapeHTML(
                         currentMember.socialPlatform ||
                         "-"
                     )}
+
                 </strong>
 
             </div>
@@ -563,10 +647,12 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${escapeHTML(
                         currentMember.socialAccount ||
                         "-"
                     )}
+
                 </strong>
 
             </div>
@@ -579,10 +665,12 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${escapeHTML(
                         currentMember.favoriteMember ||
                         "-"
                     )}
+
                 </strong>
 
             </div>
@@ -595,9 +683,11 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${escapeHTML(
                         subFavorites
                     )}
+
                 </strong>
 
             </div>
@@ -610,11 +700,13 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${
                         currentMember.officialLine
                             ? "已加入"
                             : "未加入"
                     }
+
                 </strong>
 
             </div>
@@ -627,10 +719,12 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${escapeHTML(
                         currentMember.joinSource ||
                         "-"
                     )}
+
                 </strong>
 
             </div>
@@ -643,10 +737,12 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${escapeHTML(
                         currentMember.referrerNickname ||
                         "-"
                     )}
+
                 </strong>
 
             </div>
@@ -659,10 +755,30 @@ function renderProfile() {
                 </small>
 
                 <strong>
+
                     ${escapeHTML(
                         currentMember.adminNote ||
                         "-"
                     )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="profile-box">
+
+                <small>
+                    🏷️ 會員狀態
+                </small>
+
+                <strong>
+
+                    ${escapeHTML(
+                        currentMember.status ||
+                        "-"
+                    )}
+
                 </strong>
 
             </div>
@@ -671,6 +787,757 @@ function renderProfile() {
         </div>
 
     `;
+
+
+    document
+        .getElementById("editMember")
+        ?.addEventListener(
+            "click",
+            () => {
+
+                editingMember = true;
+
+                renderProfile();
+
+            }
+        );
+
+}
+
+
+// ==================================================
+// 編輯會員資料
+// ==================================================
+
+function renderEditProfile() {
+
+    profileCard.innerHTML = `
+
+        <div class="profile-header">
+
+            <div class="profile-person">
+
+                <div class="profile-avatar">
+
+                    ✏️
+
+                </div>
+
+
+                <div class="profile-title">
+
+                    <h2>
+
+                        編輯會員
+
+                    </h2>
+
+
+                    <p>
+
+                        ${escapeHTML(
+                            currentMember.memberNo ||
+                            "待發號"
+                        )}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-actions">
+
+                <button
+                    id="cancelEditMember"
+                    type="button">
+
+                    取消
+
+                </button>
+
+
+                <button
+                    id="saveMember"
+                    type="button">
+
+                    💾 儲存
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile-grid member-edit-grid">
+
+
+            <!-- MQ 編號 -->
+
+            <div class="profile-box">
+
+                <small>
+                    🆔 MQ 編號
+                </small>
+
+                <input
+                    class="member-edit-input"
+                    id="editMemberNo"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.memberNo || ""
+                    )}"
+                >
+
+            </div>
+
+
+            <!-- 暱稱 -->
+
+            <div class="profile-box">
+
+                <small>
+                    👤 暱稱
+                </small>
+
+                <input
+                    class="member-edit-input"
+                    id="editNickname"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.nickname || ""
+                    )}"
+                >
+
+            </div>
+
+
+            <!-- 社群平台 -->
+
+            <div class="profile-box">
+
+                <small>
+                    📱 社群平台
+                </small>
+
+                <select
+                    class="member-edit-input"
+                    id="editSocialPlatform">
+
+                    <option value="Instagram"
+                        ${
+                            currentMember.socialPlatform === "Instagram"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        Instagram
+
+                    </option>
+
+                    <option value="Threads"
+                        ${
+                            currentMember.socialPlatform === "Threads"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        Threads
+
+                    </option>
+
+                    <option value="Twitter"
+                        ${
+                            currentMember.socialPlatform === "Twitter"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        Twitter / X
+
+                    </option>
+
+                    <option value="Facebook"
+                        ${
+                            currentMember.socialPlatform === "Facebook"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        Facebook
+
+                    </option>
+
+                    <option value=""
+                        ${
+                            !currentMember.socialPlatform
+                                ? "selected"
+                                : ""
+                        }>
+
+                        未填寫
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- 帳號 -->
+
+            <div class="profile-box">
+
+                <small>
+                    🔗 帳號
+                </small>
+
+                <input
+                    class="member-edit-input"
+                    id="editSocialAccount"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.socialAccount || ""
+                    )}"
+                >
+
+            </div>
+
+
+            <!-- 主擔 -->
+
+            <div class="profile-box">
+
+                <small>
+                    ❤️ 主擔
+                </small>
+
+                <input
+                    class="member-edit-input"
+                    id="editFavoriteMember"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.favoriteMember || ""
+                    )}"
+                >
+
+            </div>
+
+
+            <!-- 副擔 -->
+
+            <div class="profile-box">
+
+                <small>
+                    💛 副擔
+                </small>
+
+                <input
+                    class="member-edit-input"
+                    id="editSubFavoriteMembers"
+                    type="text"
+                    placeholder="例如：弘中、呂尚"
+                    value="${escapeAttribute(
+                        Array.isArray(
+                            currentMember.subFavoriteMembers
+                        )
+                            ? currentMember
+                                .subFavoriteMembers
+                                .join("、")
+                            : ""
+                    )}"
+                >
+
+            </div>
+
+
+            <!-- 官方 LINE -->
+
+            <div class="profile-box">
+
+                <small>
+                    🟢 官方 LINE
+                </small>
+
+                <label class="member-checkbox">
+
+                    <input
+                        id="editOfficialLine"
+                        type="checkbox"
+                        ${
+                            currentMember.officialLine
+                                ? "checked"
+                                : ""
+                        }
+                    >
+
+                    <span>
+
+                        已加入官方 LINE
+
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- 加入來源 -->
+
+            <div class="profile-box">
+
+                <small>
+                    📍 加入來源
+                </small>
+
+                <input
+                    class="member-edit-input"
+                    id="editJoinSource"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.joinSource || ""
+                    )}"
+                >
+
+            </div>
+
+
+            <!-- 推薦人 -->
+
+            <div class="profile-box">
+
+                <small>
+                    👥 推薦人
+                </small>
+
+                <input
+                    class="member-edit-input"
+                    id="editReferrer"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.referrerNickname || ""
+                    )}"
+                >
+
+            </div>
+
+
+            <!-- 會員狀態 -->
+
+            <div class="profile-box">
+
+                <small>
+                    🏷️ 會員狀態
+                </small>
+
+                <select
+                    class="member-edit-input"
+                    id="editStatus">
+
+                    <option value="已通過"
+                        ${
+                            currentMember.status === "已通過"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        🟢 已通過
+
+                    </option>
+
+                    <option value="待審核"
+                        ${
+                            currentMember.status === "待審核"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        🟡 待審核
+
+                    </option>
+
+                    <option value="已拒絕"
+                        ${
+                            currentMember.status === "已拒絕"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        🔴 已拒絕
+
+                    </option>
+
+                    <option value="暫停"
+                        ${
+                            currentMember.status === "暫停"
+                                ? "selected"
+                                : ""
+                        }>
+
+                        🟣 暫停
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- 管理員備註 -->
+
+            <div class="profile-box full">
+
+                <small>
+                    📝 管理員備註
+                </small>
+
+                <textarea
+                    class="member-edit-input member-edit-textarea"
+                    id="editAdminNote"
+                    placeholder="輸入管理員備註..."
+                >${escapeHTML(
+                    currentMember.adminNote || ""
+                )}</textarea>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    // ==================================================
+    // 取消編輯
+    // ==================================================
+
+    document
+        .getElementById(
+            "cancelEditMember"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
+
+                editingMember = false;
+
+                renderProfile();
+
+            }
+        );
+
+
+    // ==================================================
+    // 儲存
+    // ==================================================
+
+    document
+        .getElementById("saveMember")
+        ?.addEventListener(
+            "click",
+            saveMember
+        );
+
+}
+
+
+// ==================================================
+// 儲存會員
+// ==================================================
+
+async function saveMember() {
+
+    if (!currentMember) return;
+
+
+    const saveButton =
+        document.getElementById(
+            "saveMember"
+        );
+
+
+    if (saveButton) {
+
+        saveButton.disabled = true;
+
+        saveButton.textContent =
+            "儲存中…";
+
+    }
+
+
+    try {
+
+
+        // ==========================================
+        // 取得資料
+        // ==========================================
+
+        const memberNo =
+            document
+                .getElementById(
+                    "editMemberNo"
+                )
+                ?.value
+                .trim() || "";
+
+
+        const nickname =
+            document
+                .getElementById(
+                    "editNickname"
+                )
+                ?.value
+                .trim() || "";
+
+
+        const socialPlatform =
+            document
+                .getElementById(
+                    "editSocialPlatform"
+                )
+                ?.value || "";
+
+
+        const socialAccount =
+            document
+                .getElementById(
+                    "editSocialAccount"
+                )
+                ?.value
+                .trim() || "";
+
+
+        const favoriteMember =
+            document
+                .getElementById(
+                    "editFavoriteMember"
+                )
+                ?.value
+                .trim() || "";
+
+
+        const subFavoriteText =
+            document
+                .getElementById(
+                    "editSubFavoriteMembers"
+                )
+                ?.value
+                .trim() || "";
+
+
+        const subFavoriteMembers =
+            subFavoriteText
+                ? subFavoriteText
+                    .split(/[、,，]/)
+                    .map(item => item.trim())
+                    .filter(Boolean)
+                : [];
+
+
+        const officialLine =
+            document
+                .getElementById(
+                    "editOfficialLine"
+                )
+                ?.checked || false;
+
+
+        const joinSource =
+            document
+                .getElementById(
+                    "editJoinSource"
+                )
+                ?.value
+                .trim() || "";
+
+
+        const referrerNickname =
+            document
+                .getElementById(
+                    "editReferrer"
+                )
+                ?.value
+                .trim() || "";
+
+
+        const status =
+            document
+                .getElementById(
+                    "editStatus"
+                )
+                ?.value || "待審核";
+
+
+        const adminNote =
+            document
+                .getElementById(
+                    "editAdminNote"
+                )
+                ?.value
+                .trim() || "";
+
+
+        // ==========================================
+        // 更新 Firebase
+        // ==========================================
+
+        await updateDoc(
+
+            doc(
+                db,
+                "members",
+                currentMember.id
+            ),
+
+            {
+
+                memberNo,
+
+                nickname,
+
+                socialPlatform,
+
+                socialAccount,
+
+                favoriteMember,
+
+                subFavoriteMembers,
+
+                officialLine,
+
+                joinSource,
+
+                referrerNickname,
+
+                status,
+
+                adminNote
+
+            }
+
+        );
+
+
+        // ==========================================
+        // 更新本地資料
+        // ==========================================
+
+        currentMember = {
+
+            ...currentMember,
+
+            memberNo,
+
+            nickname,
+
+            socialPlatform,
+
+            socialAccount,
+
+            favoriteMember,
+
+            subFavoriteMembers,
+
+            officialLine,
+
+            joinSource,
+
+            referrerNickname,
+
+            status,
+
+            adminNote
+
+        };
+
+
+        const index =
+            members.findIndex(
+                member =>
+                    member.id ===
+                    currentMember.id
+            );
+
+
+        if (index !== -1) {
+
+            members[index] =
+                currentMember;
+
+        }
+
+
+        // ==========================================
+        // 結束編輯
+        // ==========================================
+
+        editingMember = false;
+
+
+        renderDashboard();
+
+        renderMemberList();
+
+        renderRecentMembers();
+
+        renderProfile();
+
+
+        // 找回目前選中的會員
+
+        setTimeout(() => {
+
+            const selectedCard =
+                document.querySelector(
+                    `.member-card[data-id="${currentMember.id}"]`
+                );
+
+
+            if (selectedCard) {
+
+                selectedCard.classList.add(
+                    "active"
+                );
+
+            }
+
+        }, 0);
+
+
+        alert(
+            "會員資料已儲存！"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "會員資料儲存失敗：",
+            error
+        );
+
+
+        alert(
+            "儲存失敗，請稍後再試。"
+        );
+
+
+    } finally {
+
+        if (saveButton) {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "💾 儲存";
+
+        }
+
+    }
 
 }
 
@@ -687,7 +1554,9 @@ function renderRecentMembers() {
     recentMembers.innerHTML = "";
 
 
-    if (members.length === 0) {
+    if (
+        members.length === 0
+    ) {
 
         recentMembers.innerHTML = `
 
@@ -712,10 +1581,14 @@ function renderRecentMembers() {
             .sort((a, b) => {
 
                 const dateA =
-                    getDateValue(a.joinDate);
+                    getDateValue(
+                        a.joinDate
+                    );
 
                 const dateB =
-                    getDateValue(b.joinDate);
+                    getDateValue(
+                        b.joinDate
+                    );
 
                 return dateB - dateA;
 
@@ -725,8 +1598,10 @@ function renderRecentMembers() {
 
     sortedMembers.forEach(member => {
 
+
         const card =
             document.createElement("div");
+
 
         card.className =
             "recent-member-card";
@@ -751,6 +1626,7 @@ function renderRecentMembers() {
                     )}
 
                 </strong>
+
 
                 <span>
 
@@ -786,12 +1662,18 @@ function renderRecentMembers() {
                 currentMember =
                     member;
 
+
+                editingMember = false;
+
+
                 renderProfile();
+
 
                 const target =
                     document.querySelector(
                         `.member-card[data-id="${member.id}"]`
                     );
+
 
                 if (target) {
 
@@ -807,11 +1689,13 @@ function renderRecentMembers() {
 
                         });
 
+
                     target.classList.add(
                         "active"
                     );
 
                 }
+
 
                 window.scrollTo({
 
@@ -895,6 +1779,8 @@ if (memberSearch) {
         event => {
 
             currentMember = null;
+
+            editingMember = false;
 
             renderMemberList(
                 event.target.value
@@ -1041,6 +1927,37 @@ function escapeHTML(value) {
 }
 
 
+function escapeAttribute(value) {
+
+    return String(value ?? "")
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        );
+
+}
+
+
+// ==================================================
+// 完成
+// ==================================================
+
 console.log(
-    "admin2.js V4 已載入"
+    "admin2.js V5 已載入"
 );
