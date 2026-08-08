@@ -14,6 +14,7 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+
 // ==========================
 // DOM
 // ==========================
@@ -28,12 +29,14 @@ const todayCount = document.getElementById("todayCount");
 
 const memberSearch = document.getElementById("memberSearch");
 
+
 // ==========================
 // 全域資料
 // ==========================
 
 let members = [];
 let currentMember = null;
+
 
 // ==========================
 // 權限檢查
@@ -44,37 +47,47 @@ onAuthStateChanged(auth, async (user) => {
     if (!user) {
 
         location.href = "login.html";
-        return;
-
-    }
-
-    const memberRef = doc(db, "members", user.uid);
-
-    const memberSnap = await getDoc(memberRef);
-
-    if (!memberSnap.exists()) {
-
-        alert("找不到會員資料");
-
-        location.href = "app.html";
 
         return;
 
     }
 
-    if (memberSnap.data().role !== "管理員") {
+    try {
 
-        alert("沒有權限");
+        const memberRef = doc(db, "members", user.uid);
 
-        location.href = "app.html";
+        const memberSnap = await getDoc(memberRef);
 
-        return;
+        if (!memberSnap.exists()) {
+
+            alert("找不到會員資料");
+
+            location.href = "app.html";
+
+            return;
+
+        }
+
+        if (memberSnap.data().role !== "管理員") {
+
+            alert("沒有權限");
+
+            location.href = "app.html";
+
+            return;
+
+        }
+
+        await loadMembers();
+
+    } catch (error) {
+
+        console.error("權限檢查失敗：", error);
 
     }
-
-    loadMembers();
 
 });
+
 
 // ==========================
 // 載入會員
@@ -82,27 +95,37 @@ onAuthStateChanged(auth, async (user) => {
 
 async function loadMembers() {
 
-    const snapshot = await getDocs(collection(db, "members"));
+    try {
 
-    members = [];
+        const snapshot =
+            await getDocs(collection(db, "members"));
 
-    snapshot.forEach(memberDoc => {
+        members = [];
 
-        members.push({
+        snapshot.forEach(memberDoc => {
 
-            id: memberDoc.id,
+            members.push({
 
-            ...memberDoc.data()
+                id: memberDoc.id,
+
+                ...memberDoc.data()
+
+            });
 
         });
 
-    });
+        renderDashboard();
 
-    renderDashboard();
+        renderMemberList();
 
-    renderMemberList();
+    } catch (error) {
+
+        console.error("會員資料載入失敗：", error);
+
+    }
 
 }
+
 
 // ==========================
 // Dashboard
@@ -110,7 +133,7 @@ async function loadMembers() {
 
 function renderDashboard() {
 
-    let total = members.length;
+    const total = members.length;
 
     let pending = 0;
 
@@ -118,7 +141,9 @@ function renderDashboard() {
 
     let today = 0;
 
-    const todayString = new Date().toLocaleDateString("sv-SE");
+    const todayString =
+        new Date().toLocaleDateString("sv-SE");
+
 
     members.forEach(member => {
 
@@ -140,13 +165,15 @@ function renderDashboard() {
 
             if (member.joinDate.toDate) {
 
-                joinDate = member.joinDate
-                    .toDate()
-                    .toLocaleDateString("sv-SE");
+                joinDate =
+                    member.joinDate
+                        .toDate()
+                        .toLocaleDateString("sv-SE");
 
             } else {
 
-                joinDate = String(member.joinDate).slice(0,10);
+                joinDate =
+                    String(member.joinDate).slice(0, 10);
 
             }
 
@@ -160,6 +187,7 @@ function renderDashboard() {
 
     });
 
+
     memberCount.textContent = total;
 
     pendingCount.textContent = pending;
@@ -170,6 +198,7 @@ function renderDashboard() {
 
 }
 
+
 // ==========================
 // 左側會員列表
 // ==========================
@@ -178,77 +207,97 @@ function renderMemberList(keyword = "") {
 
     memberList.innerHTML = "";
 
+    const searchKeyword =
+        keyword.trim().toLowerCase();
+
+
     const list = members.filter(member => {
 
-        const text = (
+        const text = [
 
-            (member.memberNo || "") +
+            member.memberNo || "",
 
-            (member.nickname || "") +
+            member.nickname || "",
 
-            (member.socialPlatform || "") +
+            member.socialPlatform || "",
 
-            (member.socialAccount || "") +
+            member.socialAccount || "",
 
-            (member.favoriteMember || "")
+            member.favoriteMember || ""
 
-        ).toLowerCase();
+        ]
 
-        return text.includes(keyword.toLowerCase());
+            .join(" ")
+
+            .toLowerCase();
+
+
+        return text.includes(searchKeyword);
 
     });
+
 
     list.forEach(member => {
 
-        memberList.innerHTML += `
+        const card = document.createElement("div");
 
-<div class="member-card"
+        card.className = "member-card";
 
-data-id="${member.id}">
+        card.dataset.id = member.id;
 
-    <div class="member-top">
 
-        <strong>
+        const statusClass =
+            member.status === "已通過"
+                ? "approved"
+                : member.status === "已拒絕"
+                    ? "rejected"
+                    : "pending";
 
-            ${member.memberNo || "待發號"}
 
-        </strong>
+        card.innerHTML = `
 
-        <span class="status ${member.status === "已通過" ? "approved" : "pending"}">
+            <div class="member-top">
 
-            ${member.status || "-"}
+                <strong>
+                    ${escapeHTML(member.memberNo || "待發號")}
+                </strong>
 
-        </span>
+                <span class="status ${statusClass}">
+                    ${escapeHTML(member.status || "-")}
+                </span>
 
-    </div>
+            </div>
 
-    <div class="member-name">
+            <div class="member-name">
 
-        ${member.nickname || "-"}
+                ${escapeHTML(member.nickname || "-")}
 
-    </div>
+            </div>
 
-    <div class="member-info">
+            <div class="member-info">
 
-        ❤️ ${member.favoriteMember || "-"}
+                ❤️ ${escapeHTML(member.favoriteMember || "-")}
 
-    </div>
+            </div>
 
-    <div class="member-info">
+            <div class="member-info">
 
-        ${member.socialPlatform || ""}
+                ${escapeHTML(member.socialPlatform || "-")}
 
-    </div>
+            </div>
 
-</div>
+        `;
 
-`;
+
+        memberList.appendChild(card);
 
     });
+
 
     bindMemberClick();
 
 }
+
 
 // ==========================
 // 點會員
@@ -256,19 +305,28 @@ data-id="${member.id}">
 
 function bindMemberClick() {
 
-    const cards = document.querySelectorAll(".member-card");
+    const cards =
+        document.querySelectorAll(".member-card");
+
 
     cards.forEach(card => {
 
         card.onclick = () => {
 
-            cards.forEach(c => c.classList.remove("active"));
+            cards.forEach(c =>
+                c.classList.remove("active")
+            );
+
 
             card.classList.add("active");
 
-            currentMember = members.find(
-                m => m.id === card.dataset.id
-            );
+
+            currentMember =
+                members.find(
+                    member =>
+                        member.id === card.dataset.id
+                );
+
 
             renderProfile();
 
@@ -276,7 +334,7 @@ function bindMemberClick() {
 
     });
 
-    // 第一次自動選第一位會員
+
     if (cards.length > 0 && !currentMember) {
 
         cards[0].click();
@@ -285,145 +343,219 @@ function bindMemberClick() {
 
 }
 
+
 // ==========================
 // 右側會員資料
 // ==========================
 
 function renderProfile() {
 
-    if (!currentMember) return;
+    if (!currentMember) {
+
+        profileCard.innerHTML = `
+
+            <div class="empty">
+
+                請先選擇一位會員
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const subFavorites =
+        Array.isArray(currentMember.subFavoriteMembers)
+            ? currentMember.subFavoriteMembers.join("、")
+            : "-";
+
 
     profileCard.innerHTML = `
 
-<div class="profile-header">
+        <!-- Profile Header -->
 
-    <div class="profile-avatar">
+        <div class="profile-header">
 
-        👤
+            <div class="profile-person">
 
-    </div>
+                <div class="profile-avatar">
 
-    <div>
+                    👤
 
-        <h2>
+                </div>
 
-            ${currentMember.nickname || "-"}
+                <div class="profile-title">
 
-        </h2>
+                    <h2>
 
-        <p>
+                        ${escapeHTML(
+                            currentMember.nickname || "-"
+                        )}
 
-            ${currentMember.memberNo || "-"}
+                    </h2>
 
-        </p>
+                    <p>
 
-    </div>
+                        ${escapeHTML(
+                            currentMember.memberNo || "待發號"
+                        )}
 
-</div>
+                    </p>
 
-<div class="profile-grid">
+                </div>
 
-    <div class="profile-box">
+            </div>
 
-        <small>📱 社群平台</small>
 
-        <strong>
+            <div class="profile-actions">
 
-            ${currentMember.socialPlatform || "-"}
+                <button id="editMember">
 
-        </strong>
+                    ✏️ 編輯
 
-    </div>
+                </button>
 
-    <div class="profile-box">
+                <button id="saveMember">
 
-        <small>🔗 帳號</small>
+                    💾 儲存
 
-        <strong>
+                </button>
 
-            ${currentMember.socialAccount || "-"}
+            </div>
 
-        </strong>
+        </div>
 
-    </div>
 
-    <div class="profile-box">
+        <!-- Profile Grid -->
 
-        <small>❤️ 主擔</small>
+        <div class="profile-grid">
 
-        <strong>
+            <div class="profile-box">
 
-            ${currentMember.favoriteMember || "-"}
+                <small>
+                    📱 社群平台
+                </small>
 
-        </strong>
+                <strong>
+                    ${escapeHTML(
+                        currentMember.socialPlatform || "-"
+                    )}
+                </strong>
 
-    </div>
+            </div>
 
-    <div class="profile-box">
 
-        <small>💛 副擔</small>
+            <div class="profile-box">
 
-        <strong>
+                <small>
+                    🔗 帳號
+                </small>
 
-            ${(currentMember.subFavoriteMembers || []).join("、") || "-"}
+                <strong>
+                    ${escapeHTML(
+                        currentMember.socialAccount || "-"
+                    )}
+                </strong>
 
-        </strong>
+            </div>
 
-    </div>
 
-    <div class="profile-box">
+            <div class="profile-box">
 
-        <small>🟢 官方LINE</small>
+                <small>
+                    ❤️ 主擔
+                </small>
 
-        <strong>
+                <strong>
+                    ${escapeHTML(
+                        currentMember.favoriteMember || "-"
+                    )}
+                </strong>
 
-            ${currentMember.officialLine ? "已加入" : "未加入"}
+            </div>
 
-        </strong>
 
-    </div>
+            <div class="profile-box">
 
-    <div class="profile-box">
+                <small>
+                    💛 副擔
+                </small>
 
-        <small>📍 加入來源</small>
+                <strong>
+                    ${escapeHTML(subFavorites)}
+                </strong>
 
-        <strong>
+            </div>
 
-            ${currentMember.joinSource || "-"}
 
-        </strong>
+            <div class="profile-box">
 
-    </div>
+                <small>
+                    🟢 官方 LINE
+                </small>
 
-    <div class="profile-box">
+                <strong>
+                    ${currentMember.officialLine
+                        ? "已加入"
+                        : "未加入"}
+                </strong>
 
-        <small>👥 推薦人</small>
+            </div>
 
-        <strong>
 
-            ${currentMember.referrerNickname || "-"}
+            <div class="profile-box">
 
-        </strong>
+                <small>
+                    📍 加入來源
+                </small>
 
-    </div>
+                <strong>
+                    ${escapeHTML(
+                        currentMember.joinSource || "-"
+                    )}
+                </strong>
 
-    <div class="profile-box full">
+            </div>
 
-        <small>📝 管理員備註</small>
 
-        <strong>
+            <div class="profile-box">
 
-            ${currentMember.adminNote || "目前沒有備註"}
+                <small>
+                    👥 推薦人
+                </small>
 
-        </strong>
+                <strong>
+                    ${escapeHTML(
+                        currentMember.referrerNickname || "-"
+                    )}
+                </strong>
 
-    </div>
+            </div>
 
-</div>
 
-`;
+            <div class="profile-box">
+
+                <small>
+                    📝 管理員備註
+                </small>
+
+                <strong>
+                    ${escapeHTML(
+                        currentMember.adminNote || "-"
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+    `;
 
 }
+
 
 // ==========================
 // 搜尋
@@ -431,45 +563,118 @@ function renderProfile() {
 
 if (memberSearch) {
 
-    memberSearch.addEventListener("input", e => {
+    memberSearch.addEventListener(
+        "input",
+        event => {
 
-        renderMemberList(e.target.value);
+            currentMember = null;
 
-    });
+            renderMemberList(event.target.value);
+
+        }
+    );
 
 }
+
 
 // ==========================
 // Modal
 // ==========================
 
-const memberModal = document.getElementById("memberModal");
-const taskModal = document.getElementById("taskModal");
+const memberModal =
+    document.getElementById("memberModal");
 
-const addMemberBtn = document.getElementById("addMember");
-const addTaskBtn = document.getElementById("addTask");
+const taskModal =
+    document.getElementById("taskModal");
 
-const closeMemberModal = document.getElementById("closeMemberModal");
-const closeTaskModal = document.getElementById("closeTaskModal");
+const addMemberBtn =
+    document.getElementById("addMember");
 
-// 開啟會員 Modal
-addMemberBtn?.addEventListener("click", () => {
-    memberModal.classList.remove("hidden");
-});
+const addTaskBtn =
+    document.getElementById("addTask");
 
+const closeMemberModal =
+    document.getElementById("closeMemberModal");
+
+const closeTaskModal =
+    document.getElementById("closeTaskModal");
+
+
+// ==========================
+// 新增會員
+// ==========================
+
+addMemberBtn?.addEventListener(
+    "click",
+    () => {
+
+        memberModal?.classList.remove("hidden");
+
+    }
+);
+
+
+// ==========================
 // 關閉會員 Modal
-closeMemberModal?.addEventListener("click", () => {
-    memberModal.classList.add("hidden");
-});
+// ==========================
 
-// 開啟待辦 Modal
-addTaskBtn?.addEventListener("click", () => {
-    taskModal.classList.remove("hidden");
-});
+closeMemberModal?.addEventListener(
+    "click",
+    () => {
 
+        memberModal?.classList.add("hidden");
+
+    }
+);
+
+
+// ==========================
+// 新增待辦
+// ==========================
+
+addTaskBtn?.addEventListener(
+    "click",
+    () => {
+
+        taskModal?.classList.remove("hidden");
+
+    }
+);
+
+
+// ==========================
 // 關閉待辦 Modal
-closeTaskModal?.addEventListener("click", () => {
-    taskModal.classList.add("hidden");
-});
+// ==========================
 
-console.log("admin2.js 已載入");
+closeTaskModal?.addEventListener(
+    "click",
+    () => {
+
+        taskModal?.classList.add("hidden");
+
+    }
+);
+
+
+// ==========================
+// HTML 安全處理
+// ==========================
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+
+console.log("admin2.js V3 已載入");
