@@ -89,10 +89,16 @@ onAuthStateChanged(auth, async (user) => {
     try {
 
         const memberRef =
-            doc(db, "members", user.uid);
+            doc(
+                db,
+                "members",
+                user.uid
+            );
 
         const memberSnap =
-            await getDoc(memberRef);
+            await getDoc(
+                memberRef
+            );
 
 
         if (!memberSnap.exists()) {
@@ -144,7 +150,10 @@ async function loadMembers() {
 
         const snapshot =
             await getDocs(
-                collection(db, "members")
+                collection(
+                    db,
+                    "members"
+                )
             );
 
 
@@ -201,7 +210,9 @@ function renderDashboard() {
 
     const todayString =
         new Date()
-            .toLocaleDateString("sv-SE");
+            .toLocaleDateString(
+                "sv-SE"
+            );
 
 
     members.forEach(member => {
@@ -240,13 +251,20 @@ function renderDashboard() {
                 joinDate =
                     member.joinDate
                         .toDate()
-                        .toLocaleDateString("sv-SE");
+                        .toLocaleDateString(
+                            "sv-SE"
+                        );
 
             } else {
 
                 joinDate =
-                    String(member.joinDate)
-                        .slice(0, 10);
+                    String(
+                        member.joinDate
+                    )
+                        .slice(
+                            0,
+                            10
+                        );
 
             }
 
@@ -302,7 +320,9 @@ function renderDashboard() {
 // 左側會員列表
 // ==================================================
 
-function renderMemberList(keyword = "") {
+function renderMemberList(
+    keyword = ""
+) {
 
     if (!memberList) return;
 
@@ -333,7 +353,9 @@ function renderMemberList(keyword = "") {
                 member.favoriteMember || ""
 
             ]
+
                 .join(" ")
+
                 .toLowerCase();
 
 
@@ -348,7 +370,9 @@ function renderMemberList(keyword = "") {
 
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         card.className =
@@ -446,7 +470,9 @@ function renderMemberList(keyword = "") {
         `;
 
 
-        memberList.appendChild(card);
+        memberList.appendChild(
+            card
+        );
 
     });
 
@@ -625,7 +651,6 @@ function renderProfile() {
 
         <div class="profile-grid">
 
-
             <div class="profile-box">
 
                 <small>
@@ -787,14 +812,15 @@ function renderProfile() {
 
             </div>
 
-
         </div>
 
     `;
 
 
     document
-        .getElementById("editMember")
+        .getElementById(
+            "editMember"
+        )
         ?.addEventListener(
             "click",
             () => {
@@ -823,35 +849,37 @@ function renderEditProfile() {
             : [];
 
 
-   // ==========================================
-// 主擔選項
-// ==========================================
+    // ==========================================
+    // 主擔選項
+    // ==========================================
 
-const favoriteOptions =
-    ateezMembers
-        .map(member => `
+    const favoriteOptions =
+        ateezMembers
+            .map(member => `
 
-            <label class="platform-option">
+                <label class="platform-option">
 
-                <input
-                    type="radio"
-                    name="favoriteMember"
-                    value="${escapeAttribute(member)}"
-                    ${
-                        currentMember.favoriteMember === member
-                            ? "checked"
-                            : ""
-                    }
-                >
+                    <input
+                        type="radio"
+                        name="favoriteMember"
+                        value="${escapeAttribute(member)}"
+                        ${
+                            currentMember.favoriteMember === member
+                                ? "checked"
+                                : ""
+                        }
+                    >
 
-                <span>
-                    ${escapeHTML(member)}
-                </span>
+                    <span>
 
-            </label>
+                        ${escapeHTML(member)}
 
-        `)
-        .join("");
+                    </span>
+
+                </label>
+
+            `)
+            .join("");
 
 
     // ==========================================
@@ -949,7 +977,6 @@ const favoriteOptions =
 
         <div class="profile-grid member-edit-grid">
 
-
             <!-- MQ 編號 -->
 
             <div class="profile-box">
@@ -990,101 +1017,100 @@ const favoriteOptions =
             </div>
 
 
-          <!-- 社群平台 -->
+            <!-- 社群平台 -->
 
-<div class="profile-box">
+            <div class="profile-box">
 
-    <small>
-        📱 社群平台
-    </small>
+                <small>
+                    📱 社群平台
+                </small>
 
-    <div class="platform-options">
+                <div class="platform-options">
 
-        <label class="platform-option">
+                    <label class="platform-option">
 
-            <input
-                type="radio"
-                name="socialPlatform"
-                value="Instagram"
-                ${
-                    currentMember.socialPlatform === "Instagram"
-                        ? "checked"
-                        : ""
-                }
-            >
+                        <input
+                            type="radio"
+                            name="socialPlatform"
+                            value="Instagram"
+                            ${
+                                currentMember.socialPlatform === "Instagram"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-            <span>
-                📷 Instagram
-            </span>
+                        <span>
+                            📷 Instagram
+                        </span>
 
-        </label>
-
-
-        <label class="platform-option">
-
-            <input
-                type="radio"
-                name="socialPlatform"
-                value="Threads"
-                ${
-                    currentMember.socialPlatform === "Threads"
-                        ? "checked"
-                        : ""
-                }
-            >
-
-            <span>
-                🧵 Threads
-            </span>
-
-        </label>
+                    </label>
 
 
-        <label class="platform-option">
+                    <label class="platform-option">
 
-            <input
-                type="radio"
-                name="socialPlatform"
-                value="Twitter"
-                ${
-                    currentMember.socialPlatform === "Twitter"
-                        ? "checked"
-                        : ""
-                }
-            >
+                        <input
+                            type="radio"
+                            name="socialPlatform"
+                            value="Threads"
+                            ${
+                                currentMember.socialPlatform === "Threads"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-            <span>
-                𝕏 Twitter
-            </span>
+                        <span>
+                            🧵 Threads
+                        </span>
 
-        </label>
-
-
-        <label class="platform-option">
-
-            <input
-                type="radio"
-                name="socialPlatform"
-                value="Facebook"
-                ${
-                    currentMember.socialPlatform === "Facebook"
-                        ? "checked"
-                        : ""
-                }
-            >
-
-            <span>
-                📘 Facebook
-            </span>
-
-        </label>
-
-    </div>
-
-</div>
+                    </label>
 
 
-            <!-- 帳號 -->
+                    <label class="platform-option">
+
+                        <input
+                            type="radio"
+                            name="socialPlatform"
+                            value="Twitter"
+                            ${
+                                currentMember.socialPlatform === "Twitter"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+
+                        <span>
+                            𝕏 Twitter
+                        </span>
+
+                    </label>
+
+
+                    <label class="platform-option">
+
+                        <input
+                            type="radio"
+                            name="socialPlatform"
+                            value="Facebook"
+                            ${
+                                currentMember.socialPlatform === "Facebook"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+
+                        <span>
+                            📘 Facebook
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+                        <!-- 帳號 -->
 
             <div class="profile-box">
 
@@ -1104,21 +1130,21 @@ const favoriteOptions =
             </div>
 
 
-           <!-- 主擔 -->
+            <!-- 主擔 -->
 
-<div class="profile-box">
+            <div class="profile-box">
 
-    <small>
-        ❤️ 主擔
-    </small>
+                <small>
+                    ❤️ 主擔
+                </small>
 
-    <div class="platform-options">
+                <div class="platform-options">
 
-        ${favoriteOptions}
+                    ${favoriteOptions}
 
-    </div>
+                </div>
 
-</div>
+            </div>
 
 
             <!-- 副擔 -->
@@ -1146,7 +1172,6 @@ const favoriteOptions =
                                 currentSubFavorites.length
                                     ? currentSubFavorites.join("、")
                                     : "選擇副擔"
-
                             }
 
                         </span>
@@ -1192,9 +1217,7 @@ const favoriteOptions =
                     >
 
                     <span>
-
                         已加入官方 LINE
-
                     </span>
 
                 </label>
@@ -1202,199 +1225,226 @@ const favoriteOptions =
             </div>
 
 
-        <!-- 加入來源 -->
+            <!-- 加入來源 -->
 
-<div class="profile-box">
+            <div class="profile-box">
 
-    <small>
-        📍 加入來源
-    </small>
-
-    <div class="platform-options source-options">
-
-        <label class="platform-option">
-
-            <input
-                type="radio"
-                name="joinSource"
-                value="官方 LINE"
-                ${
-                    currentMember.joinSource === "官方 LINE"
-                        ? "checked"
-                        : ""
-                }
-            >
-
-            <span>
-                🟢 官方 LINE
-            </span>
-
-        </label>
+                <small>
+                    📍 加入來源
+                </small>
 
 
-        <label class="platform-option">
+                <div class="platform-options source-options">
 
-            <input
-                type="radio"
-                name="joinSource"
-                value="Instagram"
-                ${
-                    currentMember.joinSource === "Instagram"
-                        ? "checked"
-                        : ""
-                }
-            >
+                    <label class="platform-option">
 
-            <span>
-                📷 Instagram
-            </span>
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="官方 LINE"
+                            ${
+                                currentMember.joinSource === "官方 LINE"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-        </label>
+                        <span>
+                            🟢 官方 LINE
+                        </span>
 
-
-        <label class="platform-option">
-
-            <input
-                type="radio"
-                name="joinSource"
-                value="Threads"
-                ${
-                    currentMember.joinSource === "Threads"
-                        ? "checked"
-                        : ""
-                }
-            >
-
-            <span>
-                🧵 Threads
-            </span>
-
-        </label>
+                    </label>
 
 
-        <label class="platform-option">
+                    <label class="platform-option">
 
-            <input
-                type="radio"
-                name="joinSource"
-                value="Twitter"
-                ${
-                    currentMember.joinSource === "Twitter" ||
-currentMember.joinSource === "X / Twitter"
-                        ? "checked"
-                        : ""
-                }
-            >
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="Instagram"
+                            ${
+                                currentMember.joinSource === "Instagram"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-            <span>
-                𝕏 Twitter
-            </span>
+                        <span>
+                            📷 Instagram
+                        </span>
 
-        </label>
-
-
-        <label class="platform-option">
-
-            <input
-                type="radio"
-                name="joinSource"
-                value="Facebook"
-                ${
-                    currentMember.joinSource === "Facebook"
-                        ? "checked"
-                        : ""
-                }
-            >
-
-            <span>
-                📘 Facebook
-            </span>
-
-        </label>
+                    </label>
 
 
-        <label class="platform-option">
+                    <label class="platform-option">
 
-            <input
-                type="radio"
-                name="joinSource"
-                value="社群群組"
-                ${
-                    currentMember.joinSource === "社群群組"
-                        ? "checked"
-                        : ""
-                }
-            >
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="Threads"
+                            ${
+                                currentMember.joinSource === "Threads"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-            <span>
-                👥 社群群組
-            </span>
+                        <span>
+                            🧵 Threads
+                        </span>
 
-        </label>
-
-
-        <label class="platform-option">
-
-            <input
-                type="radio"
-                name="joinSource"
-                value="朋友推薦"
-                ${
-                    currentMember.joinSource === "朋友推薦"
-                        ? "checked"
-                        : ""
-                }
-            >
-
-            <span>
-                👤 朋友推薦
-            </span>
-
-        </label>
+                    </label>
 
 
-        <label class="platform-option">
+                    <label class="platform-option">
 
-            <input
-                type="radio"
-                name="joinSource"
-                value="活動現場"
-                ${
-                    currentMember.joinSource === "活動現場"
-                        ? "checked"
-                        : ""
-                }
-            >
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="Twitter"
+                            ${
+                                currentMember.joinSource === "Twitter" ||
+                                currentMember.joinSource === "X / Twitter"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-            <span>
-                🎪 活動現場
-            </span>
+                        <span>
+                            𝕏 Twitter
+                        </span>
 
-        </label>
+                    </label>
 
 
-        <label class="platform-option">
+                    <label class="platform-option">
 
-            <input
-                type="radio"
-                name="joinSource"
-                value="其他"
-                ${
-                    currentMember.joinSource === "其他"
-                        ? "checked"
-                        : ""
-                }
-            >
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="Facebook"
+                            ${
+                                currentMember.joinSource === "Facebook"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-            <span>
-                ✨ 其他
-            </span>
+                        <span>
+                            📘 Facebook
+                        </span>
 
-        </label>
+                    </label>
 
-    </div>
 
-</div>
+                    <label class="platform-option">
+
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="社群群組"
+                            ${
+                                currentMember.joinSource === "社群群組"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+
+                        <span>
+                            👥 社群群組
+                        </span>
+
+                    </label>
+
+
+                    <label class="platform-option">
+
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="朋友推薦"
+                            ${
+                                currentMember.joinSource === "朋友推薦"
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+
+                        <span>
+                            👤 朋友推薦
+                        </span>
+
+                    </label>
+
+
+                    <!-- 其他 -->
+
+                    <label class="platform-option">
+
+                        <input
+                            type="radio"
+                            name="joinSource"
+                            value="其他"
+                            id="joinSourceOtherRadio"
+                            ${
+                                ![
+                                    "官方 LINE",
+                                    "Instagram",
+                                    "Threads",
+                                    "Twitter",
+                                    "X / Twitter",
+                                    "Facebook",
+                                    "社群群組",
+                                    "朋友推薦"
+                                ].includes(
+                                    currentMember.joinSource
+                                )
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
+
+                        <span>
+                            ✨ 其他
+                        </span>
+
+                    </label>
+
+
+                    <!-- 其他來源輸入 -->
+
+                    <div class="other-source-input">
+
+                        <input
+                            type="text"
+                            id="joinSourceOtherText"
+                            placeholder="請輸入加入來源..."
+                            value="${
+                                ![
+                                    "官方 LINE",
+                                    "Instagram",
+                                    "Threads",
+                                    "Twitter",
+                                    "X / Twitter",
+                                    "Facebook",
+                                    "社群群組",
+                                    "朋友推薦"
+                                ].includes(
+                                    currentMember.joinSource
+                                )
+                                    ? escapeAttribute(
+                                        currentMember.joinSource || ""
+                                    )
+                                    : ""
+                            }"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
 
             <!-- 推薦人 -->
 
@@ -1428,7 +1478,8 @@ currentMember.joinSource === "X / Twitter"
                     class="member-edit-input"
                     id="editStatus">
 
-                    <option value="已通過"
+                    <option
+                        value="已通過"
                         ${
                             currentMember.status === "已通過"
                                 ? "selected"
@@ -1439,7 +1490,9 @@ currentMember.joinSource === "X / Twitter"
 
                     </option>
 
-                    <option value="待審核"
+
+                    <option
+                        value="待審核"
                         ${
                             currentMember.status === "待審核"
                                 ? "selected"
@@ -1450,7 +1503,9 @@ currentMember.joinSource === "X / Twitter"
 
                     </option>
 
-                    <option value="已拒絕"
+
+                    <option
+                        value="已拒絕"
                         ${
                             currentMember.status === "已拒絕"
                                 ? "selected"
@@ -1461,7 +1516,9 @@ currentMember.joinSource === "X / Twitter"
 
                     </option>
 
-                    <option value="暫停"
+
+                    <option
+                        value="暫停"
                         ${
                             currentMember.status === "暫停"
                                 ? "selected"
@@ -1502,6 +1559,54 @@ currentMember.joinSource === "X / Twitter"
 
 
     // ==================================================
+    // 「其他」加入來源
+    // ==================================================
+
+    const otherSourceRadio =
+        document.getElementById(
+            "joinSourceOtherRadio"
+        );
+
+    const otherSourceInput =
+        document.getElementById(
+            "joinSourceOtherText"
+        );
+
+
+    otherSourceRadio?.addEventListener(
+        "change",
+        () => {
+
+            if (
+                otherSourceRadio.checked
+            ) {
+
+                otherSourceInput?.focus();
+
+            }
+
+        }
+    );
+
+
+    otherSourceInput?.addEventListener(
+        "focus",
+        () => {
+
+            if (
+                otherSourceRadio
+            ) {
+
+                otherSourceRadio.checked =
+                    true;
+
+            }
+
+        }
+    );
+
+
+    // ==================================================
     // 副擔下拉選單
     // ==================================================
 
@@ -1510,10 +1615,12 @@ currentMember.joinSource === "X / Twitter"
             "subFavoriteToggle"
         );
 
+
     const menu =
         document.getElementById(
             "subFavoriteMenu"
         );
+
 
     const text =
         document.getElementById(
@@ -1552,16 +1659,20 @@ currentMember.joinSource === "X / Twitter"
     function updateSubFavoriteText() {
 
         const selected =
-            [...menu.querySelectorAll(
-                'input[name="subFavoriteMember"]:checked'
-            )]
+            [
+                ...menu.querySelectorAll(
+                    'input[name="subFavoriteMember"]:checked'
+                )
+            ]
                 .map(
                     checkbox =>
                         checkbox.value
                 );
 
 
-        if (selected.length) {
+        if (
+            selected.length
+        ) {
 
             text.textContent =
                 selected.join("、");
@@ -1667,7 +1778,6 @@ async function saveMember() {
 
     try {
 
-
         // ==========================================
         // 基本資料
         // ==========================================
@@ -1691,9 +1801,9 @@ async function saveMember() {
 
 
         const socialPlatform =
-    document.querySelector(
-        'input[name="socialPlatform"]:checked'
-    )?.value || "";
+            document.querySelector(
+                'input[name="socialPlatform"]:checked'
+            )?.value || "";
 
 
         const socialAccount =
@@ -1709,10 +1819,10 @@ async function saveMember() {
         // 主擔
         // ==========================================
 
-       const favoriteMember =
-    document.querySelector(
-        'input[name="favoriteMember"]:checked'
-    )?.value || "";
+        const favoriteMember =
+            document.querySelector(
+                'input[name="favoriteMember"]:checked'
+            )?.value || "";
 
 
         // ==========================================
@@ -1743,10 +1853,25 @@ async function saveMember() {
                 ?.checked || false;
 
 
-        const joinSource =
-    document.querySelector(
-        'input[name="joinSource"]:checked'
-    )?.value || "";
+        let joinSource =
+            document.querySelector(
+                'input[name="joinSource"]:checked'
+            )?.value || "";
+
+
+        if (
+            joinSource === "其他"
+        ) {
+
+            joinSource =
+                document
+                    .getElementById(
+                        "joinSourceOtherText"
+                    )
+                    ?.value
+                    .trim() || "其他";
+
+        }
 
 
         const referrerNickname =
@@ -1858,7 +1983,9 @@ async function saveMember() {
             );
 
 
-        if (index !== -1) {
+        if (
+            index !== -1
+        ) {
 
             members[index] =
                 currentMember;
@@ -1890,7 +2017,9 @@ async function saveMember() {
                 );
 
 
-            if (selectedCard) {
+            if (
+                selectedCard
+            ) {
 
                 selectedCard.classList.add(
                     "active"
@@ -1935,7 +2064,6 @@ async function saveMember() {
 
 }
 
-
 // ==================================================
 // 最近加入會員
 // ==================================================
@@ -1976,10 +2104,12 @@ function renderRecentMembers() {
                         a.joinDate
                     );
 
+
                 const dateB =
                     getDateValue(
                         b.joinDate
                     );
+
 
                 return dateB - dateA;
 
@@ -1991,7 +2121,9 @@ function renderRecentMembers() {
 
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         card.className =
@@ -2053,7 +2185,10 @@ function renderRecentMembers() {
                 currentMember =
                     member;
 
-                editingMember = false;
+
+                editingMember =
+                    false;
+
 
                 renderProfile();
 
@@ -2095,7 +2230,8 @@ function renderRecentMembers() {
                             )
                             ?.offsetTop || 0,
 
-                    behavior:"smooth"
+                    behavior:
+                        "smooth"
 
                 });
 
@@ -2171,6 +2307,7 @@ if (memberSearch) {
 
             editingMember = false;
 
+
             renderMemberList(
                 event.target.value
             );
@@ -2190,25 +2327,30 @@ const memberModal =
         "memberModal"
     );
 
+
 const taskModal =
     document.getElementById(
         "taskModal"
     );
+
 
 const addMemberBtn =
     document.getElementById(
         "addMember"
     );
 
+
 const addTaskBtn =
     document.getElementById(
         "addTask"
     );
 
+
 const closeMemberModal =
     document.getElementById(
         "closeMemberModal"
     );
+
 
 const closeTaskModal =
     document.getElementById(
@@ -2286,7 +2428,9 @@ closeTaskModal?.addEventListener(
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
 
         .replace(
             /&/g,
@@ -2318,7 +2462,9 @@ function escapeHTML(value) {
 
 function escapeAttribute(value) {
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
 
         .replace(
             /&/g,
@@ -2343,6 +2489,10 @@ function escapeAttribute(value) {
 }
 
 
+// ==================================================
+// 完成
+// ==================================================
+
 console.log(
-    "admin2.js V6 已載入"
+    "admin2.js V7 已載入"
 );
