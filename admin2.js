@@ -1225,226 +1225,160 @@ function renderEditProfile() {
             </div>
 
 
-            <!-- 加入來源 -->
+           <!-- 加入來源 -->
 
-            <div class="profile-box">
+<div class="profile-box">
 
-                <small>
-                    📍 加入來源
-                </small>
+    <small>
+        📍 加入來源
+    </small>
 
+    <div class="platform-options source-options">
 
-                <div class="platform-options source-options">
+        <label class="platform-option">
 
-                    <label class="platform-option">
+            <input
+                type="radio"
+                name="joinSource"
+                value="買圖千日 用在一時 Threads"
+                ${
+                    currentMember.joinSource ===
+                    "買圖千日 用在一時 Threads"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="官方 LINE"
-                            ${
-                                currentMember.joinSource === "官方 LINE"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
+            <span>
+                🧵 買圖千日 用在一時 Threads
+            </span>
 
-                        <span>
-                            🟢 官方 LINE
-                        </span>
-
-                    </label>
-
-
-                    <label class="platform-option">
-
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="Instagram"
-                            ${
-                                currentMember.joinSource === "Instagram"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
-
-                        <span>
-                            📷 Instagram
-                        </span>
-
-                    </label>
+        </label>
 
 
-                    <label class="platform-option">
+        <label class="platform-option">
 
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="Threads"
-                            ${
-                                currentMember.joinSource === "Threads"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
+            <input
+                type="radio"
+                name="joinSource"
+                value="Facebook 社團"
+                ${
+                    currentMember.joinSource ===
+                    "Facebook 社團"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-                        <span>
-                            🧵 Threads
-                        </span>
+            <span>
+                📘 Facebook 社團
+            </span>
 
-                    </label>
-
-
-                    <label class="platform-option">
-
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="Twitter"
-                            ${
-                                currentMember.joinSource === "Twitter" ||
-                                currentMember.joinSource === "X / Twitter"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
-
-                        <span>
-                            𝕏 Twitter
-                        </span>
-
-                    </label>
+        </label>
 
 
-                    <label class="platform-option">
+        <label class="platform-option">
 
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="Facebook"
-                            ${
-                                currentMember.joinSource === "Facebook"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
+            <input
+                type="radio"
+                name="joinSource"
+                value="朋友推薦"
+                ${
+                    currentMember.joinSource ===
+                    "朋友推薦"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-                        <span>
-                            📘 Facebook
-                        </span>
+            <span>
+                👤 朋友推薦
+            </span>
 
-                    </label>
-
-
-                    <label class="platform-option">
-
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="社群群組"
-                            ${
-                                currentMember.joinSource === "社群群組"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
-
-                        <span>
-                            👥 社群群組
-                        </span>
-
-                    </label>
+        </label>
 
 
-                    <label class="platform-option">
+        <label class="platform-option">
 
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="朋友推薦"
-                            ${
-                                currentMember.joinSource === "朋友推薦"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
+            <input
+                type="radio"
+                name="joinSource"
+                value="其他"
+                ${
+                    currentMember.joinSource ===
+                    "其他"
+                        ? "checked"
+                        : ""
+                }
+            >
 
-                        <span>
-                            👤 朋友推薦
-                        </span>
+            <span>
+                ✨ 其他
+            </span>
 
-                    </label>
-
-
-                    <!-- 其他 -->
-
-                    <label class="platform-option">
-
-                        <input
-                            type="radio"
-                            name="joinSource"
-                            value="其他"
-                            id="joinSourceOtherRadio"
-                            ${
-                                ![
-                                    "官方 LINE",
-                                    "Instagram",
-                                    "Threads",
-                                    "Twitter",
-                                    "X / Twitter",
-                                    "Facebook",
-                                    "社群群組",
-                                    "朋友推薦"
-                                ].includes(
-                                    currentMember.joinSource
-                                )
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
-
-                        <span>
-                            ✨ 其他
-                        </span>
-
-                    </label>
+        </label>
 
 
-                    <!-- 其他來源輸入 -->
+        <!-- 朋友推薦 -->
 
-                    <div class="other-source-input">
+        <div
+            id="referrer-source-box"
+            style="
+                display:${
+                    currentMember.joinSource ===
+                    "朋友推薦"
+                        ? "block"
+                        : "none"
+                };
+                margin-top:12px;
+            "
+        >
 
-                        <input
-                            type="text"
-                            id="joinSourceOtherText"
-                            placeholder="請輸入加入來源..."
-                            value="${
-                                ![
-                                    "官方 LINE",
-                                    "Instagram",
-                                    "Threads",
-                                    "Twitter",
-                                    "X / Twitter",
-                                    "Facebook",
-                                    "社群群組",
-                                    "朋友推薦"
-                                ].includes(
-                                    currentMember.joinSource
-                                )
-                                    ? escapeAttribute(
-                                        currentMember.joinSource || ""
-                                    )
-                                    : ""
-                            }"
-                        >
+            <input
+                type="text"
+                id="editReferrerAccount"
+                class="member-edit-input"
+                placeholder="請輸入推薦人的社群帳號，例如 @xxxxx"
+                value="${escapeAttribute(
+                    currentMember.referrerAccount ||
+                    ""
+                )}"
+            >
 
-                    </div>
+        </div>
 
-                </div>
 
-            </div>
+        <!-- 其他 -->
 
+        <div
+            id="other-source-box"
+            style="
+                display:${
+                    currentMember.joinSource ===
+                    "其他"
+                        ? "block"
+                        : "none"
+                };
+                margin-top:12px;
+            "
+        >
+
+            <input
+                type="text"
+                id="editOtherSource"
+                class="member-edit-input"
+                placeholder="請輸入來源、帳號或其他備註"
+                value="${escapeAttribute(
+                    currentMember.otherSource ||
+                    ""
+                )}"
+            >
+
+        </div>
+
+    </div>
+
+</div>
 
             <!-- 推薦人 -->
 
