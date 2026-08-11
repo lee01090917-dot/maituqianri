@@ -1380,25 +1380,6 @@ function renderEditProfile() {
 
 </div>
 
-           <!-- 推薦人 -->
-
-<div class="profile-box">
-
-    <small>
-        👥 推薦人
-    </small>
-
-    <input
-        class="member-edit-input"
-        id="editReferrer"
-        type="text"
-        value="${escapeAttribute(
-            currentMember.referrerNickname || ""
-        )}"
-    >
-
-</div>
-
 
             <!-- 會員狀態 -->
 
@@ -1490,57 +1471,6 @@ function renderEditProfile() {
         </div>
 
     `;
-
-
-    // ==================================================
-    // 「其他」加入來源
-    // ==================================================
-
-    const otherSourceRadio =
-        document.getElementById(
-            "joinSourceOtherRadio"
-        );
-
-    const otherSourceInput =
-        document.getElementById(
-            "joinSourceOtherText"
-        );
-
-
-    otherSourceRadio?.addEventListener(
-    "change",
-    () => {
-
-        if (
-            otherSourceRadio.checked
-        ) {
-
-            setTimeout(() => {
-
-                otherSourceInput?.focus();
-
-            }, 50);
-
-        }
-
-    }
-);
-
-  otherSourceInput?.addEventListener(
-    "focus",
-    () => {
-
-        if (
-            otherSourceRadio
-        ) {
-
-            otherSourceRadio.checked =
-                true;
-
-        }
-
-    }
-);
 
 
     // ==================================================
@@ -1803,7 +1733,7 @@ async function saveMember() {
             joinSource =
                 document
                     .getElementById(
-                        "joinSourceOtherText"
+                       "editOtherSource"
                     )
                     ?.value
                     .trim() || "其他";
@@ -1882,13 +1812,19 @@ const otherSource =
 
                 officialLine,
 
-                joinSource,
+joinSource,
 
-                referrerMemberId,
+referrerAccount,
 
-                status,
+referrerMemberId,
 
-                adminNote
+referrerMemberNo,
+
+otherSource,
+
+status,
+
+adminNote
 
             }
 
@@ -1915,15 +1851,21 @@ const otherSource =
 
             subFavoriteMembers,
 
-            officialLine,
+           officialLine,
 
-            joinSource,
+joinSource,
 
-            referrerMemberId,
+referrerAccount,
 
-            status,
+referrerMemberId,
 
-            adminNote
+referrerMemberNo,
+
+otherSource,
+
+status,
+
+adminNote
 
         };
 
