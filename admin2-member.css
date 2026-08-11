@@ -1294,3 +1294,161 @@
         rgba(99,102,241,.08);
 
 }
+
+/* ==========================================
+   加入來源新版排版
+========================================== */
+
+/* 加入來源固定兩欄 */
+.source-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+
+/* 加入來源按鈕 */
+.source-options .platform-option {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+/* 讓文字不要把按鈕撐出去 */
+.source-options .platform-option span {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    padding: 0 6px;
+
+    font-size: 13px;
+    text-align: center;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+
+/* ==========================================
+   朋友推薦輸入區
+========================================== */
+
+#referrer-source-box,
+#other-source-box {
+    grid-column: 1 / -1;
+
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    margin-top: 2px;
+}
+
+
+/* 推薦人 / 其他輸入框 */
+#referrer-source-box input,
+#other-source-box input {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    height: 44px;
+
+    box-sizing: border-box;
+
+    padding: 0 14px;
+
+    border: 1px solid #dbe1ea;
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: #334155;
+
+    font-size: 13px;
+
+    transition: .2s;
+
+    pointer-events: auto;
+    cursor: text;
+}
+
+
+/* Placeholder */
+#referrer-source-box input::placeholder,
+#other-source-box input::placeholder {
+    color: #94a3b8;
+}
+
+
+/* Focus */
+#referrer-source-box input:focus,
+#other-source-box input:focus {
+    outline: none;
+
+    border-color: #6366f1;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(99,102,241,.08);
+}
+
+
+/* ==========================================
+   防止整個區塊撐出去
+========================================== */
+
+.profile-box {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.profile-grid {
+    min-width: 0;
+}
+
+.profile-grid > .profile-box {
+    min-width: 0;
+}
+
+
+/* ==========================================
+   平板
+========================================== */
+
+@media (max-width: 600px) {
+
+    .source-options {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .source-options .platform-option span {
+        font-size: 12px;
+        padding: 0 4px;
+    }
+
+}
+
+
+/* ==========================================
+   手機
+========================================== */
+
+@media (max-width: 420px) {
+
+    .source-options {
+        grid-template-columns: 1fr;
+    }
+
+}
