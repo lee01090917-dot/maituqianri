@@ -578,6 +578,10 @@ function renderProfile() {
     }
 
 
+    // ==================================================
+    // 副擔
+    // ==================================================
+
     let subFavorites = "-";
 
 
@@ -595,7 +599,89 @@ function renderProfile() {
     }
 
 
+    // ==================================================
+    // 推薦人
+    // ==================================================
+
+    let referrerDisplay = "-";
+
+
+    if (
+        currentMember.referrerMemberNo
+    ) {
+
+        referrerDisplay =
+            currentMember.referrerMemberNo;
+
+    }
+    else if (
+        currentMember.referrerAccount
+    ) {
+
+        referrerDisplay =
+            currentMember.referrerAccount;
+
+    }
+
+
+    // ==================================================
+    // 加入來源
+    // ==================================================
+
+    let joinSourceDisplay =
+        currentMember.joinSource || "-";
+
+
+    // ==================================================
+    // 會員狀態
+    // ==================================================
+
+    let statusClass = "status-default";
+
+
+    if (
+        currentMember.status ===
+        "正常"
+    ) {
+
+        statusClass =
+            "status-active";
+
+    }
+    else if (
+        currentMember.status ===
+        "待審核"
+    ) {
+
+        statusClass =
+            "status-pending";
+
+    }
+    else if (
+        currentMember.status ===
+        "停權"
+    ) {
+
+        statusClass =
+            "status-disabled";
+
+    }
+    else if (
+        currentMember.status ===
+        "黑名單"
+    ) {
+
+        statusClass =
+            "status-blacklist";
+
+    }
+
+
     profileCard.innerHTML = `
+
+        <!-- ==========================================
+             會員標題
+        ========================================== -->
 
         <div class="profile-header">
 
@@ -649,7 +735,72 @@ function renderProfile() {
         </div>
 
 
+        <!-- ==========================================
+             基本資料
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            👤 基本資料
+
+        </div>
+
+
         <div class="profile-grid">
+
+
+            <div class="profile-box">
+
+                <small>
+                    🆔 會員編號
+                </small>
+
+                <strong>
+
+                    ${escapeHTML(
+                        currentMember.memberNo ||
+                        "待發號"
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="profile-box">
+
+                <small>
+                    📧 Email
+                </small>
+
+                <strong>
+
+                    ${escapeHTML(
+                        currentMember.email ||
+                        "-"
+                    )}
+
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ==========================================
+             社群資料
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            🔗 社群資料
+
+        </div>
+
+
+        <div class="profile-grid">
+
 
             <div class="profile-box">
 
@@ -672,7 +823,7 @@ function renderProfile() {
             <div class="profile-box">
 
                 <small>
-                    🔗 帳號
+                    🔗 社群帳號
                 </small>
 
                 <strong>
@@ -685,6 +836,23 @@ function renderProfile() {
                 </strong>
 
             </div>
+
+
+        </div>
+
+
+        <!-- ==========================================
+             ATEEZ
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            ❤️ ATEEZ 喜好
+
+        </div>
+
+
+        <div class="profile-grid">
 
 
             <div class="profile-box">
@@ -722,6 +890,93 @@ function renderProfile() {
             </div>
 
 
+        </div>
+
+
+        <!-- ==========================================
+             加入資訊
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            📍 加入資訊
+
+        </div>
+
+
+        <div class="profile-grid">
+
+
+            <div class="profile-box">
+
+                <small>
+                    📍 加入來源
+                </small>
+
+                <strong>
+
+                    ${escapeHTML(
+                        joinSourceDisplay
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="profile-box">
+
+                <small>
+                    👥 推薦人
+                </small>
+
+                <strong>
+
+                    ${escapeHTML(
+                        referrerDisplay
+                    )}
+
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ==========================================
+             會員狀態
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            🛡️ 會員狀態
+
+        </div>
+
+
+        <div class="profile-grid">
+
+
+            <div class="profile-box">
+
+                <small>
+                    🏷️ 會員狀態
+                </small>
+
+                <strong
+                    class="${statusClass}">
+
+                    ${escapeHTML(
+                        currentMember.status ||
+                        "-"
+                    )}
+
+                </strong>
+
+            </div>
+
+
             <div class="profile-box">
 
                 <small>
@@ -741,43 +996,24 @@ function renderProfile() {
             </div>
 
 
-            <div class="profile-box">
-
-                <small>
-                    📍 加入來源
-                </small>
-
-                <strong>
-
-                    ${escapeHTML(
-                        currentMember.joinSource ||
-                        "-"
-                    )}
-
-                </strong>
-
-            </div>
+        </div>
 
 
-            <div class="profile-box">
+        <!-- ==========================================
+             管理
+        ========================================== -->
 
-                <small>
-                    👥 推薦人
-                </small>
+        <div class="profile-section-title">
 
-                <strong>
+            📝 管理資訊
 
-                    ${escapeHTML(
-                        currentMember.referrerNickname ||
-                        "-"
-                    )}
-
-                </strong>
-
-            </div>
+        </div>
 
 
-            <div class="profile-box">
+        <div class="profile-grid">
+
+
+            <div class="profile-box profile-box-wide">
 
                 <small>
                     📝 管理員備註
@@ -795,27 +1031,14 @@ function renderProfile() {
             </div>
 
 
-            <div class="profile-box">
-
-                <small>
-                    🏷️ 會員狀態
-                </small>
-
-                <strong>
-
-                    ${escapeHTML(
-                        currentMember.status ||
-                        "-"
-                    )}
-
-                </strong>
-
-            </div>
-
         </div>
 
     `;
 
+
+    // ==================================================
+    // 編輯按鈕
+    // ==================================================
 
     document
         .getElementById(
@@ -833,7 +1056,6 @@ function renderProfile() {
         );
 
 }
-
 
 // ==================================================
 // 編輯會員資料
