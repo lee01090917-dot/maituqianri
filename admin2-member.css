@@ -1452,3 +1452,118 @@
     }
 
 }
+
+/* ==========================================
+   推薦人自動比對
+========================================== */
+
+.referrer-match-result {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.referrer-match-title {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.referrer-match-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.referrer-match-item {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #dbe1ea;
+    border-radius: 10px;
+
+    background: #fff;
+    color: #334155;
+
+    cursor: pointer;
+    text-align: left;
+}
+
+.referrer-match-item:hover {
+    border-color: #6366f1;
+    background: #f8f8ff;
+}
+
+.referrer-match-main {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.referrer-match-main strong {
+    font-size: 13px;
+}
+
+.referrer-match-main small {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.referrer-match-item > span:last-child {
+    flex-shrink: 0;
+
+    color: #6366f1;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.referrer-selected {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #c7d2fe;
+    border-radius: 10px;
+
+    background: #f5f5ff;
+}
+
+.referrer-selected span {
+    font-size: 11px;
+    color: #6366f1;
+}
+
+.referrer-selected strong {
+    font-size: 13px;
+}
+
+.referrer-selected small {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.referrer-no-match {
+    padding: 10px 12px;
+
+    border: 1px dashed #dbe1ea;
+    border-radius: 10px;
+
+    color: #64748b;
+    font-size: 12px;
+}
+
+.referrer-no-match small {
+    display: block;
+    margin-top: 4px;
+    color: #94a3b8;
+}
