@@ -1474,6 +1474,342 @@ function renderEditProfile() {
 
 
     // ==================================================
+// 朋友推薦：自動比對
+// ==================================================
+
+const referrerInput =
+    document.getElementById(
+        "editReferrerAccount"
+    );
+
+const referrerResult =
+    document.getElementById(
+        "referrer-match-result"
+    );
+
+const referrerSelect =
+    document.getElementById(
+        "referrer-member-select"
+    );
+
+const referrerMemberIdInput =
+    document.getElementById(
+        "referrerMemberId"
+    );
+
+const referrerMemberNoInput =
+    document.getElementById(
+        "referrerMemberNo"
+    );
+
+
+function normalizeReferrerAccount(account) {
+
+    return String(account || "")
+        .trim()
+        .toLowerCase()
+        .replace(/^@/, "")
+        .replace(/\s+/g, "");
+
+}
+
+
+function setReferrer(member) {
+
+    if (!member) return;
+
+
+    if (referrerMemberIdInput) {
+
+        referrerMemberIdInput.value =
+            member.id || "";
+
+    }
+
+
+    if (referrerMemberNoInput) {
+
+        referrerMemberNoInput.value =
+            member.memberNo || "";
+
+    }
+
+
+    if (referrerSelect) {
+
+        referrerSelect.value =
+            member.id || "";
+
+    }
+
+
+    if (referrerResult) {
+
+        referrerResult.innerHTML = `
+
+            <div class="referrer-selected">
+
+                <span>
+                    ✓ 已指定推薦人
+                </span>
+
+                <strong>
+                    ${
+                        escapeHTML(
+                            member.memberNo ||
+                            "尚未發號"
+                        )
+                    }
+
+                    ｜
+
+                    ${
+                        escapeHTML(
+                            member.nickname ||
+                            "未填暱稱"
+                        )
+                    }
+                </strong>
+
+                <small>
+                    ${
+                        escapeHTML(
+                            member.socialPlatform ||
+                            "社群"
+                        )
+                    }
+
+                    ·
+
+                    ${
+                        escapeHTML(
+                            member.socialAccount ||
+                            ""
+                        )
+                    }
+                </small>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+function searchReferrer(account) {
+
+    const keyword =
+        normalizeReferrerAccount(
+            account
+        );
+
+
+    if (!referrerResult) return;
+
+
+    if (!keyword) {
+
+        referrerResult.innerHTML = "";
+
+        return;
+
+    }
+
+
+    const matches =
+        members.filter(member => {
+
+            if (
+                !member.socialAccount ||
+                member.id === currentMember.id
+            ) {
+
+                return false;
+
+            }
+
+
+            return (
+                normalizeReferrerAccount(
+                    member.socialAccount
+                ) === keyword
+            );
+
+        });
+
+
+    if (!matches.length) {
+
+        referrerResult.innerHTML = `
+
+            <div class="referrer-no-match">
+
+                🔍 找不到符合的會員
+
+                <small>
+                    可以使用下面的手動指定會員
+                </small>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    referrerResult.innerHTML = `
+
+        <div class="referrer-match-title">
+
+            🔍 找到 ${matches.length} 位可能的會員
+
+        </div>
+
+
+        <div class="referrer-match-list">
+
+            ${matches.map(member => `
+
+                <button
+                    type="button"
+                    class="referrer-match-item"
+                    data-referrer-id="${escapeAttribute(
+                        member.id
+                    )}"
+                >
+
+                    <span class="referrer-match-main">
+
+                        <strong>
+
+                            ${
+                                escapeHTML(
+                                    member.memberNo ||
+                                    "尚未發號"
+                                )
+                            }
+
+                            ｜
+
+                            ${
+                                escapeHTML(
+                                    member.nickname ||
+                                    "未填暱稱"
+                                )
+                            }
+
+                        </strong>
+
+
+                        <small>
+
+                            ${
+                                escapeHTML(
+                                    member.socialPlatform ||
+                                    "社群"
+                                )
+                            }
+
+                            ·
+
+                            ${
+                                escapeHTML(
+                                    member.socialAccount ||
+                                    ""
+                                )
+                            }
+
+                        </small>
+
+                    </span>
+
+
+                    <span>
+                        ✓ 指定
+                    </span>
+
+                </button>
+
+            `).join("")}
+
+        </div>
+
+    `;
+
+
+    referrerResult
+        .querySelectorAll(
+            ".referrer-match-item"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const member =
+                        members.find(
+                            item =>
+                                item.id ===
+                                button.dataset.referrerId
+                        );
+
+
+                    if (member) {
+
+                        setReferrer(
+                            member
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+
+referrerInput?.addEventListener(
+    "input",
+    () => {
+
+        searchReferrer(
+            referrerInput.value
+        );
+
+    }
+);
+
+
+referrerSelect?.addEventListener(
+    "change",
+    () => {
+
+        const member =
+            members.find(
+                item =>
+                    item.id ===
+                    referrerSelect.value
+            );
+
+
+        if (member) {
+
+            setReferrer(
+                member
+            );
+
+        }
+
+    }
+);
+    // ==================================================
     // 副擔下拉選單
     // ==================================================
 
@@ -1750,13 +2086,18 @@ async function saveMember() {
         .trim() || "";
 
 const referrerMemberId =
-    currentMember.referrerMemberId ||
-    "";
+    document
+        .getElementById(
+            "referrerMemberId"
+        )
+        ?.value || "";
 
 const referrerMemberNo =
-    currentMember.referrerMemberNo ||
-    "";
-
+    document
+        .getElementById(
+            "referrerMemberNo"
+        )
+        ?.value || "";
 const otherSource =
     document
         .getElementById(
