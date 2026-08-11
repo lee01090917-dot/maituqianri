@@ -1345,6 +1345,66 @@ function renderEditProfile() {
                 )}"
             >
 
+<div
+    id="referrer-match-result"
+    class="referrer-match-result"
+></div>
+
+<select
+    id="referrer-member-select"
+    class="member-edit-input"
+    style="margin-top:10px;"
+>
+    <option value="">
+        🔗 手動指定推薦人會員
+    </option>
+
+    ${members
+        .filter(member =>
+            member.id !== currentMember.id
+        )
+        .sort((a, b) =>
+            (a.memberNo || "").localeCompare(
+                b.memberNo || ""
+            )
+        )
+        .map(member => `
+            <option
+                value="${escapeAttribute(
+                    member.id
+                )}"
+            >
+                ${
+                    member.memberNo ||
+                    "尚未發號"
+                }
+                ｜${member.nickname || "未填暱稱"}
+                ｜${member.socialPlatform || "無平台"}
+                ${
+                    member.socialAccount
+                        ? `｜${member.socialAccount}`
+                        : ""
+                }
+            </option>
+        `)
+        .join("")}
+</select>
+
+<input
+    type="hidden"
+    id="referrerMemberId"
+    value="${escapeAttribute(
+        currentMember.referrerMemberId || ""
+    )}"
+>
+
+<input
+    type="hidden"
+    id="referrerMemberNo"
+    value="${escapeAttribute(
+        currentMember.referrerMemberNo || ""
+    )}"
+>
         </div>
 
 
