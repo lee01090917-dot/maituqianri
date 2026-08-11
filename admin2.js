@@ -1380,24 +1380,24 @@ function renderEditProfile() {
 
 </div>
 
-            <!-- 推薦人 -->
+           <!-- 推薦人 -->
 
-            <div class="profile-box">
+<div class="profile-box">
 
-                <small>
-                    👥 推薦人
-                </small>
+    <small>
+        👥 推薦人
+    </small>
 
-                <input
-                    class="member-edit-input"
-                    id="editReferrer"
-                    type="text"
-                    value="${escapeAttribute(
-                        currentMember.referrerNickname || ""
-                    )}"
-                >
+    <input
+        class="member-edit-input"
+        id="editReferrer"
+        type="text"
+        value="${escapeAttribute(
+            currentMember.referrerNickname || ""
+        )}"
+    >
 
-            </div>
+</div>
 
 
             <!-- 會員狀態 -->
@@ -1811,13 +1811,29 @@ async function saveMember() {
         }
 
 
-        const referrerNickname =
-            document
-                .getElementById(
-                    "editReferrer"
-                )
-                ?.value
-                .trim() || "";
+       const referrerAccount =
+    document
+        .getElementById(
+            "editReferrerAccount"
+        )
+        ?.value
+        .trim() || "";
+
+const referrerMemberId =
+    currentMember.referrerMemberId ||
+    "";
+
+const referrerMemberNo =
+    currentMember.referrerMemberNo ||
+    "";
+
+const otherSource =
+    document
+        .getElementById(
+            "editOtherSource"
+        )
+        ?.value
+        .trim() || "";
 
 
         const status =
@@ -1868,7 +1884,7 @@ async function saveMember() {
 
                 joinSource,
 
-                referrerNickname,
+                referrerMemberId,
 
                 status,
 
@@ -1903,7 +1919,7 @@ async function saveMember() {
 
             joinSource,
 
-            referrerNickname,
+            referrerMemberId,
 
             status,
 
