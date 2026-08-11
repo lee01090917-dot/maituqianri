@@ -639,42 +639,34 @@ function renderProfile() {
     let statusClass = "status-default";
 
 
-    if (
-        currentMember.status ===
-        "正常"
-    ) {
-
-        statusClass =
-            "status-active";
-
-    }
-    else if (
-        currentMember.status ===
-        "待審核"
-    ) {
-
-        statusClass =
-            "status-pending";
-
-    }
-    else if (
-        currentMember.status ===
-        "停權"
-    ) {
-
-        statusClass =
-            "status-disabled";
-
-    }
-    else if (
-        currentMember.status ===
-        "黑名單"
-    ) {
-
-        statusClass =
-            "status-blacklist";
-
-    }
+  if (
+    currentMember.status ===
+    "已通過"
+) {
+    statusClass =
+        "status-active";
+}
+else if (
+    currentMember.status ===
+    "待審核"
+) {
+    statusClass =
+        "status-pending";
+}
+else if (
+    currentMember.status ===
+    "暫停"
+) {
+    statusClass =
+        "status-disabled";
+}
+else if (
+    currentMember.status ===
+    "已拒絕"
+) {
+    statusClass =
+        "status-blacklist";
+}
 
 
     profileCard.innerHTML = `
