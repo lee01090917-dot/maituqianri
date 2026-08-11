@@ -1,62 +1,210 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第一次登入</title>
+<link rel="stylesheet" href="login.css">
 
-    <link rel="stylesheet" href="login.css">
-</head>
 
-<body>
+<div class="login-card">
 
-<div class="login-container">
+    <h1>歡迎加入 🎉</h1>
 
-    <div class="login-card">
+    <p class="subtitle">
+        第一次登入，請先完成會員資料。
+    </p>
 
-        <h1>歡迎加入 🎉</h1>
 
-        <p class="subtitle">
-            第一次登入，請先完成會員資料。
-        </p>
+    <!-- =========================
+         社群暱稱
+    ========================== -->
 
-        <input
-            id="nickname"
-            type="text"
-            placeholder="社群暱稱">
+    <input
+        id="nickname"
+        type="text"
+        placeholder="社群暱稱">
 
-        <br><br>
 
-        <select id="platform">
+    <br><br>
 
-            <option value="">請選擇社群平台</option>
 
-            <option>Instagram</option>
+    <!-- =========================
+         社群平台
+    ========================== -->
 
-            <option>Threads</option>
+    <select id="platform">
 
-            <option>Facebook</option>
+        <option value="">
+            請選擇社群平台
+        </option>
 
-        </select>
+        <option value="Instagram">
+            Instagram
+        </option>
 
-        <br><br>
+        <option value="Threads">
+            Threads
+        </option>
 
-        <input
-            id="account"
-            type="text"
-            placeholder="社群帳號">
+        <option value="Facebook">
+            Facebook
+        </option>
 
-        <br><br>
+    </select>
 
-        <button id="save">
-            送出申請
-        </button>
+
+    <br><br>
+
+
+    <!-- =========================
+         社群帳號
+    ========================== -->
+
+    <input
+        id="account"
+        type="text"
+        placeholder="社群帳號">
+
+
+    <br><br>
+
+
+    <!-- =========================
+         加入來源
+    ========================== -->
+
+    <label
+        style="
+            display:block;
+            margin-bottom:10px;
+            font-weight:600;
+        ">
+
+        📍 你是從哪裡知道我們的？
+
+    </label>
+
+
+    <div
+        id="join-source-options"
+        style="
+            display:grid;
+            grid-template-columns:repeat(2,minmax(0,1fr));
+            gap:10px;
+        ">
+
+
+        <label class="source-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="買圖千日 用在一時 Threads">
+
+            <span>
+                🧵 買圖千日 用在一時 Threads
+            </span>
+
+        </label>
+
+
+        <label class="source-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="Facebook 社團">
+
+            <span>
+                📘 Facebook 社團
+            </span>
+
+        </label>
+
+
+        <label class="source-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="朋友推薦">
+
+            <span>
+                👤 朋友推薦
+            </span>
+
+        </label>
+
+
+        <label class="source-option">
+
+            <input
+                type="radio"
+                name="joinSource"
+                value="其他">
+
+            <span>
+                ✨ 其他
+            </span>
+
+        </label>
 
     </div>
 
+
+    <!-- =========================
+         朋友推薦
+    ========================== -->
+
+    <div
+        id="referrer-area"
+        style="
+            display:none;
+            margin-top:14px;
+        ">
+
+        <input
+            id="referrerAccount"
+            type="text"
+            placeholder="推薦人的社群帳號，例如 @xxxxx">
+
+        <small
+            style="
+                display:block;
+                margin-top:6px;
+                color:#94a3b8;
+            ">
+
+            可填 Instagram、Threads、Facebook 等社群帳號
+
+        </small>
+
+    </div>
+
+
+    <!-- =========================
+         其他
+    ========================== -->
+
+    <div
+        id="other-source-area"
+        style="
+            display:none;
+            margin-top:14px;
+        ">
+
+        <input
+            id="otherSource"
+            type="text"
+            placeholder="請輸入來源、帳號或其他備註">
+
+    </div>
+
+
+    <br>
+
+
+    <button
+        id="save"
+        type="button">
+
+        送出申請
+
+    </button>
+
 </div>
-
-<script type="module" src="register.js"></script>
-
-</body>
-</html>
