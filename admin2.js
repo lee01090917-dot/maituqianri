@@ -321,7 +321,9 @@ function renderDashboard() {
 // ==================================================
 
 function renderMemberList(
-    keyword = ""
+    keyword = "",
+    status = "",
+    favorite = ""
 ) {
 
     if (!memberList) return;
@@ -331,7 +333,7 @@ function renderMemberList(
 
 
     const searchKeyword =
-        keyword
+        String(keyword)
             .trim()
             .toLowerCase();
 
@@ -339,6 +341,10 @@ function renderMemberList(
     const list =
         members.filter(member => {
 
+
+            // ==============================
+            // 搜尋
+            // ==============================
 
             const text = [
 
@@ -350,29 +356,77 @@ function renderMemberList(
 
                 member.socialAccount || "",
 
-                member.favoriteMember || ""
+                member.favoriteMember || "",
+
+                member.email || ""
 
             ]
-
                 .join(" ")
-
                 .toLowerCase();
 
 
-            return text.includes(
-                searchKeyword
+            const matchSearch =
+                !searchKeyword ||
+                text.includes(searchKeyword);
+
+
+            // ==============================
+            // 會員狀態
+            // ==============================
+
+            const matchStatus =
+                !status ||
+                member.status === status;
+
+
+            // ==============================
+            // 主擔
+            // ==============================
+
+            const matchFavorite =
+                !favorite ||
+                member.favoriteMember === favorite;
+
+
+            return (
+                matchSearch &&
+                matchStatus &&
+                matchFavorite
             );
 
         });
 
 
+    // ==============================
+    // 沒有符合會員
+    // ==============================
+
+    if (list.length === 0) {
+
+        memberList.innerHTML = `
+
+            <div class="empty">
+
+                找不到符合條件的會員
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // ==============================
+    // 產生會員卡片
+    // ==============================
+
     list.forEach(member => {
 
 
         const card =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
 
         card.className =
@@ -382,6 +436,10 @@ function renderMemberList(
         card.dataset.id =
             member.id;
 
+
+        // ==============================
+        // 狀態樣式
+        // ==============================
 
         let statusClass =
             "pending";
@@ -2807,26 +2865,93 @@ function getDateValue(value) {
 // 搜尋
 // ==================================================
 
-if (memberSearch) {
+// ==================================================
+// 搜尋＋會員篩選
+// ==================================================
 
-    memberSearch.addEventListener(
-        "input",
-        event => {
+const memberStatusFilter =
+    document.getElementById(
+        "memberStatusFilter"
+    );
 
-            currentMember = null;
+const memberFavoriteFilter =
+    document.getElementById(
+        "memberFavoriteFilter"
+    );
 
-            editingMember = false;
+
+function applyMemberFilters() {
+
+    currentMember = null;
+
+    editingMember = false;
 
 
-            renderMemberList(
-                event.target.value
-            );
+    const keyword =
+        memberSearch
+            ?.value
+            ?.trim() || "";
 
-        }
+
+    const status =
+        memberStatusFilter
+            ?.value || "";
+
+
+    const favorite =
+        memberFavoriteFilter
+            ?.value || "";
+
+
+    renderMemberList(
+        keyword,
+        status,
+        favorite
     );
 
 }
 
+
+// ==============================
+// 搜尋
+// ==============================
+
+if (memberSearch) {
+
+    memberSearch.addEventListener(
+        "input",
+        applyMemberFilters
+    );
+
+}
+
+
+// ==============================
+// 狀態篩選
+// ==============================
+
+if (memberStatusFilter) {
+
+    memberStatusFilter.addEventListener(
+        "change",
+        applyMemberFilters
+    );
+
+}
+
+
+// ==============================
+// 主擔篩選
+// ==============================
+
+if (memberFavoriteFilter) {
+
+    memberFavoriteFilter.addEventListener(
+        "change",
+        applyMemberFilters
+    );
+
+}
 
 // ==================================================
 // Modal
