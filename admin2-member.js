@@ -433,65 +433,98 @@ function renderMemberList(
             }
 
 
-            card.innerHTML = `
+          card.innerHTML = `
 
-                <div class="member-top">
+    <div class="member-top">
 
-                    <strong>
+        <strong>
 
-                        ${escapeHTML(
-                            member.memberNo ||
-                            "待發號"
-                        )}
+            ${escapeHTML(
+                member.memberNo ||
+                "待發號"
+            )}
 
-                    </strong>
+        </strong>
 
 
-                    <span
-                        class="status ${statusClass}"
+        <span
+            class="status ${statusClass}"
+        >
+
+            ${escapeHTML(
+                member.status ||
+                "-"
+            )}
+
+        </span>
+
+    </div>
+
+
+    <div class="member-name">
+
+        ${escapeHTML(
+            member.nickname ||
+            "-"
+        )}
+
+    </div>
+
+
+    <div class="member-info">
+
+        ❤️ ${escapeHTML(
+            member.favoriteMember ||
+            "-"
+        )}
+
+    </div>
+
+
+    <div class="member-info">
+
+        ${escapeHTML(
+            member.socialPlatform ||
+            "-"
+        )}
+
+    </div>
+
+
+    ${
+        member.status === "待審核"
+            ? `
+
+                <div class="member-review-actions">
+
+                    <button
+                        type="button"
+                        class="approve-member"
+                        data-id="${escapeAttribute(
+                            member.id
+                        )}"
                     >
-
-                        ${escapeHTML(
-                            member.status ||
-                            "-"
-                        )}
-
-                    </span>
-
-                </div>
+                        🟢 通過
+                    </button>
 
 
-                <div class="member-name">
-
-                    ${escapeHTML(
-                        member.nickname ||
-                        "-"
-                    )}
+                    <button
+                        type="button"
+                        class="reject-member"
+                        data-id="${escapeAttribute(
+                            member.id
+                        )}"
+                    >
+                        🔴 拒絕
+                    </button>
 
                 </div>
 
+            `
+            : ""
+    }
 
-                <div class="member-info">
-
-                    ❤️ ${escapeHTML(
-                        member.favoriteMember ||
-                        "-"
-                    )}
-
-                </div>
-
-
-                <div class="member-info">
-
-                    ${escapeHTML(
-                        member.socialPlatform ||
-                        "-"
-                    )}
-
-                </div>
-
-            `;
-
+`;
 
             memberList.appendChild(
                 card
