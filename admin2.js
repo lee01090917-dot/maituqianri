@@ -1008,23 +1008,37 @@ else if (
         <div class="profile-grid">
 
 
-            <div class="profile-box">
+           <div class="profile-box">
 
-                <small>
-                    🏷️ 會員狀態
-                </small>
+    <div class="profile-box-title">
 
-                <strong
-                    class="${statusClass}">
+        <small>
+            🏷️ 會員狀態
+        </small>
 
-                    ${escapeHTML(
-                        currentMember.status ||
-                        "-"
-                    )}
+        <button
+            type="button"
+            class="quick-edit-btn"
+            id="quickEditStatus">
 
-                </strong>
+            ✏️
 
-            </div>
+        </button>
+
+    </div>
+
+    <strong
+        class="${statusClass}"
+        id="profileStatusText">
+
+        ${escapeHTML(
+            currentMember.status ||
+            "-"
+        )}
+
+    </strong>
+
+</div>
 
 
             <div class="profile-box">
@@ -2268,7 +2282,164 @@ referrerSelect?.addEventListener(
             }
         );
 
+// ==================================================
+// 快速修改會員狀態
+// ==================================================
 
+document
+    .getElementById(
+        "quickEditStatus"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            const statusText =
+                document.getElementById(
+                    "profileStatusText"
+                );
+
+            if (!statusText) return;
+
+
+            statusText.innerHTML = `
+
+                <select
+                    id="quickStatusSelect"
+                    class="quick-status-select"
+                >
+
+                    <option
+                        value="已通過"
+                        ${
+                            currentMember.status ===
+                            "已通過"
+                                ? "selected"
+                                : ""
+                        }
+                    >
+                        🟢 已通過
+                    </option>
+
+                    <option
+                        value="待審核"
+                        ${
+                            currentMember.status ===
+                            "待審核"
+                                ? "selected"
+                                : ""
+                        }
+                    >
+                        🟡 待審核
+                    </option>
+
+                    <option
+                        value="已拒絕"
+                        ${
+                            currentMember.status ===
+                            "已拒絕"
+                                ? "selected"
+                                : ""
+                        }
+                    >
+                        🔴 已拒絕
+                    </option>
+
+                    <option
+                        value="暫停"
+                        ${
+                            currentMember.status ===
+                            "暫停"
+                                ? "selected"
+                                : ""
+                        }
+                    >
+                        ⚪ 暫停
+                    </option>
+
+                </select>
+
+                <button
+                    type="button"
+                    id="quickSaveStatus"
+                    class="quick-status-save"
+                >
+                    💾
+                </button>
+
+            `;
+
+
+            document
+                .getElementById(
+                    "quickSaveStatus"
+                )
+                ?.addEventListener(
+                    "click",
+                    async () => {
+
+                        const select =
+                            document.getElementById(
+                                "quickStatusSelect"
+                            );
+
+                        if (!select) return;
+
+
+                        const newStatus =
+                            select.value;
+
+
+                        try {
+
+                            await setDoc(
+                                doc(
+                                    db,
+                                    "members",
+                                    currentMember.id
+                                ),
+                                {
+                                    status:
+                                        newStatus
+                                },
+                                {
+                                    merge: true
+                                }
+                            );
+
+
+                            currentMember.status =
+                                newStatus;
+
+
+                            showToast(
+                                "會員狀態已更新！"
+                            );
+
+
+                            renderProfile();
+
+
+                        }
+                        catch (error) {
+
+                            console.error(
+                                "更新會員狀態失敗：",
+                                error
+                            );
+
+                            alert(
+                                "會員狀態更新失敗，請稍後再試。"
+                            );
+
+                        }
+
+                    }
+                );
+
+        }
+    );
+    
     // ==================================================
     // 儲存
     // ==================================================
