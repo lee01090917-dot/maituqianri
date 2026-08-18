@@ -44,7 +44,10 @@ const todayCount =
 const memberSearch =
     document.getElementById("memberSearch");
 
-
+const pendingStatCard =
+    document.getElementById(
+        "pendingStatCard"
+    );
 // ==================================================
 // ATEEZ 成員
 // ==================================================
