@@ -3128,6 +3128,57 @@ if (memberFavoriteFilter) {
 }
 
 // ==================================================
+// 點擊「待審核」快速查看
+// ==================================================
+
+if (pendingStatCard) {
+
+    pendingStatCard.addEventListener(
+        "click",
+        () => {
+
+            // 清空搜尋
+            if (memberSearch) {
+
+                memberSearch.value = "";
+
+            }
+
+
+            // 主擔恢復全部
+            if (memberFavoriteFilter) {
+
+                memberFavoriteFilter.value = "";
+
+            }
+
+
+            // 狀態設定為「待審核」
+            if (memberStatusFilter) {
+
+                memberStatusFilter.value =
+                    "待審核";
+
+            }
+
+
+            // 套用篩選
+            applyMemberFilters();
+
+
+            // 捲到會員管理
+            document
+                .querySelector(".workspace")
+                ?.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+    );
+
+}
+
+// ==================================================
 // Modal
 // ==================================================
 
