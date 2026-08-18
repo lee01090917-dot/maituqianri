@@ -432,7 +432,121 @@ function renderMemberList(
 
             }
 
+// ==================================================
+// 更新會員審核狀態
+// ==================================================
 
+async function updateMemberStatus(
+    memberId,
+    newStatus
+) {
+
+    const member =
+        members.find(
+            item =>
+                item.id === memberId
+        );
+
+
+    if (!member) {
+
+        alert("找不到這位會員");
+
+        return;
+
+    }
+
+
+    const actionText =
+        newStatus === "已通過"
+            ? "通過"
+            : "拒絕";
+
+
+    const confirmed =
+        confirm(
+            `確定要${actionText}「${
+                member.nickname || "此會員"
+            }」嗎？`
+        );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+        await setDoc(
+            doc(
+                db,
+                "members",
+                memberId
+            ),
+            {
+                status: newStatus
+            },
+            {
+                merge: true
+            }
+        );
+
+
+        // 更新目前記憶中的資料
+        member.status =
+            newStatus;
+
+
+        // 如果目前正在查看這位會員
+        if (
+            currentMember &&
+            currentMember.id === memberId
+        ) {
+
+            currentMember.status =
+                newStatus;
+
+        }
+
+
+        // 重新整理會員列表
+        applyMemberFilters();
+
+
+        // 重新顯示會員資料
+        renderProfile();
+
+
+        // 更新 Dashboard 數字
+        if (
+            typeof loadDashboard ===
+            "function"
+        ) {
+
+            loadDashboard();
+
+        }
+
+
+        alert(
+            `已${actionText}會員！`
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "更新會員狀態失敗：",
+            error
+        );
+
+
+        alert(
+            "更新失敗，請稍後再試。"
+        );
+
+    }
+
+}
           card.innerHTML = `
 
     <div class="member-top">
@@ -551,20 +665,131 @@ function bindMemberClick() {
         );
 
 
-    cards.forEach(
-        card => {
+   cards.forEach(
+    card => {
 
-            card.onclick = () => {
+        card.onclick = () => {
 
-                cards.forEach(
-                    item => {
+            cards.forEach(
+                item => {
 
-                        item.classList.remove(
-                            "active"
+                    item.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+            card.classList.add(
+                "active"
+            );
+
+
+            currentMember =
+                members.find(
+                    member =>
+                        member.id ===
+                        card.dataset.id
+                );
+
+
+            editingMember =
+                false;
+
+
+            renderProfile();
+
+        };
+
+
+        // ==============================
+        // 審核：通過
+        // ==============================
+
+        const approveButton =
+            card.querySelector(
+                ".approve-member"
+            );
+
+
+        if (approveButton) {
+
+            approveButton.onclick =
+                async (event) => {
+
+                    event.stopPropagation();
+
+
+                    const memberId =
+                        approveButton.dataset.id;
+
+
+                    try {
+
+                        await updateMemberStatus(
+                            memberId,
+                            "已通過"
+                        );
+
+
+                    } catch (error) {
+
+                        console.error(
+                            error
                         );
 
                     }
-                );
+
+                };
+
+        }
+
+
+        // ==============================
+        // 審核：拒絕
+        // ==============================
+
+        const rejectButton =
+            card.querySelector(
+                ".reject-member"
+            );
+
+
+        if (rejectButton) {
+
+            rejectButton.onclick =
+                async (event) => {
+
+                    event.stopPropagation();
+
+
+                    const memberId =
+                        rejectButton.dataset.id;
+
+
+                    try {
+
+                        await updateMemberStatus(
+                            memberId,
+                            "已拒絕"
+                        );
+
+
+                    } catch (error) {
+
+                        console.error(
+                            error
+                        );
+
+                    }
+
+                };
+
+        }
+
+    }
+);
 
 
                 card.classList.add(
