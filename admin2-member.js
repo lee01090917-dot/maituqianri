@@ -476,19 +476,16 @@ async function updateMemberStatus(
 
     try {
 
-        await setDoc(
-            doc(
-                db,
-                "members",
-                memberId
-            ),
-            {
-                status: newStatus
-            },
-            {
-                merge: true
-            }
-        );
+        await updateDoc(
+    doc(
+        db,
+        "members",
+        memberId
+    ),
+    {
+        status: newStatus
+    }
+);
 
 
         // 更新目前記憶中的資料
