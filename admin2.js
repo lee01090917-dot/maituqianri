@@ -3352,7 +3352,58 @@ function escapeAttribute(value) {
 // ==================================================
 // 完成
 // ==================================================
+// ==================================================
+// 左側選單
+// ==================================================
 
+document
+    .querySelectorAll(".menu li")
+    .forEach(item => {
+
+        item.addEventListener(
+            "click",
+            () => {
+
+                const page =
+                    item.dataset.page;
+
+
+                // 更新選單 active
+                document
+                    .querySelectorAll(".menu li")
+                    .forEach(menuItem => {
+
+                        menuItem.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                item.classList.add(
+                    "active"
+                );
+
+
+                // 會員管理
+                if (
+                    page === "members"
+                ) {
+
+                    document
+                        .querySelector(
+                            ".workspace"
+                        )
+                        ?.scrollIntoView({
+                            behavior: "smooth"
+                        });
+
+                }
+
+            }
+        );
+
+    });
 console.log(
     "admin2.js V7 已載入"
 );
