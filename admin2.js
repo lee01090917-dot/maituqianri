@@ -3178,6 +3178,15 @@ if (pendingStatCard) {
 
 }
 
+if (page === "tasks") {
+
+    document
+        .querySelector(".task-section")
+        ?.scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
 // ==================================================
 // Modal
 // ==================================================
