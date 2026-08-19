@@ -336,6 +336,10 @@ function renderDashboard() {
 // 左側會員列表
 // ==================================================
 
+// ==================================================
+// 左側會員列表
+// ==================================================
+
 function renderMemberList(
     keyword = ""
 ) {
@@ -432,6 +436,114 @@ function renderMemberList(
 
             }
 
+
+            card.innerHTML = `
+
+                <div class="member-top">
+
+                    <strong>
+
+                        ${escapeHTML(
+                            member.memberNo ||
+                            "待發號"
+                        )}
+
+                    </strong>
+
+
+                    <span
+                        class="status ${statusClass}"
+                    >
+
+                        ${escapeHTML(
+                            member.status ||
+                            "-"
+                        )}
+
+                    </span>
+
+                </div>
+
+
+                <div class="member-name">
+
+                    ${escapeHTML(
+                        member.nickname ||
+                        "-"
+                    )}
+
+                </div>
+
+
+                <div class="member-info">
+
+                    ❤️ ${escapeHTML(
+                        member.favoriteMember ||
+                        "-"
+                    )}
+
+                </div>
+
+
+                <div class="member-info">
+
+                    ${escapeHTML(
+                        member.socialPlatform ||
+                        "-"
+                    )}
+
+                </div>
+
+
+                ${
+                    member.status === "待審核"
+                        ? `
+
+                            <div class="member-review-actions">
+
+                                <button
+                                    type="button"
+                                    class="approve-member"
+                                    data-id="${escapeAttribute(
+                                        member.id
+                                    )}"
+                                >
+                                    🟢 通過
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="reject-member"
+                                    data-id="${escapeAttribute(
+                                        member.id
+                                    )}"
+                                >
+                                    🔴 拒絕
+                                </button>
+
+                            </div>
+
+                        `
+                        : ""
+                }
+
+            `;
+
+
+            memberList.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    bindMemberClick();
+
+}
+
+
 // ==================================================
 // 更新會員審核狀態
 // ==================================================
@@ -450,7 +562,9 @@ async function updateMemberStatus(
 
     if (!member) {
 
-        alert("找不到這位會員");
+        alert(
+            "找不到這位會員"
+        );
 
         return;
 
@@ -466,7 +580,8 @@ async function updateMemberStatus(
     const confirmed =
         confirm(
             `確定要${actionText}「${
-                member.nickname || "此會員"
+                member.nickname ||
+                "此會員"
             }」嗎？`
         );
 
@@ -477,26 +592,30 @@ async function updateMemberStatus(
     try {
 
         await updateDoc(
-    doc(
-        db,
-        "members",
-        memberId
-    ),
-    {
-        status: newStatus
-    }
-);
+
+            doc(
+                db,
+                "members",
+                memberId
+            ),
+
+            {
+                status:
+                    newStatus
+            }
+
+        );
 
 
-        // 更新目前記憶中的資料
+        // 更新目前記憶中的會員
         member.status =
             newStatus;
 
 
-        // 如果目前正在查看這位會員
         if (
             currentMember &&
-            currentMember.id === memberId
+            currentMember.id ===
+                memberId
         ) {
 
             currentMember.status =
@@ -505,23 +624,14 @@ async function updateMemberStatus(
         }
 
 
-        // 重新整理會員列表
-        applyMemberFilters();
+        // 重新整理
+        renderDashboard();
+
+        renderMemberList();
 
 
-        // 重新顯示會員資料
+        // 保持目前會員資料
         renderProfile();
-
-
-        // 更新 Dashboard 數字
-        if (
-            typeof loadDashboard ===
-            "function"
-        ) {
-
-            loadDashboard();
-
-        }
 
 
         alert(
@@ -544,110 +654,6 @@ async function updateMemberStatus(
     }
 
 }
-          card.innerHTML = `
-
-    <div class="member-top">
-
-        <strong>
-
-            ${escapeHTML(
-                member.memberNo ||
-                "待發號"
-            )}
-
-        </strong>
-
-
-        <span
-            class="status ${statusClass}"
-        >
-
-            ${escapeHTML(
-                member.status ||
-                "-"
-            )}
-
-        </span>
-
-    </div>
-
-
-    <div class="member-name">
-
-        ${escapeHTML(
-            member.nickname ||
-            "-"
-        )}
-
-    </div>
-
-
-    <div class="member-info">
-
-        ❤️ ${escapeHTML(
-            member.favoriteMember ||
-            "-"
-        )}
-
-    </div>
-
-
-    <div class="member-info">
-
-        ${escapeHTML(
-            member.socialPlatform ||
-            "-"
-        )}
-
-    </div>
-
-
-    ${
-        member.status === "待審核"
-            ? `
-
-                <div class="member-review-actions">
-
-                    <button
-                        type="button"
-                        class="approve-member"
-                        data-id="${escapeAttribute(
-                            member.id
-                        )}"
-                    >
-                        🟢 通過
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="reject-member"
-                        data-id="${escapeAttribute(
-                            member.id
-                        )}"
-                    >
-                        🔴 拒絕
-                    </button>
-
-                </div>
-
-            `
-            : ""
-    }
-
-`;
-
-            memberList.appendChild(
-                card
-            );
-
-        }
-    );
-
-
-    bindMemberClick();
-
-}
 
 
 // ==================================================
@@ -662,157 +668,127 @@ function bindMemberClick() {
         );
 
 
-   cards.forEach(
-    card => {
+    cards.forEach(
+        card => {
 
-        card.onclick = () => {
 
-            cards.forEach(
-                item => {
+            // ==============================
+            // 點會員卡
+            // ==============================
 
-                    item.classList.remove(
+            card.onclick =
+                () => {
+
+                    cards.forEach(
+                        item => {
+
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    card.classList.add(
                         "active"
                     );
 
-                }
-            );
+
+                    currentMember =
+                        members.find(
+                            member =>
+                                member.id ===
+                                card.dataset.id
+                        );
 
 
-            card.classList.add(
-                "active"
-            );
+                    editingMember =
+                        false;
 
 
-            currentMember =
-                members.find(
-                    member =>
-                        member.id ===
-                        card.dataset.id
+                    renderProfile();
+
+                };
+
+
+            // ==============================
+            // 🟢 通過
+            // ==============================
+
+            const approveButton =
+                card.querySelector(
+                    ".approve-member"
                 );
 
 
-            editingMember =
-                false;
+            if (
+                approveButton
+            ) {
+
+                approveButton.onclick =
+                    async event => {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
 
 
-            renderProfile();
+                        const memberId =
+                            approveButton.dataset.id;
 
-        };
-
-
-        // ==============================
-        // 審核：通過
-        // ==============================
-
-        const approveButton =
-            card.querySelector(
-                ".approve-member"
-            );
-
-
-        if (approveButton) {
-
-            approveButton.onclick =
-                async (event) => {
-
-                    event.stopPropagation();
-
-
-                    const memberId =
-                        approveButton.dataset.id;
-
-
-                    try {
 
                         await updateMemberStatus(
                             memberId,
                             "已通過"
                         );
 
+                    };
 
-                    } catch (error) {
-
-                        console.error(
-                            error
-                        );
-
-                    }
-
-                };
-
-        }
+            }
 
 
-        // ==============================
-        // 審核：拒絕
-        // ==============================
+            // ==============================
+            // 🔴 拒絕
+            // ==============================
 
-        const rejectButton =
-            card.querySelector(
-                ".reject-member"
-            );
-
-
-        if (rejectButton) {
-
-            rejectButton.onclick =
-                async (event) => {
-
-                    event.stopPropagation();
+            const rejectButton =
+                card.querySelector(
+                    ".reject-member"
+                );
 
 
-                    const memberId =
-                        rejectButton.dataset.id;
+            if (
+                rejectButton
+            ) {
+
+                rejectButton.onclick =
+                    async event => {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
 
 
-                    try {
+                        const memberId =
+                            rejectButton.dataset.id;
+
 
                         await updateMemberStatus(
                             memberId,
                             "已拒絕"
                         );
 
+                    };
 
-                    } catch (error) {
-
-                        console.error(
-                            error
-                        );
-
-                    }
-
-                };
-
-        }
-
-    }
-);
-
-
-                card.classList.add(
-                    "active"
-                );
-
-
-                currentMember =
-                    members.find(
-                        member =>
-                            member.id ===
-                            card.dataset.id
-                    );
-
-
-                editingMember =
-                    false;
-
-
-                renderProfile();
-
-            };
+            }
 
         }
     );
 
+
+    // 沒有選擇會員
+    // 自動選第一位
 
     if (
         cards.length > 0 &&
@@ -824,8 +800,6 @@ function bindMemberClick() {
     }
 
 }
-
-
 // ==================================================
 // 會員資料
 // ==================================================
