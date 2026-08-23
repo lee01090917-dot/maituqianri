@@ -3394,18 +3394,54 @@ document
                 );
 
 
-                // 會員管理
+                // ==============================
+                // 👥 會員管理
+                // ==============================
+
                 if (
                     page === "members"
                 ) {
 
-                    document
-                        .querySelector(
+                    const workspace =
+                        document.querySelector(
                             ".workspace"
-                        )
-                        ?.scrollIntoView({
-                            behavior: "smooth"
+                        );
+
+
+                    if (workspace) {
+
+                        workspace.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
                         });
+
+                    }
+
+                }
+
+
+                // ==============================
+                // 📌 待辦事項
+                // ==============================
+
+                if (
+                    page === "tasks"
+                ) {
+
+                    const taskSection =
+                        document.querySelector(
+                            ".task-section"
+                        );
+
+
+                    if (taskSection) {
+
+                        taskSection.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }
 
                 }
 
@@ -3413,6 +3449,8 @@ document
         );
 
     });
+
+
 console.log(
-    "admin2.js V7 已載入"
+    "admin2.js V8 已載入"
 );
