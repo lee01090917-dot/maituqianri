@@ -3362,105 +3362,86 @@ function escapeAttribute(value) {
 // 完成
 // ==================================================
 // ==================================================
-// 左側選單
+// 後台頁面切換
 // ==================================================
 
-document
-    .querySelectorAll(".menu li")
-    .forEach(item => {
+const pageItems =
+    document.querySelectorAll(".menu li");
 
-        item.addEventListener(
-            "click",
-            () => {
-
-                const page =
-                    item.dataset.page;
+const pageSections =
+    document.querySelectorAll(".page-section");
 
 
-                // 更新 active
-                document
-                    .querySelectorAll(".menu li")
-                    .forEach(menuItem => {
+function showPage(pageName) {
 
-                        menuItem.classList.remove(
-                            "active"
-                        );
+    pageSections.forEach(section => {
 
-                    });
+        if (
+            section.dataset.pageContent ===
+            pageName
+        ) {
 
+            section.style.display = "";
 
-                item.classList.add(
-                    "active"
-                );
+        } else {
 
+            section.style.display = "none";
 
-                // ==============================
-                // 👥 會員管理
-                // ==============================
-
-                if (
-                    page === "members"
-                ) {
-
-                    const target =
-                        document.querySelector(
-                            ".workspace"
-                        );
-
-
-                    if (target) {
-
-                        window.scrollTo({
-
-                            top:
-                                target.offsetTop,
-
-                            behavior:
-                                "smooth"
-
-                        });
-
-                    }
-
-                }
-
-
-                // ==============================
-                // 📌 待辦事項
-                // ==============================
-
-                if (
-                    page === "tasks"
-                ) {
-
-                    const target =
-                        document.querySelector(
-                            ".task-section"
-                        );
-
-
-                    if (target) {
-
-                        window.scrollTo({
-
-                            top:
-                                target.offsetTop,
-
-                            behavior:
-                                "smooth"
-
-                        });
-
-                    }
-
-                }
-
-            }
-        );
+        }
 
     });
 
 
+    pageItems.forEach(item => {
+
+        item.classList.toggle(
+            "active",
+            item.dataset.page === pageName
+        );
+
+    });
+
+}
+
+
+// ==================================================
+// 左側選單點擊
+// ==================================================
+
+pageItems.forEach(item => {
+
+    item.addEventListener(
+        "click",
+        () => {
+
+            const page =
+                item.dataset.page;
+
+
+            // 目前已完成的頁面
+            if (
+                page === "dashboard" ||
+                page === "members" ||
+                page === "tasks"
+            ) {
+
+                showPage(page);
+
+            }
+
+        }
+    );
+
+});
+
+
+// ==================================================
+// 預設顯示 Dashboard
+// ==================================================
+
+showPage("dashboard");
+
+
 console.log(
-    "admin2.js V9 已載入"
+    "admin2.js V10 已載入"
 );
