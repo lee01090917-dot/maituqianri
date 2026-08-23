@@ -3377,7 +3377,7 @@ document
                     item.dataset.page;
 
 
-                // 更新選單 active
+                // 更新 active
                 document
                     .querySelectorAll(".menu li")
                     .forEach(menuItem => {
@@ -3402,17 +3402,22 @@ document
                     page === "members"
                 ) {
 
-                    const workspace =
+                    const target =
                         document.querySelector(
                             ".workspace"
                         );
 
 
-                    if (workspace) {
+                    if (target) {
 
-                        workspace.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
+                        window.scrollTo({
+
+                            top:
+                                target.offsetTop,
+
+                            behavior:
+                                "smooth"
+
                         });
 
                     }
@@ -3428,17 +3433,22 @@ document
                     page === "tasks"
                 ) {
 
-                    const taskSection =
+                    const target =
                         document.querySelector(
                             ".task-section"
                         );
 
 
-                    if (taskSection) {
+                    if (target) {
 
-                        taskSection.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
+                        window.scrollTo({
+
+                            top:
+                                target.offsetTop,
+
+                            behavior:
+                                "smooth"
+
                         });
 
                     }
@@ -3452,5 +3462,5 @@ document
 
 
 console.log(
-    "admin2.js V8 已載入"
+    "admin2.js V9 已載入"
 );
