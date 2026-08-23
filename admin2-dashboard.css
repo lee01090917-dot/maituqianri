@@ -1,691 +1,446 @@
-/* ==========================================
-   Dashboard
-========================================== */
-
-.dashboard{
-
-    display:grid;
-
-    grid-template-columns:repeat(4,minmax(0,1fr));
-
-    gap:24px;
-
-    margin-bottom:30px;
-
-}
-
-
-/* ==========================================
-   Stat Card
-========================================== */
-
-.stat-card{
-
-    position:relative;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:18px;
-
-    padding:24px;
-
-    background:#ffffff;
-
-    border:1px solid #eceff5;
-
-    border-radius:22px;
-
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
-
-    cursor:pointer;
-
-    overflow:hidden;
-
-    transition:
-        transform .25s,
-        box-shadow .25s,
-        border-color .25s;
-
-}
-
-.stat-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-
-    top:0;
-
-    bottom:0;
-
-    width:5px;
-
-    background:#6366f1;
-
-}
-
-.stat-card:nth-child(2)::before{
-
-    background:#f59e0b;
-
-}
-
-.stat-card:nth-child(3)::before{
-
-    background:#22c55e;
-
-}
-
-.stat-card:nth-child(4)::before{
-
-    background:#3b82f6;
-
-}
-
-.stat-card:hover{
-
-    transform:translateY(-4px);
-
-    border-color:#dce1ff;
-
-    box-shadow:0 16px 34px rgba(15,23,42,.09);
-
-}
-
-
-/* ==========================================
-   Stat Icon
-========================================== */
-
-.stat-card .icon{
-
-    width:64px;
-
-    height:64px;
-
-    flex-shrink:0;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:18px;
-
-    font-size:30px;
-
-    background:#eef2ff;
-
-}
-
-.stat-card:nth-child(2) .icon{
-
-    background:#fff7ed;
-
-}
-
-.stat-card:nth-child(3) .icon{
-
-    background:#ecfdf5;
-
-}
-
-.stat-card:nth-child(4) .icon{
-
-    background:#eff6ff;
-
-}
-
-
-/* ==========================================
-   Stat Text
-========================================== */
-
-.stat-content{
-
-    min-width:0;
-
-    flex:1;
-
-}
-
-.stat-content small{
-
-    display:block;
-
-    margin-bottom:7px;
-
-    color:#94a3b8;
-
-    font-size:13px;
-
-    font-weight:600;
-
-}
-
-.stat-content h2{
-
-    margin:0;
-
-    color:#111827;
-
-    font-size:34px;
-
-    line-height:1;
-
-    font-weight:700;
-
-}
-
-.stat-content p{
-
-    margin:9px 0 0;
-
-    color:#22c55e;
-
-    font-size:13px;
-
-    font-weight:600;
-
-}
-
-
-/* ==========================================
-   最近加入會員
-========================================== */
-
-.recent-section{
-
-    width:100%;
-
-    margin-top:4px;
-
-    margin-bottom:28px;
-
-    background:#ffffff;
-
-    border:1px solid #eceff5;
-
-    border-radius:22px;
-
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
-
-    overflow:hidden;
-
-}
-
-
-/* ==========================================
-   Recent Header
-========================================== */
-
-.recent-section .panel-header{
-
-    min-height:72px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:18px 24px;
-
-    background:#ffffff;
-
-    border-bottom:1px solid #eef2f7;
-
-}
-
-.recent-section .panel-header h2{
-
-    margin:0;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    color:#111827;
-
-    font-size:18px;
-
-    font-weight:700;
-
-}
-
-.recent-section .panel-header button{
-
-    border:none;
-
-    background:#f1f3ff;
-
-    color:#5964e8;
-
-    padding:9px 14px;
-
-    border-radius:10px;
-
-    font-size:13px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.recent-section .panel-header button:hover{
-
-    background:#e5e8ff;
-
-    transform:translateY(-1px);
-
-}
-
-
-/* ==========================================
-   Recent Members
-========================================== */
-
-.recent-members{
-
-    min-height:110px;
-
-    padding:18px 22px;
-
-    display:grid;
-
-    grid-template-columns:repeat(3,minmax(0,1fr));
-
-    gap:14px;
-
-    box-sizing:border-box;
-
-}
-
-
-/* ==========================================
-   沒有會員資料
-========================================== */
-
-.recent-members:empty::before{
-
-    content:"目前尚無最近加入的會員";
-
-    grid-column:1 / -1;
-
-    min-height:70px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    color:#94a3b8;
-
-    font-size:14px;
-
-}
-
-
-/* ==========================================
-   Recent Member Card
-========================================== */
-
-.recent-member-card{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    min-width:0;
-
-    padding:14px 16px;
-
-    background:#f8fafc;
-
-    border:1px solid #eef2f7;
-
-    border-radius:16px;
-
-    transition:.2s;
-
-}
-
-.recent-member-card:hover{
-
-    background:#f6f7ff;
-
-    border-color:#dfe4ff;
-
-    transform:translateY(-2px);
-
-}
-
-
-/* ==========================================
-   Recent Avatar
-========================================== */
-
-.recent-member-avatar{
-
-    width:44px;
-
-    height:44px;
-
-    flex-shrink:0;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:14px;
-
-    background:#eef2ff;
-
-    font-size:21px;
-
-}
-
-
-/* ==========================================
-   Recent Info
-========================================== */
-
-.recent-member-info{
-
-    min-width:0;
-
-}
-
-.recent-member-info strong{
-
-    display:block;
-
-    margin-bottom:3px;
-
-    color:#111827;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-}
-
-.recent-member-info span{
-
-    display:block;
-
-    color:#94a3b8;
-
-    font-size:12px;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-}
-
-
-/* ==========================================
-   快速操作
-========================================== */
-
-.quick-actions{
-
-    display:grid;
-
-    grid-template-columns:repeat(4,minmax(0,1fr));
-
-    gap:14px;
-
-    width:100%;
-
-    margin-top:0;
-
-    margin-bottom:36px;
-
-}
-
-
-/* ==========================================
-   Quick Action Button
-========================================== */
-
-.quick-actions button{
-
-    min-height:54px;
-
-    padding:0 18px;
-
-    border:1px solid #e6e9f2;
-
-    border-radius:16px;
-
-    background:#ffffff;
-
-    color:#475569;
-
-    font-size:14px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    box-shadow:0 5px 16px rgba(15,23,42,.04);
-
-    transition:
-        transform .2s,
-        box-shadow .2s,
-        border-color .2s,
-        background .2s;
-
-}
-
-.quick-actions button:hover{
-
-    transform:translateY(-2px);
-
-    background:#f7f8ff;
-
-    border-color:#cfd5ff;
-
-    color:#4f46e5;
-
-    box-shadow:0 10px 24px rgba(93,104,255,.09);
-
-}
-
-
-/* ==========================================
-   Responsive
-========================================== */
-
-@media (max-width:1400px){
-
-    .dashboard{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-    .recent-members{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-}
-
-@media (max-width:900px){
-
-    .quick-actions{
-
-        grid-template-columns:repeat(2,1fr);
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .dashboard{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .recent-members{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .quick-actions{
-
-        grid-template-columns:1fr;
-
-    }
-
-}
-
 /* ==================================================
-   Dashboard 修正版
-   ================================================== */
+   Dashboard
+================================================== */
 
 .dashboard {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 20px;
+    gap: 18px;
     width: 100%;
-    margin-bottom: 24px;
+    margin: 0 0 24px;
 }
 
 
-.dashboard .stat-card {
-    min-width: 0;
-    width: 100%;
-    min-height: 150px;
+/* ==================================================
+   統計卡片
+================================================== */
 
-    box-sizing: border-box;
+.dashboard .stat-card {
+    position: relative;
+
+    min-width: 0;
+    min-height: 132px;
 
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
 
-    padding: 24px;
+    box-sizing: border-box;
+
+    padding: 22px;
 
     background: #ffffff;
 
-    border: 1px solid #edf0f6;
-    border-radius: 20px;
+    border: 1px solid #edf0f5;
+    border-radius: 18px;
 
     box-shadow:
-        0 6px 20px rgba(15, 23, 42, 0.05);
+        0 4px 16px rgba(15, 23, 42, 0.045);
+
+    overflow: hidden;
 
     transition:
         transform .2s ease,
-        box-shadow .2s ease;
+        box-shadow .2s ease,
+        border-color .2s ease;
 }
 
+
+/* 左側色條 */
+
+.dashboard .stat-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 4px;
+
+    background: #6366f1;
+}
+
+.dashboard .stat-card:nth-child(2)::before {
+    background: #f59e0b;
+}
+
+.dashboard .stat-card:nth-child(3)::before {
+    background: #22c55e;
+}
+
+.dashboard .stat-card:nth-child(4)::before {
+    background: #3b82f6;
+}
+
+
+/* Hover */
 
 .dashboard .stat-card:hover {
     transform: translateY(-2px);
 
+    border-color: #e1e5f0;
+
     box-shadow:
-        0 10px 28px rgba(15, 23, 42, 0.08);
+        0 9px 24px rgba(15, 23, 42, 0.07);
 }
 
 
-.dashboard .stat-card .icon {
-    width: 58px;
-    height: 58px;
+/* ==================================================
+   統計圖示
+================================================== */
 
-    flex-shrink: 0;
+.dashboard .stat-card .icon {
+    width: 54px;
+    height: 54px;
+
+    flex: 0 0 54px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 17px;
+    border-radius: 15px;
 
-    font-size: 28px;
+    background: #eef2ff;
 
-    background: #f1f3ff;
+    font-size: 26px;
 }
 
+.dashboard .stat-card:nth-child(2) .icon {
+    background: #fff7ed;
+}
+
+.dashboard .stat-card:nth-child(3) .icon {
+    background: #ecfdf5;
+}
+
+.dashboard .stat-card:nth-child(4) .icon {
+    background: #eff6ff;
+}
+
+
+/* ==================================================
+   統計文字
+================================================== */
 
 .dashboard .stat-content {
     min-width: 0;
 }
 
-
 .dashboard .stat-content small {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 
     color: #94a3b8;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
 }
-
 
 .dashboard .stat-content h2 {
     margin: 0;
 
     color: #111827;
 
-    font-size: 34px;
+    font-size: 30px;
     line-height: 1.1;
+
     font-weight: 800;
 }
 
-
 .dashboard .stat-content p {
-    margin: 7px 0 0;
+    margin: 6px 0 0;
 
     color: #22c55e;
 
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
 }
 
 
-/* 待審核 */
+/* ==================================================
+   待審核卡片
+================================================== */
 
 .dashboard #pendingStatCard {
     cursor: pointer;
 }
 
 
-/* 平板 */
+/* ==================================================
+   最近加入會員
+================================================== */
 
-@media (max-width: 1100px) {
+.recent-section {
+    width: 100%;
+
+    margin: 0 0 24px;
+
+    background: #ffffff;
+
+    border: 1px solid #edf0f5;
+    border-radius: 18px;
+
+    box-shadow:
+        0 4px 16px rgba(15, 23, 42, 0.045);
+
+    overflow: hidden;
+}
+
+
+/* Header */
+
+.recent-section .panel-header {
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+
+    padding: 16px 20px;
+
+    border-bottom: 1px solid #f0f2f6;
+}
+
+.recent-section .panel-header h2 {
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #111827;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.recent-section .panel-header button {
+    border: none;
+
+    padding: 8px 13px;
+
+    border-radius: 9px;
+
+    background: #f1f3ff;
+
+    color: #5964e8;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.recent-section .panel-header button:hover {
+    background: #e7e9ff;
+}
+
+
+/* Recent Members */
+
+.recent-members {
+    min-height: 96px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    padding: 16px;
+
+    box-sizing: border-box;
+}
+
+
+/* 沒有資料 */
+
+.recent-members:empty::before {
+    content: "目前尚無最近加入的會員";
+
+    grid-column: 1 / -1;
+
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #94a3b8;
+
+    font-size: 13px;
+}
+
+
+/* Recent Member Card */
+
+.recent-member-card {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px 14px;
+
+    background: #f8fafc;
+
+    border: 1px solid #eef1f5;
+
+    border-radius: 14px;
+
+    transition: .2s;
+}
+
+.recent-member-card:hover {
+    background: #f7f8ff;
+
+    border-color: #dfe3ff;
+
+    transform: translateY(-1px);
+}
+
+
+/* Avatar */
+
+.recent-member-avatar {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eef2ff;
+
+    font-size: 19px;
+}
+
+
+/* Info */
+
+.recent-member-info {
+    min-width: 0;
+}
+
+.recent-member-info strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: #111827;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recent-member-info span {
+    display: block;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ==================================================
+   快速操作
+================================================== */
+
+.quick-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+
+    width: 100%;
+
+    margin: 0 0 28px;
+}
+
+.quick-actions button {
+    min-height: 50px;
+
+    padding: 0 16px;
+
+    border: 1px solid #e7eaf1;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 12px rgba(15, 23, 42, 0.035);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease,
+        color .2s ease;
+}
+
+.quick-actions button:hover {
+    transform: translateY(-1px);
+
+    background: #fafaff;
+
+    border-color: #d7dbff;
+
+    color: #4f46e5;
+
+    box-shadow:
+        0 7px 18px rgba(93, 104, 255, 0.07);
+}
+
+
+/* ==================================================
+   Responsive
+================================================== */
+
+@media (max-width: 1200px) {
 
     .dashboard {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .recent-members {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .quick-actions {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
     }
@@ -693,11 +448,17 @@
 }
 
 
-/* 手機 */
-
-@media (max-width: 650px) {
+@media (max-width: 700px) {
 
     .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-members {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
         grid-template-columns: 1fr;
     }
 
