@@ -2,7 +2,11 @@ import { auth, db } from "./firebase.js";
 
 import {
     doc,
-    getDoc
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
@@ -11,48 +15,10 @@ import {
 
 
 /* ==========================================================
-   會員中心 V1
+   神燈精靈
+   會員中心 V2
+   Firestore 版
    ========================================================== */
-
-
-/* ----------------------------------------------------------
-   測試用應付款資料
-   ---------------------------------------------------------- */
-
-const MOCK_PAYMENTS = [
-    {
-        id: "TMA-MK-01",
-        event: "2026 TMA",
-        member: "旼琦",
-        quantity: 2,
-        amount: 300,
-        status: "unpaid"
-    },
-    {
-        id: "ACON-JH-01",
-        event: "2026 ACON",
-        member: "鍾浩",
-        quantity: 1,
-        amount: 500,
-        status: "unpaid"
-    },
-    {
-        id: "AAA-MK-01",
-        event: "2026 AAA",
-        member: "旼琦",
-        quantity: 3,
-        amount: 600,
-        status: "unpaid"
-    },
-    {
-        id: "GDA-JH-01",
-        event: "2026 GDA",
-        member: "鍾浩",
-        quantity: 1,
-        amount: 400,
-        status: "unpaid"
-    }
-];
 
 
 /* ----------------------------------------------------------
@@ -65,7 +31,7 @@ const MemberState = {
 
     member: null,
 
-    payments: [...MOCK_PAYMENTS],
+    payments: [],
 
     selectedPayments: new Set()
 
@@ -73,7 +39,7 @@ const MemberState = {
 
 
 /* ----------------------------------------------------------
-   Init
+   Firebase Auth
    ---------------------------------------------------------- */
 
 onAuthStateChanged(auth, async (user) => {
@@ -84,37 +50,53 @@ onAuthStateChanged(auth, async (user) => {
 
     MemberState.user = user;
 
+
     try {
 
-        const snap = await getDoc(
+        /* ---------- 會員資料 ---------- */
+
+        const memberSnap = await getDoc(
             doc(db, "members", user.uid)
         );
 
-        if (snap.exists()) {
 
-            MemberState.member = snap.data();
+        if (memberSnap.exists()) {
+
+            MemberState.member =
+                memberSnap.data();
 
             renderMemberInfo();
 
         }
 
+
+        /* ---------- 應付款資料 ---------- */
+
+        await loadPayments(user.uid);
+
+
+        /* ---------- Render ---------- */
+
+        renderPaymentCenter();
+
+
     } catch (error) {
 
         console.error(
-            "會員資料讀取失敗：",
+            "會員中心載入失敗：",
             error
         );
 
-    }
+        showPaymentError();
 
-    renderPaymentCenter();
+    }
 
 });
 
 
-/* ----------------------------------------------------------
+/* ==========================================================
    會員資料
-   ---------------------------------------------------------- */
+   ========================================================== */
 
 function renderMemberInfo() {
 
@@ -150,9 +132,94 @@ function renderMemberInfo() {
 }
 
 
-/* ----------------------------------------------------------
-   會員中心
-   ---------------------------------------------------------- */
+/* ==========================================================
+   讀取應付款項
+   ========================================================== */
+
+async function loadPayments(uid) {
+
+    MemberState.payments = [];
+
+    MemberState.selectedPayments.clear();
+
+
+    const paymentsRef =
+        collection(db, "payments");
+
+
+    const paymentQuery =
+        query(
+            paymentsRef,
+            where("memberUid", "==", uid),
+            where("status", "==", "unpaid")
+        );
+
+
+    const snapshot =
+        await getDocs(paymentQuery);
+
+
+    snapshot.forEach((docSnap) => {
+
+        const data =
+            docSnap.data();
+
+
+        MemberState.payments.push({
+
+            id: docSnap.id,
+
+            event:
+                data.event || "",
+
+            member:
+                data.member || "",
+
+            quantity:
+                Number(data.quantity || 0),
+
+            amount:
+                Number(data.amount || 0),
+
+            status:
+                data.status || "unpaid",
+
+            createdAt:
+                data.createdAt || null
+
+        });
+
+    });
+
+
+    /*
+
+       最新建立的款項放前面。
+       如果之後我們有正式 createdAt，
+       再做更精準的排序。
+
+    */
+
+    MemberState.payments.sort(
+        (a, b) => {
+
+            const aTime =
+                a.createdAt?.seconds || 0;
+
+            const bTime =
+                b.createdAt?.seconds || 0;
+
+            return bTime - aTime;
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   會員帳務
+   ========================================================== */
 
 function renderPaymentCenter() {
 
@@ -161,15 +228,14 @@ function renderPaymentCenter() {
             "member-payment-center"
         );
 
+
     if (!container) {
         return;
     }
 
 
     const unpaid =
-        MemberState.payments.filter(
-            item => item.status === "unpaid"
-        );
+        MemberState.payments;
 
 
     const unpaidTotal =
@@ -187,6 +253,7 @@ function renderPaymentCenter() {
             <div class="member-center-header">
 
                 <div>
+
                     <div class="member-center-label">
                         💳 我的帳務
                     </div>
@@ -194,7 +261,9 @@ function renderPaymentCenter() {
                     <h2>
                         待付款
                     </h2>
+
                 </div>
+
 
                 <div class="member-unpaid-summary">
 
@@ -216,55 +285,22 @@ function renderPaymentCenter() {
                 class="member-payment-list"
             >
 
-                ${unpaid.length
-                    ? unpaid.map(
-                        createPaymentCard
-                    ).join("")
-                    : createEmptyPayment()
+                ${
+                    unpaid.length
+                        ? unpaid.map(
+                            createPaymentCard
+                        ).join("")
+                        : createEmptyPayment()
                 }
 
             </div>
 
 
-            <div
-                id="member-payment-footer"
-                class="member-payment-footer"
-            >
-
-                <div>
-
-                    <span>
-                        本次選擇
-                    </span>
-
-                    <strong id="selected-payment-count">
-                        0 筆
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        本次應付
-                    </span>
-
-                    <strong id="selected-payment-total">
-                        NT$0
-                    </strong>
-
-                </div>
-
-
-                <button
-                    id="confirm-member-payment"
-                    class="member-payment-confirm"
-                >
-                    確認本次付款
-                </button>
-
-            </div>
+            ${
+                unpaid.length
+                    ? createPaymentFooter()
+                    : ""
+            }
 
         </div>
 
@@ -276,17 +312,11 @@ function renderPaymentCenter() {
 }
 
 
-/* ----------------------------------------------------------
+/* ==========================================================
    Payment Card
-   ---------------------------------------------------------- */
+   ========================================================== */
 
 function createPaymentCard(item) {
-
-    const checked =
-        MemberState.selectedPayments.has(item.id)
-            ? "checked"
-            : "";
-
 
     return `
 
@@ -300,7 +330,6 @@ function createPaymentCard(item) {
                 id="payment-${item.id}"
                 class="member-payment-checkbox"
                 data-payment-id="${item.id}"
-                ${checked}
             >
 
 
@@ -323,7 +352,7 @@ function createPaymentCard(item) {
 
             <div class="member-payment-price">
 
-                NT$${Number(item.amount).toLocaleString("zh-TW")}
+                NT$${item.amount.toLocaleString("zh-TW")}
 
             </div>
 
@@ -334,9 +363,62 @@ function createPaymentCard(item) {
 }
 
 
-/* ----------------------------------------------------------
+/* ==========================================================
+   Footer
+   ========================================================== */
+
+function createPaymentFooter() {
+
+    return `
+
+        <div
+            id="member-payment-footer"
+            class="member-payment-footer"
+        >
+
+            <div>
+
+                <span>
+                    本次選擇
+                </span>
+
+                <strong id="selected-payment-count">
+                    0 筆
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    本次應付
+                </span>
+
+                <strong id="selected-payment-total">
+                    NT$0
+                </strong>
+
+            </div>
+
+
+            <button
+                id="confirm-member-payment"
+                class="member-payment-confirm"
+            >
+                確認本次付款
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ==========================================================
    Empty
-   ---------------------------------------------------------- */
+   ========================================================== */
 
 function createEmptyPayment() {
 
@@ -363,9 +445,53 @@ function createEmptyPayment() {
 }
 
 
-/* ----------------------------------------------------------
+/* ==========================================================
+   Error
+   ========================================================== */
+
+function showPaymentError() {
+
+    const container =
+        document.getElementById(
+            "member-payment-center"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = `
+
+        <div class="member-center">
+
+            <div class="member-payment-empty">
+
+                <div>
+                    ⚠️
+                </div>
+
+                <h3>
+                    帳務資料載入失敗
+                </h3>
+
+                <p>
+                    請重新整理頁面後再試
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ==========================================================
    Events
-   ---------------------------------------------------------- */
+   ========================================================== */
 
 function bindPaymentEvents() {
 
@@ -388,11 +514,13 @@ function bindPaymentEvents() {
 
                     if (checkbox.checked) {
 
-                        MemberState.selectedPayments.add(id);
+                        MemberState.selectedPayments
+                            .add(id);
 
                     } else {
 
-                        MemberState.selectedPayments.delete(id);
+                        MemberState.selectedPayments
+                            .delete(id);
 
                     }
 
@@ -423,18 +551,17 @@ function bindPaymentEvents() {
 }
 
 
-/* ----------------------------------------------------------
+/* ==========================================================
    Summary
-   ---------------------------------------------------------- */
+   ========================================================== */
 
 function updatePaymentSummary() {
 
     const selected =
         MemberState.payments.filter(
             item =>
-                MemberState.selectedPayments.has(
-                    item.id
-                )
+                MemberState.selectedPayments
+                    .has(item.id)
         );
 
 
@@ -476,18 +603,17 @@ function updatePaymentSummary() {
 }
 
 
-/* ----------------------------------------------------------
+/* ==========================================================
    Confirm
-   ---------------------------------------------------------- */
+   ========================================================== */
 
 function confirmPayment() {
 
     const selected =
         MemberState.payments.filter(
             item =>
-                MemberState.selectedPayments.has(
-                    item.id
-                )
+                MemberState.selectedPayments
+                    .has(item.id)
         );
 
 
@@ -520,15 +646,15 @@ function confirmPayment() {
 
 
     alert(
-        `本次選擇 ${selected.length} 筆\n\n${text}\n\n總計：NT$${total.toLocaleString("zh-TW")}\n\n下一階段再接實際付款流程。`
+        `本次選擇 ${selected.length} 筆\n\n${text}\n\n總計：NT$${total.toLocaleString("zh-TW")}\n\n付款送出功能下一步接。`
     );
 
 }
 
 
-/* ----------------------------------------------------------
+/* ==========================================================
    HTML Escape
-   ---------------------------------------------------------- */
+   ========================================================== */
 
 function escapeHTML(text = "") {
 
