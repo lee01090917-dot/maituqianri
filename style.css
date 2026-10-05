@@ -1458,7 +1458,493 @@ body::before{
     z-index:-1;
 
 }
+/* ==========================================================
+   會員中心 V1
+   ========================================================== */
 
+.member-payment-section{
+    margin-top:36px;
+}
+
+
+.member-center{
+
+    background:rgba(255,255,255,.94);
+
+    border:1px solid rgba(255,255,255,.7);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.06);
+
+}
+
+
+/* Header */
+
+.member-center-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    margin-bottom:24px;
+
+}
+
+
+.member-center-label{
+
+    color:#2563eb;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    margin-bottom:4px;
+
+}
+
+
+.member-center-header h2{
+
+    font-size:26px;
+
+    font-weight:800;
+
+}
+
+
+.member-unpaid-summary{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+}
+
+
+.member-unpaid-summary span{
+
+    color:#888;
+
+    font-size:14px;
+
+}
+
+
+.member-unpaid-summary strong{
+
+    color:#dc2626;
+
+    font-size:24px;
+
+}
+
+
+/* Payment List */
+
+.member-payment-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+
+/* Payment Card */
+
+.member-payment-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    padding:18px;
+
+    background:#fafafa;
+
+    border:1px solid #e8e8e8;
+
+    border-radius:18px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.member-payment-card:hover{
+
+    border-color:#2563eb;
+
+    background:#f8fbff;
+
+}
+
+
+.member-payment-card:has(
+    .member-payment-checkbox:checked
+){
+
+    background:#eff6ff;
+
+    border-color:#2563eb;
+
+    box-shadow:
+        0 5px 18px rgba(37,99,235,.10);
+
+}
+
+
+/* Checkbox */
+
+.member-payment-checkbox{
+
+    width:20px;
+
+    height:20px;
+
+    flex:none;
+
+    accent-color:#2563eb;
+
+    cursor:pointer;
+
+}
+
+
+/* Info */
+
+.member-payment-info{
+
+    flex:1;
+
+    min-width:0;
+
+}
+
+
+.member-payment-event{
+
+    font-size:17px;
+
+    font-weight:800;
+
+    margin-bottom:4px;
+
+}
+
+
+.member-payment-member{
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+
+.member-payment-quantity{
+
+    color:#888;
+
+    font-size:14px;
+
+    margin-top:2px;
+
+}
+
+
+/* Price */
+
+.member-payment-price{
+
+    color:#2563eb;
+
+    font-size:19px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+}
+
+
+/* Footer */
+
+.member-payment-footer{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:28px;
+
+    margin-top:24px;
+
+    padding-top:22px;
+
+    border-top:1px solid #eee;
+
+}
+
+
+.member-payment-footer > div{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+.member-payment-footer span{
+
+    color:#888;
+
+    font-size:13px;
+
+}
+
+
+.member-payment-footer strong{
+
+    font-size:20px;
+
+}
+
+
+#selected-payment-total{
+
+    color:#dc2626;
+
+}
+
+
+/* Confirm */
+
+.member-payment-confirm{
+
+    margin-left:auto;
+
+    min-width:150px;
+
+    height:48px;
+
+    padding:0 22px;
+
+    border:none;
+
+    border-radius:13px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.member-payment-confirm:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+}
+
+
+/* Empty */
+
+.member-payment-empty{
+
+    text-align:center;
+
+    padding:45px 20px;
+
+    color:#999;
+
+}
+
+
+.member-payment-empty > div{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+}
+
+
+.member-payment-empty h3{
+
+    color:#555;
+
+    font-size:18px;
+
+    margin-bottom:5px;
+
+}
+
+
+.member-payment-empty p{
+
+    font-size:14px;
+
+}
+
+
+/* Loading */
+
+.member-center-loading{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    text-align:center;
+
+    color:#999;
+
+}
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .member-center{
+
+        padding:20px;
+
+        border-radius:20px;
+
+    }
+
+
+    .member-center-header{
+
+        align-items:flex-start;
+
+    }
+
+
+    .member-center-header h2{
+
+        font-size:23px;
+
+    }
+
+
+    .member-unpaid-summary strong{
+
+        font-size:20px;
+
+    }
+
+
+    .member-payment-card{
+
+        padding:15px;
+
+    }
+
+
+    .member-payment-event{
+
+        font-size:16px;
+
+    }
+
+
+    .member-payment-price{
+
+        font-size:17px;
+
+    }
+
+
+    .member-payment-footer{
+
+        display:grid;
+
+        grid-template-columns:1fr 1fr;
+
+        gap:15px;
+
+    }
+
+
+    .member-payment-confirm{
+
+        grid-column:1 / -1;
+
+        width:100%;
+
+        margin-left:0;
+
+    }
+
+}
+
+
+@media(max-width:480px){
+
+    .member-center-header{
+
+        flex-direction:column;
+
+        width:100%;
+
+    }
+
+
+    .member-unpaid-summary{
+
+        align-items:flex-start;
+
+    }
+
+
+    .member-payment-card{
+
+        gap:10px;
+
+    }
+
+
+    .member-payment-price{
+
+        font-size:16px;
+
+    }
+
+}
 /* ==========================================================
    END
 ========================================================== */
