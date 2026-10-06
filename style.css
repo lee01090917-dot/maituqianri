@@ -1945,6 +1945,468 @@ body::before{
     }
 
 }
+
+/* =========================================================
+   💰 儲值金 / 小額退款管理
+   ========================================================= */
+
+[data-page-content="deposit"] {
+    padding: 28px;
+}
+
+
+/* =========================
+   標題區
+   ========================= */
+
+[data-page-content="deposit"] h2 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #26354a;
+    letter-spacing: 0.5px;
+}
+
+[data-page-content="deposit"] > p {
+    margin: 0 0 22px;
+    color: #7b8798;
+    font-size: 14px;
+}
+
+
+/* =========================
+   搜尋框
+   ========================= */
+
+[data-page-content="deposit"] input[type="text"],
+[data-page-content="deposit"] input[type="search"] {
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+
+    padding: 11px 15px;
+
+    border: 1px solid #dfe5ef;
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    font-size: 14px;
+    color: #334155;
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+[data-page-content="deposit"] input[type="text"]:focus,
+[data-page-content="deposit"] input[type="search"]:focus {
+    border-color: #9aaee8;
+
+    box-shadow:
+        0 0 0 4px rgba(130, 150, 220, 0.12);
+}
+
+[data-page-content="deposit"] input::placeholder {
+    color: #aab3c1;
+}
+
+
+/* =========================
+   會員列表
+   ========================= */
+
+[data-page-content="deposit"] button {
+    font-family: inherit;
+}
+
+
+/* 如果會員列表是直接產生的按鈕 */
+
+[data-page-content="deposit"] button:not(.deposit-action) {
+    border: 1px solid #e2e7f0;
+    background: #fff;
+    color: #425066;
+
+    border-radius: 10px;
+
+    padding: 9px 13px;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        background .15s ease;
+}
+
+[data-page-content="deposit"] button:not(.deposit-action):hover {
+    background: #f7f8fc;
+
+    box-shadow:
+        0 4px 12px rgba(60, 80, 120, 0.08);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   會員選擇卡片
+   ========================= */
+
+[data-page-content="deposit"] .member-card {
+    background: rgba(255, 255, 255, 0.96);
+
+    border: 1px solid #e6eaf1;
+
+    border-radius: 16px;
+
+    padding: 14px 16px;
+
+    margin-top: 10px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 14px rgba(60, 75, 110, 0.05);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
+}
+
+[data-page-content="deposit"] .member-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #cdd7ee;
+
+    box-shadow:
+        0 8px 22px rgba(60, 75, 110, 0.09);
+}
+
+
+/* =========================
+   會員資訊區
+   ========================= */
+
+[data-page-content="deposit"] .member-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #29364b;
+}
+
+[data-page-content="deposit"] .member-no {
+    color: #8b95a5;
+    font-size: 13px;
+}
+
+
+/* =========================
+   目前選中的會員
+   ========================= */
+
+[data-page-content="deposit"] .member-card.active,
+[data-page-content="deposit"] .member-card.selected {
+    border-color: #aebde7;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8f9ff,
+            #f1f5ff
+        );
+
+    box-shadow:
+        0 8px 24px rgba(103, 124, 190, 0.12);
+}
+
+
+/* =========================================================
+   會員餘額詳細區
+   ========================================================= */
+
+[data-page-content="deposit"] .member-detail,
+[data-page-content="deposit"] .deposit-detail {
+    margin-top: 22px;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border: 1px solid #e5e9f1;
+
+    border-radius: 20px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 8px 28px rgba(48, 63, 95, 0.07);
+}
+
+
+/* =========================
+   會員標題
+   ========================= */
+
+[data-page-content="deposit"] .member-detail h3,
+[data-page-content="deposit"] .deposit-detail h3 {
+    margin: 0 0 4px;
+
+    font-size: 21px;
+
+    color: #26354a;
+}
+
+[data-page-content="deposit"] .member-detail p,
+[data-page-content="deposit"] .deposit-detail p {
+    margin: 4px 0;
+
+    color: #8a94a5;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   三個餘額卡片
+   ========================================================= */
+
+[data-page-content="deposit"] .balance-grid,
+[data-page-content="deposit"] .balance-cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin: 20px 0;
+}
+
+
+/* 通用餘額卡 */
+
+[data-page-content="deposit"] .balance-card {
+    position: relative;
+
+    padding: 18px;
+
+    border-radius: 16px;
+
+    background: #fff;
+
+    border: 1px solid #e8ebf2;
+
+    box-shadow:
+        0 4px 14px rgba(50, 65, 100, 0.05);
+}
+
+
+/* 儲值金 */
+
+[data-page-content="deposit"] .balance-card.stored,
+[data-page-content="deposit"] .stored-balance {
+    background:
+        linear-gradient(
+            135deg,
+            #f4f8ff,
+            #ffffff
+        );
+
+    border-color: #dce6fa;
+}
+
+
+/* 小額退款 */
+
+[data-page-content="deposit"] .balance-card.refund,
+[data-page-content="deposit"] .refund-balance {
+    background:
+        linear-gradient(
+            135deg,
+            #fff8f4,
+            #ffffff
+        );
+
+    border-color: #f3e1d6;
+}
+
+
+/* 總額 */
+
+[data-page-content="deposit"] .balance-card.total,
+[data-page-content="deposit"] .total-balance {
+    background:
+        linear-gradient(
+            135deg,
+            #f7f4ff,
+            #ffffff
+        );
+
+    border-color: #e4dcf5;
+}
+
+
+/* 餘額標題 */
+
+[data-page-content="deposit"] .balance-card .label,
+[data-page-content="deposit"] .balance-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    color: #7c8798;
+}
+
+
+/* 餘額數字 */
+
+[data-page-content="deposit"] .balance-card .amount,
+[data-page-content="deposit"] .balance-amount {
+    font-size: 25px;
+
+    font-weight: 750;
+
+    color: #2d3b52;
+
+    letter-spacing: 0.3px;
+}
+
+
+/* =========================================================
+   操作按鈕
+   ========================================================= */
+
+[data-page-content="deposit"] .add-balance-btn,
+[data-page-content="deposit"] .add-refund-btn,
+[data-page-content="deposit"] .deposit-action {
+    border: none !important;
+
+    border-radius: 10px !important;
+
+    padding: 9px 14px !important;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+
+/* 儲值金按鈕 */
+
+[data-page-content="deposit"] .add-balance-btn {
+    background: #eaf1ff !important;
+    color: #526da8 !important;
+}
+
+
+/* 退款按鈕 */
+
+[data-page-content="deposit"] .add-refund-btn {
+    background: #fff0e9 !important;
+    color: #a66c50 !important;
+}
+
+
+[data-page-content="deposit"] .add-balance-btn:hover,
+[data-page-content="deposit"] .add-refund-btn:hover,
+[data-page-content="deposit"] .deposit-action:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 14px rgba(60, 70, 100, 0.10);
+}
+
+
+/* =========================================================
+   餘額異動紀錄
+   ========================================================= */
+
+[data-page-content="deposit"] .transaction-section,
+[data-page-content="deposit"] .balance-history {
+    margin-top: 24px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #edf0f5;
+}
+
+
+[data-page-content="deposit"] .transaction-section h4,
+[data-page-content="deposit"] .balance-history h4 {
+    margin: 0 0 12px;
+
+    font-size: 16px;
+
+    color: #354258;
+}
+
+
+/* 沒有紀錄 */
+
+[data-page-content="deposit"] .empty,
+[data-page-content="deposit"] .empty-state {
+    padding: 22px;
+
+    text-align: center;
+
+    border-radius: 12px;
+
+    background: #f8f9fb;
+
+    color: #9aa3b1;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   RWD
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    [data-page-content="deposit"] .balance-grid,
+    [data-page-content="deposit"] .balance-cards {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    [data-page-content="deposit"] {
+
+        padding: 18px;
+
+    }
+
+    [data-page-content="deposit"] h2 {
+
+        font-size: 23px;
+
+    }
+
+    [data-page-content="deposit"] input[type="text"],
+    [data-page-content="deposit"] input[type="search"] {
+
+        max-width: none;
+
+    }
+
+}
 /* ==========================================================
    END
 ========================================================== */
