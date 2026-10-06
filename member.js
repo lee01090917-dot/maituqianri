@@ -8,7 +8,8 @@ import {
     where,
     getDocs,
     updateDoc,
-    serverTimestamp
+    serverTimestamp,
+    runTransaction
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
@@ -18,7 +19,7 @@ import {
 
 /* ==========================================================
    神燈精靈
-   會員中心 V4
+   會員中心
    Firestore 版
    ========================================================== */
 
@@ -52,6 +53,7 @@ onAuthStateChanged(auth, async (user) => {
 
     MemberState.user = user;
 
+
     try {
 
         /* ---------- 會員資料 ---------- */
@@ -59,6 +61,7 @@ onAuthStateChanged(auth, async (user) => {
         const memberSnap = await getDoc(
             doc(db, "members", user.uid)
         );
+
 
         if (memberSnap.exists()) {
 
@@ -133,7 +136,7 @@ function renderMemberInfo() {
 
 
 /* ==========================================================
-   讀取帳務
+   讀取應付款項
    ========================================================== */
 
 async function loadPayments(uid) {
@@ -147,91 +150,124 @@ async function loadPayments(uid) {
         collection(db, "payments");
 
 
-    /*
-       讀取這位會員自己的所有付款資料。
-
-       會員端只顯示：
-       unpaid ＝ 待付款
-       pending ＝ 待對帳
-
-       paid 等其他狀態不顯示。
-    */
-
     const paymentQuery =
         query(
             paymentsRef,
-            where("memberUid", "==", uid)
+            where(
+                "memberUid",
+                "==",
+                uid
+            )
         );
 
 
     const snapshot =
-        await getDocs(paymentQuery);
+        await getDocs(
+            paymentQuery
+        );
 
 
-    snapshot.forEach((docSnap) => {
+    snapshot.forEach(
+        (docSnap) => {
 
-        const data =
-            docSnap.data();
+            const data =
+                docSnap.data();
 
 
-        if (
-            data.status !== "unpaid" &&
-            data.status !== "pending"
-        ) {
-            return;
+            if (
+                data.status !== "unpaid" &&
+                data.status !== "pending"
+            ) {
+                return;
+            }
+
+
+            MemberState.payments.push({
+
+                id:
+                    docSnap.id,
+
+                event:
+                    data.event || "",
+
+                member:
+                    data.member || "",
+
+                quantity:
+                    Number(
+                        data.quantity || 0
+                    ),
+
+                amount:
+                    Number(
+                        data.amount || 0
+                    ),
+
+                status:
+                    data.status ||
+                    "unpaid",
+
+                createdAt:
+                    data.createdAt ||
+                    null,
+
+                paymentRequestedAt:
+                    data.paymentRequestedAt ||
+                    null,
+
+                remittanceDate:
+                    data.remittanceDate ||
+                    "",
+
+                remittanceTime:
+                    data.remittanceTime ||
+                    "",
+
+                remittanceBank:
+                    data.remittanceBank ||
+                    "",
+
+                remittanceLast5:
+                    data.remittanceLast5 ||
+                    "",
+
+                remittanceNote:
+                    data.remittanceNote ||
+                    "",
+
+                remittanceTotal:
+                    Number(
+                        data.remittanceTotal ||
+                        0
+                    ),
+
+                originalPaymentTotal:
+                    Number(
+                        data.originalPaymentTotal ||
+                        data.amount ||
+                        0
+                    ),
+
+                refundBalanceUsed:
+                    Number(
+                        data.refundBalanceUsed ||
+                        0
+                    ),
+
+                storedBalanceUsed:
+                    Number(
+                        data.storedBalanceUsed ||
+                        0
+                    ),
+
+                remittanceBatchId:
+                    data.remittanceBatchId ||
+                    ""
+
+            });
+
         }
-
-
-        MemberState.payments.push({
-
-            id:
-                docSnap.id,
-
-            event:
-                data.event || "",
-
-            member:
-                data.member || "",
-
-            quantity:
-                Number(data.quantity || 0),
-
-            amount:
-                Number(data.amount || 0),
-
-            status:
-                data.status || "unpaid",
-
-            createdAt:
-                data.createdAt || null,
-
-            paymentRequestedAt:
-                data.paymentRequestedAt || null,
-
-            remittanceDate:
-                data.remittanceDate || "",
-
-            remittanceTime:
-                data.remittanceTime || "",
-
-            remittanceBank:
-                data.remittanceBank || "",
-
-            remittanceLast5:
-                data.remittanceLast5 || "",
-
-            remittanceNote:
-                data.remittanceNote || "",
-
-            remittanceTotal:
-                Number(data.remittanceTotal || 0),
-
-            remittanceBatchId:
-                data.remittanceBatchId || ""
-
-        });
-
-    });
+    );
 
 
     /* ---------- 排序 ---------- */
@@ -240,15 +276,42 @@ async function loadPayments(uid) {
         (a, b) => {
 
             const aTime =
-                a.createdAt?.seconds || 0;
+                a.createdAt?.seconds ||
+                0;
 
             const bTime =
-                b.createdAt?.seconds || 0;
+                b.createdAt?.seconds ||
+                0;
 
             return bTime - aTime;
 
         }
     );
+
+}
+
+
+/* ==========================================================
+   取得會員餘額
+   ========================================================== */
+
+function getMemberBalance() {
+
+    return {
+
+        storedBalance:
+            Number(
+                MemberState.member?.storedBalance ||
+                0
+            ),
+
+        refundBalance:
+            Number(
+                MemberState.member?.refundBalance ||
+                0
+            )
+
+    };
 
 }
 
@@ -287,7 +350,10 @@ function renderPaymentCenter() {
     const unpaidTotal =
         unpaid.reduce(
             (sum, item) =>
-                sum + Number(item.amount || 0),
+                sum +
+                Number(
+                    item.amount || 0
+                ),
             0
         );
 
@@ -295,9 +361,24 @@ function renderPaymentCenter() {
     const pendingTotal =
         pending.reduce(
             (sum, item) =>
-                sum + Number(item.amount || 0),
+                sum +
+                Number(
+                    item.amount || 0
+                ),
             0
         );
+
+
+    const {
+        storedBalance,
+        refundBalance
+    } =
+        getMemberBalance();
+
+
+    const availableBalance =
+        storedBalance +
+        refundBalance;
 
 
     container.innerHTML = `
@@ -326,7 +407,9 @@ function renderPaymentCenter() {
                     </span>
 
                     <strong>
-                        NT$${unpaidTotal.toLocaleString("zh-TW")}
+                        NT$${unpaidTotal.toLocaleString(
+                            "zh-TW"
+                        )}
                     </strong>
 
                 </div>
@@ -341,9 +424,11 @@ function renderPaymentCenter() {
 
                 ${
                     unpaid.length
-                        ? unpaid.map(
-                            createPaymentCard
-                        ).join("")
+                        ? unpaid
+                            .map(
+                                createPaymentCard
+                            )
+                            .join("")
                         : createEmptyPayment()
                 }
 
@@ -357,17 +442,97 @@ function renderPaymentCenter() {
             }
 
 
+            <!-- ==========================================
+                 我的餘額
+                 ========================================== -->
+
+            <div
+                class="member-balance-summary"
+            >
+
+                <div
+                    class="member-balance-summary-title"
+                >
+                    💰 我的餘額
+                </div>
+
+
+                <div
+                    class="member-balance-summary-grid"
+                >
+
+                    <div
+                        class="member-balance-summary-item"
+                    >
+
+                        <span>
+                            儲值金
+                        </span>
+
+                        <strong>
+                            NT$${storedBalance.toLocaleString(
+                                "zh-TW"
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="member-balance-summary-item"
+                    >
+
+                        <span>
+                            小額退款
+                        </span>
+
+                        <strong>
+                            NT$${refundBalance.toLocaleString(
+                                "zh-TW"
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="member-balance-summary-total"
+                >
+
+                    <span>
+                        可使用餘額
+                    </span>
+
+                    <strong>
+                        NT$${availableBalance.toLocaleString(
+                            "zh-TW"
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
             ${
                 pending.length
                     ? `
 
-                        <div class="member-pending-section">
+                        <div
+                            class="member-pending-section"
+                        >
 
-                            <div class="member-pending-header">
+                            <div
+                                class="member-pending-header"
+                            >
 
                                 <div>
 
-                                    <div class="member-center-label">
+                                    <div
+                                        class="member-center-label"
+                                    >
                                         🕐 待對帳
                                     </div>
 
@@ -378,14 +543,18 @@ function renderPaymentCenter() {
                                 </div>
 
 
-                                <div class="member-unpaid-summary">
+                                <div
+                                    class="member-unpaid-summary"
+                                >
 
                                     <span>
                                         ${pending.length} 筆
                                     </span>
 
                                     <strong>
-                                        NT$${pendingTotal.toLocaleString("zh-TW")}
+                                        NT$${pendingTotal.toLocaleString(
+                                            "zh-TW"
+                                        )}
                                     </strong>
 
                                 </div>
@@ -393,12 +562,16 @@ function renderPaymentCenter() {
                             </div>
 
 
-                            <div class="member-payment-list">
+                            <div
+                                class="member-payment-list"
+                            >
 
                                 ${
-                                    pending.map(
-                                        createPendingPaymentCard
-                                    ).join("")
+                                    pending
+                                        .map(
+                                            createPendingPaymentCard
+                                        )
+                                        .join("")
                                 }
 
                             </div>
@@ -440,28 +613,44 @@ function createPaymentCard(item) {
             >
 
 
-            <div class="member-payment-info">
+            <div
+                class="member-payment-info"
+            >
 
-                <div class="member-payment-event">
-                    ${escapeHTML(item.event)}
+                <div
+                    class="member-payment-event"
+                >
+                    ${escapeHTML(
+                        item.event
+                    )}
                 </div>
 
 
-                <div class="member-payment-member">
-                    👤 ${escapeHTML(item.member)}
+                <div
+                    class="member-payment-member"
+                >
+                    👤 ${escapeHTML(
+                        item.member
+                    )}
                 </div>
 
 
-                <div class="member-payment-quantity">
+                <div
+                    class="member-payment-quantity"
+                >
                     📦 ${item.quantity} 張
                 </div>
 
             </div>
 
 
-            <div class="member-payment-price">
+            <div
+                class="member-payment-price"
+            >
 
-                NT$${item.amount.toLocaleString("zh-TW")}
+                NT$${item.amount.toLocaleString(
+                    "zh-TW"
+                )}
 
             </div>
 
@@ -484,19 +673,31 @@ function createPendingPaymentCard(item) {
             class="member-payment-card member-payment-pending"
         >
 
-            <div class="member-payment-info">
+            <div
+                class="member-payment-info"
+            >
 
-                <div class="member-payment-event">
-                    ${escapeHTML(item.event)}
+                <div
+                    class="member-payment-event"
+                >
+                    ${escapeHTML(
+                        item.event
+                    )}
                 </div>
 
 
-                <div class="member-payment-member">
-                    👤 ${escapeHTML(item.member)}
+                <div
+                    class="member-payment-member"
+                >
+                    👤 ${escapeHTML(
+                        item.member
+                    )}
                 </div>
 
 
-                <div class="member-payment-quantity">
+                <div
+                    class="member-payment-quantity"
+                >
                     📦 ${item.quantity} 張
                 </div>
 
@@ -505,7 +706,9 @@ function createPendingPaymentCard(item) {
                     item.remittanceDate
                         ? `
 
-                            <div class="member-payment-remittance">
+                            <div
+                                class="member-payment-remittance"
+                            >
 
                                 🏦
                                 ${escapeHTML(
@@ -543,11 +746,17 @@ function createPendingPaymentCard(item) {
             </div>
 
 
-            <div class="member-payment-price">
+            <div
+                class="member-payment-price"
+            >
 
-                NT$${item.amount.toLocaleString("zh-TW")}
+                NT$${item.amount.toLocaleString(
+                    "zh-TW"
+                )}
 
-                <div class="member-payment-status">
+                <div
+                    class="member-payment-status"
+                >
                     待對帳
                 </div>
 
@@ -559,295 +768,566 @@ function createPendingPaymentCard(item) {
 
 }
 
+                <label class="member-balance-option">
 
-/* ==========================================================
-   Footer
-   ========================================================== */
+                    <input
+                        type="checkbox"
+                        id="use-stored-balance"
+                        ${storedBalance > 0 ? "" : "disabled"}
+                    >
 
-function createPaymentFooter() {
+                    <span class="member-balance-option-info">
 
-    return `
+                        <strong>
+                            使用儲值金
+                        </strong>
 
-        <div
-            id="member-payment-footer"
-            class="member-payment-footer"
-        >
+                        <small>
+                            可用 NT$${storedBalance.toLocaleString("zh-TW")}
+                        </small>
 
-            <div>
+                    </span>
 
-                <span>
-                    本次選擇
-                </span>
-
-                <strong id="selected-payment-count">
-                    0 筆
-                </strong>
+                </label>
 
             </div>
 
 
-            <div>
-
-                <span>
-                    本次應付
-                </span>
-
-                <strong id="selected-payment-total">
-                    NT$0
-                </strong>
-
-            </div>
-
-
-            <button
-                id="confirm-member-payment"
-                class="member-payment-confirm"
+            <div
+                class="member-payment-method-result"
+                id="member-payment-method-result"
             >
-                我要付款
-            </button>
-
-        </div>
-
-    `;
-
-}
-
-
-/* ==========================================================
-   Empty
-   ========================================================== */
-
-function createEmptyPayment() {
-
-    return `
-
-        <div class="member-payment-empty">
-
-            <div>
-                🎉
+                尚未使用餘額
             </div>
 
-            <h3>
-                目前沒有待付款項目
-            </h3>
 
-            <p>
-                有新的款項時會顯示在這裡
-            </p>
+            <div
+                class="member-payment-modal-actions"
+            >
+
+                <button
+                    type="button"
+                    class="member-modal-cancel"
+                    id="member-method-cancel"
+                >
+                    取消
+                </button>
+
+
+                <button
+                    type="button"
+                    class="member-payment-confirm"
+                    id="member-method-next"
+                >
+                    下一步
+                </button>
+
+            </div>
 
         </div>
 
     `;
 
-}
+
+    document.body.appendChild(
+        modal
+    );
 
 
-/* ==========================================================
-   Error
-   ========================================================== */
+    const close =
+        () => modal.remove();
 
-function showPaymentError() {
 
-    const container =
+    const refundCheckbox =
         document.getElementById(
-            "member-payment-center"
+            "use-refund-balance"
         );
 
 
-    if (!container) {
-        return;
+    const storedCheckbox =
+        document.getElementById(
+            "use-stored-balance"
+        );
+
+
+    const result =
+        document.getElementById(
+            "member-payment-method-result"
+        );
+
+
+    /* ======================================================
+       計算餘額折抵
+       ====================================================== */
+
+    function updateMethodSummary() {
+
+        let remaining =
+            total;
+
+
+        let refundUsed =
+            0;
+
+
+        let storedUsed =
+            0;
+
+
+        /* ---------- 小額退款 ---------- */
+
+        if (
+            refundCheckbox?.checked
+        ) {
+
+            refundUsed =
+                Math.min(
+                    refundBalance,
+                    remaining
+                );
+
+
+            remaining -=
+                refundUsed;
+
+        }
+
+
+        /* ---------- 儲值金 ---------- */
+
+        if (
+            storedCheckbox?.checked
+        ) {
+
+            storedUsed =
+                Math.min(
+                    storedBalance,
+                    remaining
+                );
+
+
+            remaining -=
+                storedUsed;
+
+        }
+
+
+        /* ---------- 顯示 ---------- */
+
+        if (result) {
+
+            result.innerHTML = `
+
+                <div>
+
+                    小額退款折抵：
+
+                    <strong>
+                        NT$${refundUsed.toLocaleString(
+                            "zh-TW"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    儲值金折抵：
+
+                    <strong>
+                        NT$${storedUsed.toLocaleString(
+                            "zh-TW"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="member-payment-method-remaining"
+                >
+
+                    尚需付款：
+
+                    <strong>
+                        NT$${remaining.toLocaleString(
+                            "zh-TW"
+                        )}
+                    </strong>
+
+                </div>
+
+            `;
+
+        }
+
+
+        return {
+
+            refundUsed,
+
+            storedUsed,
+
+            remaining
+
+        };
+
     }
 
 
-    container.innerHTML = `
+    refundCheckbox?.addEventListener(
+        "change",
+        updateMethodSummary
+    );
 
-        <div class="member-center">
 
-            <div class="member-payment-empty">
+    storedCheckbox?.addEventListener(
+        "change",
+        updateMethodSummary
+    );
 
-                <div>
-                    ⚠️
-                </div>
 
-                <h3>
-                    帳務資料載入失敗
-                </h3>
+    updateMethodSummary();
 
-                <p>
-                    請重新整理頁面後再試
-                </p>
 
-            </div>
+    /* ======================================================
+       關閉
+       ====================================================== */
 
-        </div>
+    modal
+        .querySelector(
+            ".member-payment-modal-backdrop"
+        )
+        ?.addEventListener(
+            "click",
+            close
+        );
 
-    `;
+
+    document
+        .getElementById(
+            "member-method-close"
+        )
+        ?.addEventListener(
+            "click",
+            close
+        );
+
+
+    document
+        .getElementById(
+            "member-method-cancel"
+        )
+        ?.addEventListener(
+            "click",
+            close
+        );
+
+
+    /* ======================================================
+       下一步
+       ====================================================== */
+
+    document
+        .getElementById(
+            "member-method-next"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
+
+                const usage =
+                    updateMethodSummary();
+
+
+                close();
+
+
+                /*
+                   還有需要匯款的金額
+                   → 進銀行匯款流程
+                */
+
+                if (
+                    usage.remaining > 0
+                ) {
+
+                    openBankInfoModal(
+                        selected,
+                        total,
+                        usage.refundUsed,
+                        usage.storedUsed
+                    );
+
+                }
+
+                /*
+                   餘額已經完全支付
+                   → 直接 paid
+                */
+
+                else {
+
+                    completeBalancePayment(
+                        selected,
+                        total,
+                        usage.refundUsed,
+                        usage.storedUsed
+                    );
+
+                }
+
+            }
+        );
 
 }
 
 
 /* ==========================================================
-   Events
+   純餘額付款
    ========================================================== */
 
-function bindPaymentEvents() {
+async function completeBalancePayment(
+    selected,
+    total,
+    refundUsed,
+    storedUsed
+) {
 
-    const checkboxes =
-        document.querySelectorAll(
-            ".member-payment-checkbox"
-        );
+    try {
+
+        await runTransaction(
+            db,
+            async transaction => {
+
+                const memberRef =
+                    doc(
+                        db,
+                        "members",
+                        MemberState.user.uid
+                    );
 
 
-    checkboxes.forEach(
-        checkbox => {
-
-            checkbox.addEventListener(
-                "change",
-                () => {
-
-                    const id =
-                        checkbox.dataset.paymentId;
+                const memberSnap =
+                    await transaction.get(
+                        memberRef
+                    );
 
 
-                    if (checkbox.checked) {
+                if (
+                    !memberSnap.exists()
+                ) {
 
-                        MemberState.selectedPayments
-                            .add(id);
+                    throw new Error(
+                        "找不到會員資料"
+                    );
 
-                    } else {
+                }
 
-                        MemberState.selectedPayments
-                            .delete(id);
+
+                const memberData =
+                    memberSnap.data();
+
+
+                const currentRefund =
+                    Number(
+                        memberData.refundBalance ||
+                        0
+                    );
+
+
+                const currentStored =
+                    Number(
+                        memberData.storedBalance ||
+                        0
+                    );
+
+
+                /* ---------- 再次確認餘額 ---------- */
+
+                if (
+                    currentRefund <
+                        refundUsed ||
+
+                    currentStored <
+                        storedUsed
+                ) {
+
+                    throw new Error(
+                        "會員餘額不足，請重新整理後再試"
+                    );
+
+                }
+
+
+                const paymentRefs = [];
+
+
+                /* ---------- 檢查所有款項 ---------- */
+
+                for (
+                    const item
+                    of selected
+                ) {
+
+                    const paymentRef =
+                        doc(
+                            db,
+                            "payments",
+                            item.id
+                        );
+
+
+                    const paymentSnap =
+                        await transaction.get(
+                            paymentRef
+                        );
+
+
+                    if (
+                        !paymentSnap.exists() ||
+                        paymentSnap.data().status !==
+                            "unpaid"
+                    ) {
+
+                        throw new Error(
+                            "其中一筆款項狀態已變更，請重新整理後再試"
+                        );
 
                     }
 
 
-                    updatePaymentSummary();
+                    paymentRefs.push(
+                        paymentRef
+                    );
 
                 }
-            );
-
-        }
-    );
 
 
-    const confirmButton =
-        document.getElementById(
-            "confirm-member-payment"
+                /* ---------- 扣會員餘額 ---------- */
+
+                transaction.update(
+                    memberRef,
+                    {
+
+                        refundBalance:
+                            currentRefund -
+                            refundUsed,
+
+                        storedBalance:
+                            currentStored -
+                            storedUsed
+
+                    }
+                );
+
+
+                /* ---------- 款項改 paid ---------- */
+
+                for (
+                    const paymentRef
+                    of paymentRefs
+                ) {
+
+                    transaction.update(
+                        paymentRef,
+                        {
+
+                            status:
+                                "paid",
+
+                            paidAt:
+                                serverTimestamp(),
+
+                            paymentMethod:
+                                "member_balance",
+
+                            refundBalanceUsed:
+                                refundUsed,
+
+                            storedBalanceUsed:
+                                storedUsed,
+
+                            paymentTotal:
+                                total
+
+                        }
+                    );
+
+                }
+
+            }
         );
 
 
-    confirmButton?.addEventListener(
-        "click",
-        confirmPayment
-    );
+        MemberState
+            .selectedPayments
+            .clear();
 
-
-    updatePaymentSummary();
-
-}
-
-
-/* ==========================================================
-   Summary
-   ========================================================== */
-
-function updatePaymentSummary() {
-
-    const selected =
-        MemberState.payments.filter(
-            item =>
-                item.status === "unpaid" &&
-                MemberState.selectedPayments
-                    .has(item.id)
-        );
-
-
-    const total =
-        selected.reduce(
-            (sum, item) =>
-                sum + Number(item.amount || 0),
-            0
-        );
-
-
-    const countElement =
-        document.getElementById(
-            "selected-payment-count"
-        );
-
-
-    const totalElement =
-        document.getElementById(
-            "selected-payment-total"
-        );
-
-
-    if (countElement) {
-
-        countElement.textContent =
-            `${selected.length} 筆`;
-
-    }
-
-
-    if (totalElement) {
-
-        totalElement.textContent =
-            `NT$${total.toLocaleString("zh-TW")}`;
-
-    }
-
-}
-
-/* ==========================================================
-   Confirm Payment
-   ========================================================== */
-
-async function confirmPayment() {
-
-    const selected =
-        MemberState.payments.filter(
-            item =>
-                item.status === "unpaid" &&
-                MemberState.selectedPayments.has(item.id)
-        );
-
-
-    if (!selected.length) {
 
         alert(
-            "請先選擇這次要付款的項目"
+            `付款完成！\n\n共 ${selected.length} 筆，總計 NT$${total.toLocaleString("zh-TW")}。`
         );
 
-        return;
+
+        /* ---------- 重新抓會員餘額 ---------- */
+
+        const memberSnap =
+            await getDoc(
+                doc(
+                    db,
+                    "members",
+                    MemberState.user.uid
+                )
+            );
+
+
+        if (
+            memberSnap.exists()
+        ) {
+
+            MemberState.member =
+                memberSnap.data();
+
+        }
+
+
+        await loadPayments(
+            MemberState.user.uid
+        );
+
+
+        renderPaymentCenter();
+
+
+    } catch (error) {
+
+        console.error(
+            "餘額付款失敗：",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "餘額付款失敗，請稍後再試。"
+        );
 
     }
-
-
-    const total =
-        selected.reduce(
-            (sum, item) =>
-                sum + Number(item.amount || 0),
-            0
-        );
-
-
-    openBankInfoModal(
-        selected,
-        total
-    );
 
 }
 
 
 /* ==========================================================
-   收款帳戶視窗
+   銀行付款視窗
    ========================================================== */
 
 function openBankInfoModal(
     selected,
-    total
+    total,
+    refundUsed = 0,
+    storedUsed = 0
 ) {
 
     const existing =
@@ -860,7 +1340,9 @@ function openBankInfoModal(
 
 
     const modal =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     modal.id =
@@ -869,6 +1351,12 @@ function openBankInfoModal(
 
     modal.className =
         "member-payment-modal";
+
+
+    const actualBankAmount =
+        total -
+        refundUsed -
+        storedUsed;
 
 
     modal.innerHTML = `
@@ -901,55 +1389,81 @@ function openBankInfoModal(
             <div
                 class="member-payment-modal-subtitle"
             >
-                請先確認以下付款內容，再進行匯款。
+
+                ${
+                    refundUsed > 0 ||
+                    storedUsed > 0
+
+                        ? `
+
+                            餘額折抵後還需匯款：
+
+                            <strong>
+                                NT$${actualBankAmount.toLocaleString(
+                                    "zh-TW"
+                                )}
+                            </strong>
+
+                        `
+
+                        : `
+
+                            請先確認以下付款內容，再進行匯款。
+
+                        `
+                }
+
             </div>
 
 
-            <!-- ==========================
+            <!-- ==================================================
                  本次付款項目
-                 ========================== -->
+                 ================================================== -->
 
             <div
                 class="member-bank-summary"
             >
 
                 ${
-                    selected.map(
-                        item => `
+                    selected
+                        .map(
+                            item => `
 
-                            <div
-                                class="member-bank-summary-row"
-                            >
+                                <div
+                                    class="member-bank-summary-row"
+                                >
 
-                                <span>
+                                    <span>
 
-                                    ${escapeHTML(
-                                        item.event
-                                    )}
+                                        ${escapeHTML(
+                                            item.event
+                                        )}
 
-                                    ｜
+                                        ｜
 
-                                    ${escapeHTML(
-                                        item.member
-                                    )}
+                                        ${escapeHTML(
+                                            item.member
+                                        )}
 
-                                    × ${item.quantity}
+                                        ×
+                                        ${item.quantity}
 
-                                </span>
+                                    </span>
 
 
-                                <strong>
+                                    <strong>
 
-                                    NT$${item.amount.toLocaleString(
-                                        "zh-TW"
-                                    )}
+                                        NT$${item.amount.toLocaleString(
+                                            "zh-TW"
+                                        )}
 
-                                </strong>
+                                    </strong>
 
-                            </div>
+                                </div>
 
-                        `
-                    ).join("")
+                            `
+                        )
+                        .join("")
                 }
 
 
@@ -970,12 +1484,72 @@ function openBankInfoModal(
 
                 </div>
 
+
+                ${
+                    refundUsed > 0 ||
+                    storedUsed > 0
+
+                        ? `
+
+                            <div
+                                class="member-bank-balance-deduction"
+                            >
+
+                                ${
+                                    refundUsed > 0
+
+                                        ? `
+
+                                            <div>
+
+                                                小額退款折抵：
+
+                                                <strong>
+                                                    NT$${refundUsed.toLocaleString(
+                                                        "zh-TW"
+                                                    )}
+                                                </strong>
+
+                                            </div>
+
+                                        `
+
+                                        : ""
+                                }
+
+
+                                ${
+                                    storedUsed > 0
+
+                                        ? `
+
+                                            <div>
+
+                                                儲值金折抵：
+
+                                                <strong>
+                                                    NT$${storedUsed.toLocaleString(
+                                                        "zh-TW"
+                                                    )}
+                                                </strong>
+
+                                            </div>
+
+                                        `
+
+                                        : ""
+                                }
+
+
+                            </div>
+
+                        `
+
+                        : ""
+                }
+
             </div>
 
-
-            <!-- ==========================
-                 收款帳戶
-                 ========================== -->
 
             <div
                 class="member-bank-title"
@@ -1002,6 +1576,7 @@ function openBankInfoModal(
                         <span>
                             中華郵政
                         </span>
+
 
                         <strong>
                             (700)
@@ -1048,6 +1623,7 @@ function openBankInfoModal(
                             永豐銀行
                         </span>
 
+
                         <strong>
                             (807)
                         </strong>
@@ -1081,21 +1657,147 @@ function openBankInfoModal(
 
             </div>
 
+                <div class="member-bank-total">
+                    <span>本次總計</span>
+                    <strong>
+                        NT$${total.toLocaleString("zh-TW")}
+                    </strong>
+                </div>
 
-            <div
-                class="member-bank-hint"
-            >
-                💡 完成匯款後，請點擊下方「我已完成匯款」並填寫匯款資料。
+                ${
+                    refundUsed > 0 || storedUsed > 0
+                        ? `
+                            <div class="member-bank-balance-deduction">
+
+                                ${
+                                    refundUsed > 0
+                                        ? `
+                                            <div>
+                                                小額退款折抵：
+                                                <strong>
+                                                    NT$${refundUsed.toLocaleString("zh-TW")}
+                                                </strong>
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                                ${
+                                    storedUsed > 0
+                                        ? `
+                                            <div>
+                                                儲值金折抵：
+                                                <strong>
+                                                    NT$${storedUsed.toLocaleString("zh-TW")}
+                                                </strong>
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+                        `
+                        : ""
+                }
+
             </div>
 
 
-            <!-- ==========================
-                 按鈕
-                 ========================== -->
+            <div class="member-bank-title">
+                🏦 收款帳戶
+            </div>
 
-            <div
-                class="member-payment-modal-actions"
-            >
+
+            <div class="member-bank-info">
+
+                <!-- ==============================
+                     中華郵政
+                     ============================== -->
+
+                <div class="member-bank-option">
+
+                    <div class="member-bank-name-row">
+
+                        <span>
+                            中華郵政
+                        </span>
+
+                        <strong>
+                            (700)
+                        </strong>
+
+                    </div>
+
+
+                    <div class="member-bank-account-row">
+
+                        <div class="member-bank-account">
+                            24414050555742
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="member-copy-account"
+                            data-account="24414050555742"
+                        >
+                            📋 複製
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     永豐銀行
+                     ============================== -->
+
+                <div class="member-bank-option">
+
+                    <div class="member-bank-name-row">
+
+                        <span>
+                            永豐銀行
+                        </span>
+
+                        <strong>
+                            (807)
+                        </strong>
+
+                    </div>
+
+
+                    <div class="member-bank-account-row">
+
+                        <div class="member-bank-account">
+                            20401800363832
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="member-copy-account"
+                            data-account="20401800363832"
+                        >
+                            📋 複製
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="member-bank-hint">
+
+                💡 完成匯款後，請點擊下方「我已完成匯款」並填寫匯款資料。
+
+            </div>
+
+
+            <div class="member-payment-modal-actions">
 
                 <button
                     type="button"
@@ -1126,7 +1828,9 @@ function openBankInfoModal(
     );
 
 
-    /* ---------- 關閉 ---------- */
+    /* ======================================================
+       關閉視窗
+       ====================================================== */
 
     const close =
         () => modal.remove();
@@ -1191,7 +1895,7 @@ function openBankInfoModal(
                                 );
 
 
-                            const originalText =
+                            const original =
                                 button.textContent;
 
 
@@ -1208,7 +1912,7 @@ function openBankInfoModal(
                                 () => {
 
                                     button.textContent =
-                                        originalText;
+                                        original;
 
                                     button.classList.remove(
                                         "copied"
@@ -1241,7 +1945,7 @@ function openBankInfoModal(
 
 
     /* ======================================================
-       下一步 → 匯款回報
+       我已完成匯款
        ====================================================== */
 
     document
@@ -1257,7 +1961,9 @@ function openBankInfoModal(
 
                 openRemittanceForm(
                     selected,
-                    total
+                    total,
+                    refundUsed,
+                    storedUsed
                 );
 
             }
@@ -1272,7 +1978,9 @@ function openBankInfoModal(
 
 function openRemittanceForm(
     selected,
-    total
+    total,
+    refundUsed = 0,
+    storedUsed = 0
 ) {
 
     const existing =
@@ -1284,8 +1992,16 @@ function openRemittanceForm(
     existing?.remove();
 
 
+    const actualBankAmount =
+        total -
+        refundUsed -
+        storedUsed;
+
+
     const modal =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     modal.id =
@@ -1327,13 +2043,49 @@ function openRemittanceForm(
                 class="member-payment-modal-subtitle"
             >
 
-                本次回報金額：
+                本次原始金額：
 
                 <strong>
                     NT$${total.toLocaleString(
                         "zh-TW"
                     )}
                 </strong>
+
+
+                ${
+                    refundUsed > 0 ||
+                    storedUsed > 0
+
+                        ? `
+
+                            <br>
+
+                            餘額折抵：
+
+                            <strong>
+                                NT$${(
+                                    refundUsed +
+                                    storedUsed
+                                ).toLocaleString(
+                                    "zh-TW"
+                                )}
+                            </strong>
+
+
+                            <br>
+
+                            實際匯款：
+
+                            <strong>
+                                NT$${actualBankAmount.toLocaleString(
+                                    "zh-TW"
+                                )}
+                            </strong>
+
+                        `
+
+                        : ""
+                }
 
             </div>
 
@@ -1342,8 +2094,9 @@ function openRemittanceForm(
                 class="member-remittance-form"
             >
 
-
-                <!-- 匯款日期 -->
+                <!-- ==============================
+                     匯款日期
+                     ============================== -->
 
                 <label>
 
@@ -1361,7 +2114,9 @@ function openRemittanceForm(
                 </label>
 
 
-                <!-- 匯款時間 -->
+                <!-- ==============================
+                     匯款時間
+                     ============================== -->
 
                 <label>
 
@@ -1379,7 +2134,9 @@ function openRemittanceForm(
                 </label>
 
 
-                <!-- 匯入哪個帳戶 -->
+                <!-- ==============================
+                     收款帳戶
+                     ============================== -->
 
                 <label>
 
@@ -1416,7 +2173,9 @@ function openRemittanceForm(
                 </label>
 
 
-                <!-- 匯款末五碼 -->
+                <!-- ==============================
+                     匯款末五碼
+                     ============================== -->
 
                 <label>
 
@@ -1437,7 +2196,9 @@ function openRemittanceForm(
                 </label>
 
 
-                <!-- 備註 -->
+                <!-- ==============================
+                     備註
+                     ============================== -->
 
                 <label>
 
@@ -1462,7 +2223,9 @@ function openRemittanceForm(
             <div
                 class="member-remittance-warning"
             >
+
                 ⚠️ 請確認以上資料與實際匯款內容一致。
+
             </div>
 
 
@@ -1499,7 +2262,9 @@ function openRemittanceForm(
     );
 
 
-    /* ---------- 關閉 ---------- */
+    /* ======================================================
+       關閉
+       ====================================================== */
 
     const close =
         () => modal.remove();
@@ -1536,7 +2301,7 @@ function openRemittanceForm(
 
 
     /* ======================================================
-       末五碼限制只能輸入數字
+       末五碼只能輸入數字
        ====================================================== */
 
     document
@@ -1604,8 +2369,6 @@ function openRemittanceForm(
                     )?.value.trim() || "";
 
 
-                /* ---------- 檢查 ---------- */
-
                 if (
                     !date ||
                     !time ||
@@ -1653,10 +2416,6 @@ function openRemittanceForm(
                 }
 
 
-                /* ==================================================
-                   同一批匯款建立同一個 Batch ID
-                   ================================================== */
-
                 const batchId =
                     `B${Date.now()}_${MemberState.user.uid.slice(0, 6)}`;
 
@@ -1675,68 +2434,185 @@ function openRemittanceForm(
                         bankParts[1] || "";
 
 
-                    /* ==================================================
-                       更新本次選取的所有款項
-                       ================================================== */
+                    const actualBankAmount =
+                        total -
+                        refundUsed -
+                        storedUsed;
 
-                    await Promise.all(
 
-                        selected.map(
-                            item =>
-                                updateDoc(
+                    await runTransaction(
+                        db,
+                        async transaction => {
 
+                            const memberRef =
+                                doc(
+                                    db,
+                                    "members",
+                                    MemberState.user.uid
+                                );
+
+
+                            const memberSnap =
+                                await transaction.get(
+                                    memberRef
+                                );
+
+
+                            if (
+                                !memberSnap.exists()
+                            ) {
+
+                                throw new Error(
+                                    "找不到會員資料"
+                                );
+
+                            }
+
+
+                            const memberData =
+                                memberSnap.data();
+
+
+                            const currentRefund =
+                                Number(
+                                    memberData.refundBalance ||
+                                    0
+                                );
+
+
+                            const currentStored =
+                                Number(
+                                    memberData.storedBalance ||
+                                    0
+                                );
+
+
+                            if (
+                                currentRefund <
+                                    refundUsed ||
+
+                                currentStored <
+                                    storedUsed
+                            ) {
+
+                                throw new Error(
+                                    "會員餘額不足，請重新整理後再試"
+                                );
+
+                            }
+
+
+                            const paymentRefs = [];
+
+
+                            for (
+                                const item
+                                of selected
+                            ) {
+
+                                const paymentRef =
                                     doc(
                                         db,
                                         "payments",
                                         item.id
-                                    ),
+                                    );
 
+
+                                const paymentSnap =
+                                    await transaction.get(
+                                        paymentRef
+                                    );
+
+
+                                if (
+                                    !paymentSnap.exists() ||
+                                    paymentSnap.data().status !==
+                                        "unpaid"
+                                ) {
+
+                                    throw new Error(
+                                        "其中一筆款項狀態已變更，請重新整理後再試"
+                                    );
+
+                                }
+
+
+                                paymentRefs.push(
+                                    paymentRef
+                                );
+
+                            }
+
+
+                            transaction.update(
+                                memberRef,
+                                {
+
+                                    refundBalance:
+                                        currentRefund -
+                                        refundUsed,
+
+                                    storedBalance:
+                                        currentStored -
+                                        storedUsed
+
+                                }
+                            );
+
+
+                            for (
+                                const paymentRef
+                                of paymentRefs
+                            ) {
+
+                                transaction.update(
+                                    paymentRef,
                                     {
 
                                         status:
                                             "pending",
 
-
                                         paymentRequestedAt:
                                             serverTimestamp(),
-
 
                                         remittanceDate:
                                             date,
 
-
                                         remittanceTime:
                                             time,
-
 
                                         remittanceBank:
                                             `${bankCode} ${bankName}`,
 
-
                                         remittanceLast5:
                                             last5,
-
 
                                         remittanceNote:
                                             note,
 
-
                                         remittanceTotal:
+                                            actualBankAmount,
+
+                                        originalPaymentTotal:
                                             total,
 
+                                        refundBalanceUsed:
+                                            refundUsed,
+
+                                        storedBalanceUsed:
+                                            storedUsed,
 
                                         remittanceBatchId:
                                             batchId
 
                                     }
+                                );
 
-                                )
-                        )
+                            }
 
+                        }
                     );
 
-
-                    /* ---------- 清除選取 ---------- */
 
                     MemberState
                         .selectedPayments
@@ -1746,14 +2622,33 @@ function openRemittanceForm(
                     close();
 
 
-                    /* ---------- 提示 ---------- */
-
                     alert(
-                        `匯款回報成功！\n\n共 ${selected.length} 筆，總計 NT$${total.toLocaleString("zh-TW")}。\n\n目前狀態：待對帳`
+                        `匯款回報成功！\n\n本次原始金額 NT$${total.toLocaleString("zh-TW")}\n餘額折抵 NT$${(
+                            refundUsed +
+                            storedUsed
+                        ).toLocaleString("zh-TW")}\n實際匯款 NT$${actualBankAmount.toLocaleString("zh-TW")}\n\n目前狀態：待對帳`
                     );
 
 
-                    /* ---------- 重新載入 ---------- */
+                    const memberSnap =
+                        await getDoc(
+                            doc(
+                                db,
+                                "members",
+                                MemberState.user.uid
+                            )
+                        );
+
+
+                    if (
+                        memberSnap.exists()
+                    ) {
+
+                        MemberState.member =
+                            memberSnap.data();
+
+                    }
+
 
                     await loadPayments(
                         MemberState.user.uid
@@ -1772,6 +2667,7 @@ function openRemittanceForm(
 
 
                     alert(
+                        error.message ||
                         "匯款回報失敗，請稍後再試。"
                     );
 
@@ -1801,37 +2697,21 @@ function escapeHTML(text = "") {
 
     return String(text)
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
+        .replace(/&/g, "&amp;")
 
-        .replace(
-            /</g,
-            "&lt;"
-        )
+        .replace(/</g, "&lt;")
 
-        .replace(
-            />/g,
-            "&gt;"
-        )
+        .replace(/>/g, "&gt;")
 
-        .replace(
-            /"/g,
-            "&quot;"
-        )
+        .replace(/"/g, "&quot;")
 
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/'/g, "&#039;");
 
 }
 
 
 /* ==========================================================
    會員付款中心 V4
-   Modal / Pending / Bank CSS
    ========================================================== */
 
 function ensureMemberPaymentStyles() {
@@ -1846,9 +2726,7 @@ function ensureMemberPaymentStyles() {
 
 
     const style =
-        document.createElement(
-            "style"
-        );
+        document.createElement("style");
 
 
     style.id =
@@ -1857,9 +2735,8 @@ function ensureMemberPaymentStyles() {
 
     style.textContent = `
 
-
         /* ==================================================
-           待對帳區
+           待對帳
            ================================================== */
 
         .member-pending-section {
@@ -1935,7 +2812,7 @@ function ensureMemberPaymentStyles() {
 
 
         /* ==================================================
-           Modal 外層
+           Modal
            ================================================== */
 
         .member-payment-modal {
@@ -2005,15 +2882,11 @@ function ensureMemberPaymentStyles() {
                     30,
                     35,
                     70,
-                    .20
+                    .2
                 );
 
         }
 
-
-        /* ==================================================
-           Modal 關閉按鈕
-           ================================================== */
 
         .member-payment-modal-close {
 
@@ -2035,16 +2908,10 @@ function ensureMemberPaymentStyles() {
 
             font-size: 22px;
 
-            line-height: 1;
-
             cursor: pointer;
 
         }
 
-
-        /* ==================================================
-           Modal 標題
-           ================================================== */
 
         .member-payment-modal-title {
 
@@ -2069,7 +2936,7 @@ function ensureMemberPaymentStyles() {
 
 
         /* ==================================================
-           本次付款明細
+           付款明細
            ================================================== */
 
         .member-bank-summary {
@@ -2097,20 +2964,6 @@ function ensureMemberPaymentStyles() {
             padding: 7px 0;
 
             font-size: 14px;
-
-        }
-
-
-        .member-bank-summary-row span {
-
-            color: #666;
-
-        }
-
-
-        .member-bank-summary-row strong {
-
-            white-space: nowrap;
 
         }
 
@@ -2145,7 +2998,7 @@ function ensureMemberPaymentStyles() {
 
 
         /* ==================================================
-           銀行帳戶
+           銀行
            ================================================== */
 
         .member-bank-title {
@@ -2159,7 +3012,8 @@ function ensureMemberPaymentStyles() {
 
         .member-bank-option {
 
-            padding: 14px 16px;
+            padding:
+                14px 16px;
 
             border-radius: 15px;
 
@@ -2212,10 +3066,6 @@ function ensureMemberPaymentStyles() {
         }
 
 
-        /* ==================================================
-           複製帳號按鈕
-           ================================================== */
-
         .member-copy-account {
 
             flex-shrink: 0;
@@ -2224,7 +3074,8 @@ function ensureMemberPaymentStyles() {
 
             border-radius: 10px;
 
-            padding: 7px 11px;
+            padding:
+                7px 11px;
 
             background: #e9eefc;
 
@@ -2239,13 +3090,6 @@ function ensureMemberPaymentStyles() {
         }
 
 
-        .member-copy-account:hover {
-
-            filter: brightness(.97);
-
-        }
-
-
         .member-copy-account.copied {
 
             background: #e8f7ed;
@@ -2254,10 +3098,6 @@ function ensureMemberPaymentStyles() {
 
         }
 
-
-        /* ==================================================
-           提醒
-           ================================================== */
 
         .member-bank-hint,
         .member-remittance-warning {
@@ -2338,38 +3178,6 @@ function ensureMemberPaymentStyles() {
         }
 
 
-        .member-remittance-form input:focus,
-        .member-remittance-form select:focus,
-        .member-remittance-form textarea:focus {
-
-            border-color:
-                #8d9be0;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(
-                    141,
-                    155,
-                    224,
-                    .12
-                );
-
-        }
-
-
-        .member-remittance-form textarea {
-
-            resize: vertical;
-
-            min-height: 80px;
-
-        }
-
-
-        /* ==================================================
-           Modal 按鈕
-           ================================================== */
-
         .member-payment-modal-actions {
 
             display: flex;
@@ -2404,13 +3212,6 @@ function ensureMemberPaymentStyles() {
         }
 
 
-        .member-modal-cancel:hover {
-
-            filter: brightness(.97);
-
-        }
-
-
         .member-payment-modal
         .member-payment-confirm {
 
@@ -2439,10 +3240,249 @@ function ensureMemberPaymentStyles() {
 
 
         /* ==================================================
+           我的餘額
+           ================================================== */
+
+        .member-balance-summary {
+
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 18px;
+
+            background: #f7f8fc;
+
+        }
+
+
+        .member-balance-summary-title {
+
+            font-weight: 800;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .member-balance-summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap: 10px;
+
+        }
+
+
+        .member-balance-summary-item {
+
+            padding: 12px;
+
+            border-radius: 13px;
+
+            background: #fff;
+
+        }
+
+
+        .member-balance-summary-item span {
+
+            display: block;
+
+            font-size: 12px;
+
+            color: #777;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .member-balance-summary-item strong {
+
+            font-size: 16px;
+
+        }
+
+
+        .member-balance-summary-total {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            gap: 12px;
+
+            margin-top: 12px;
+
+            padding-top: 12px;
+
+            border-top:
+                1px solid
+                rgba(
+                    100,
+                    110,
+                    150,
+                    .12
+                );
+
+            font-weight: 700;
+
+        }
+
+
+        .member-balance-summary-total strong {
+
+            font-size: 18px;
+
+        }
+
+
+        /* ==================================================
+           餘額付款方式
+           ================================================== */
+
+        .member-balance-options {
+
+            display: grid;
+
+            gap: 10px;
+
+            margin:
+                18px 0;
+
+        }
+
+
+        .member-balance-option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 14px;
+
+            border:
+                1px solid
+                #e2e5ee;
+
+            border-radius: 14px;
+
+            cursor: pointer;
+
+        }
+
+
+        .member-balance-option:has(
+            input:checked
+        ) {
+
+            border-color:
+                #8d9be0;
+
+            background:
+                #f7f8ff;
+
+        }
+
+
+        .member-balance-option input {
+
+            width: 18px;
+
+            height: 18px;
+
+        }
+
+
+        .member-balance-option-info {
+
+            display: grid;
+
+            gap: 4px;
+
+        }
+
+
+        .member-balance-option-info small {
+
+            color: #777;
+
+        }
+
+
+        .member-payment-method-result {
+
+            padding: 13px;
+
+            border-radius: 13px;
+
+            background: #f6f8fc;
+
+            line-height: 1.8;
+
+        }
+
+
+        .member-payment-method-remaining {
+
+            margin-top: 7px;
+
+            padding-top: 7px;
+
+            border-top:
+                1px solid
+                rgba(
+                    100,
+                    110,
+                    150,
+                    .12
+                );
+
+        }
+
+
+        .member-bank-balance-deduction {
+
+            margin-top: 10px;
+
+            padding-top: 10px;
+
+            border-top:
+                1px solid
+                rgba(
+                    100,
+                    110,
+                    150,
+                    .12
+                );
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+        }
+
+
+        /* ==================================================
            手機版
            ================================================== */
 
-        @media (max-width: 600px) {
+        @media (
+            max-width: 600px
+        ) {
 
             .member-payment-modal {
 
@@ -2468,11 +3508,10 @@ function ensureMemberPaymentStyles() {
             }
 
 
-            .member-bank-summary-row {
+            .member-balance-summary-grid {
 
-                flex-direction: column;
-
-                gap: 3px;
+                grid-template-columns:
+                    1fr;
 
             }
 
@@ -2485,17 +3524,10 @@ function ensureMemberPaymentStyles() {
             }
 
 
-            .member-payment-modal-actions button {
+            .member-payment-modal-actions
+            button {
 
                 width: 100%;
-
-            }
-
-
-            .member-pending-header {
-
-                align-items:
-                    flex-start;
 
             }
 
@@ -2510,9 +3542,5 @@ function ensureMemberPaymentStyles() {
 
 }
 
-
-/* ==========================================================
-   啟用會員付款中心樣式
-   ========================================================== */
 
 ensureMemberPaymentStyles();
