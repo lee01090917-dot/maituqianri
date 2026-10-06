@@ -3411,15 +3411,17 @@ pageItems.forEach(item => {
 
 
             // 目前已完成的頁面
-          if (
-    page === "dashboard" ||
-    page === "members" ||
-    page === "tasks" ||
-    page === "payments"
-    page === "deposit"
-) {
-    showPage(page);
-}
+            if (
+                page === "dashboard" ||
+                page === "members" ||
+                page === "tasks" ||
+                page === "payments" ||
+                page === "deposit"
+            ) {
+
+                showPage(page);
+
+            }
 
         }
     );
