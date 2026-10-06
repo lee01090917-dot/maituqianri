@@ -48,6 +48,8 @@ const pendingStatCard =
     document.getElementById(
         "pendingStatCard"
     );
+
+
 // ==================================================
 // ATEEZ 成員
 // ==================================================
@@ -699,7 +701,6 @@ function renderProfile() {
 
     let statusClass = "status-default";
 
-
   if (
     currentMember.status ===
     "已通過"
@@ -1124,6 +1125,7 @@ else if (
 
 }
 
+
 // ==================================================
 // 編輯會員資料
 // ==================================================
@@ -1399,7 +1401,7 @@ function renderEditProfile() {
 
             </div>
 
-                        <!-- 帳號 -->
+                                    <!-- 帳號 -->
 
             <div class="profile-box">
 
@@ -2100,6 +2102,377 @@ function searchReferrer(account) {
                 "click",
                 () => {
 
+                    const memberId =
+                        button.dataset.referrerId;
+
+                    const member =
+                        members.find(
+                            item =>
+                                item.id ===
+                                memberId
+                        );
+
+                    if (member) {
+
+                        setReferrer(member);
+
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+
+if (referrerInput) {
+
+    referrerInput.addEventListener(
+        "input",
+        () => {
+
+            searchReferrer(
+                referrerInput.value
+            );
+
+        }
+    );
+
+}
+
+
+if (referrerSelect) {
+
+    referrerSelect.addEventListener(
+        "change",
+        () => {
+
+            const memberId =
+                referrerSelect.value;
+
+            if (!memberId) {
+
+                if (referrerMemberIdInput) {
+
+                    referrerMemberIdInput.value =
+                        "";
+
+                }
+
+                if (referrerMemberNoInput) {
+
+                    referrerMemberNoInput.value =
+                        "";
+
+                }
+
+                return;
+
+            }
+
+
+            const member =
+                members.find(
+                    item =>
+                        item.id ===
+                        memberId
+                );
+
+            if (member) {
+
+                setReferrer(member);
+
+            }
+
+        }
+    );
+
+}
+
+
+// ==================================================
+// 加入來源切換
+// ==================================================
+
+const joinSourceInputs =
+    document.querySelectorAll(
+        'input[name="joinSource"]'
+    );
+
+const referrerSourceBox =
+    document.getElementById(
+        "referrer-source-box"
+    );
+
+const otherSourceBox =
+    document.getElementById(
+        "other-source-box"
+    );
+
+
+function updateJoinSourceUI() {
+
+    const selected =
+        document.querySelector(
+            'input[name="joinSource"]:checked'
+        )?.value || "";
+
+
+    if (referrerSourceBox) {
+
+        referrerSourceBox.style.display =
+            selected === "朋友推薦"
+                ? "block"
+                : "none";
+
+    }
+
+
+    if (otherSourceBox) {
+
+        otherSourceBox.style.display =
+            selected === "其他"
+                ? "block"
+                : "none";
+
+    }
+
+}
+
+
+joinSourceInputs.forEach(input => {
+
+    input.addEventListener(
+        "change",
+        updateJoinSourceUI
+    );
+
+});
+
+
+// ==================================================
+// 副擔下拉
+// ==================================================
+
+const subFavoriteToggle =
+    document.getElementById(
+        "subFavoriteToggle"
+    );
+
+const subFavoriteMenu =
+    document.getElementById(
+        "subFavoriteMenu"
+    );
+
+const subFavoriteText =
+    document.getElementById(
+        "subFavoriteText"
+    );
+
+
+if (
+    subFavoriteToggle &&
+    subFavoriteMenu
+) {
+
+    subFavoriteToggle.addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            subFavoriteMenu.classList.toggle(
+                "show"
+            );
+
+        }
+    );
+
+
+    document.addEventListener(
+        "click",
+        () => {
+
+            subFavoriteMenu.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+}
+
+
+if (subFavoriteMenu) {
+
+    subFavoriteMenu
+        .querySelectorAll(
+            'input[type="checkbox"]'
+        )
+        .forEach(checkbox => {
+
+            checkbox.addEventListener(
+                "change",
+                () => {
+
+                    const selected =
+                        [
+                            ...subFavoriteMenu.querySelectorAll(
+                                'input[type="checkbox"]:checked'
+                            )
+                        ]
+                        .map(
+                            item =>
+                                item.value
+                        );
+
+
+                    if (subFavoriteText) {
+
+                        subFavoriteText.textContent =
+                            selected.length
+                                ? selected.join("、")
+                                : "選擇副擔";
+
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+
+// ==================================================
+// 取消編輯
+// ==================================================
+
+document
+    .getElementById(
+        "cancelEditMember"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            editingMember = false;
+
+            renderProfile();
+
+        }
+    );
+
+
+// ==================================================
+// 快速修改會員狀態
+// ==================================================
+
+document
+    .getElementById(
+        "quickEditStatus"
+    )
+    ?.addEventListener(
+        "click",
+        async () => {
+
+            if (!currentMember) return;
+
+
+            const currentStatus =
+                currentMember.status ||
+                "待審核";
+
+
+            const newStatus =
+                prompt(
+                    "請輸入新的會員狀態：\n\n已通過\n待審核\n已拒絕\n暫停",
+                    currentStatus
+                );
+
+
+            if (
+                newStatus === null
+            ) {
+
+                return;
+
+            }
+
+
+            const allowedStatuses = [
+                "已通過",
+                "待審核",
+                "已拒絕",
+                "暫停"
+            ];
+
+
+            if (
+                !allowedStatuses.includes(
+                    newStatus.trim()
+                )
+            ) {
+
+                alert(
+                    "會員狀態格式不正確。"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                await updateDoc(
+
+                    doc(
+                        db,
+                        "members",
+                        currentMember.id
+                    ),
+
+                    {
+                        status:
+                            newStatus.trim()
+                    }
+
+                );
+
+
+                currentMember.status =
+                    newStatus.trim();
+
+
+                showToast(
+                    "會員狀態已更新！"
+                );
+
+
+                renderProfile();
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    "更新會員狀態失敗：",
+                    error
+                );
+
+                alert(
+                    "會員狀態更新失敗，請稍後再試。"
+                );
+
+            }
+
+        }
+    );
+
+                () => {
+
                     const member =
                         members.find(
                             item =>
@@ -2158,132 +2531,135 @@ referrerSelect?.addEventListener(
 
     }
 );
-    // ==================================================
-    // 副擔下拉選單
-    // ==================================================
-
-    const toggle =
-        document.getElementById(
-            "subFavoriteToggle"
-        );
 
 
-    const menu =
-        document.getElementById(
-            "subFavoriteMenu"
-        );
+// ==================================================
+// 副擔下拉選單
+// ==================================================
 
-
-    const text =
-        document.getElementById(
-            "subFavoriteText"
-        );
-
-
-    toggle?.addEventListener(
-        "click",
-        (event) => {
-
-            event.stopPropagation();
-
-            menu?.classList.toggle(
-                "show"
-            );
-
-        }
+const toggle =
+    document.getElementById(
+        "subFavoriteToggle"
     );
 
 
-    // 點選副擔
+const menu =
+    document.getElementById(
+        "subFavoriteMenu"
+    );
 
-    menu?.querySelectorAll(
-        'input[name="subFavoriteMember"]'
-    ).forEach(checkbox => {
 
-        checkbox.addEventListener(
-            "change",
-            updateSubFavoriteText
+const text =
+    document.getElementById(
+        "subFavoriteText"
+    );
+
+
+toggle?.addEventListener(
+    "click",
+    (event) => {
+
+        event.stopPropagation();
+
+        menu?.classList.toggle(
+            "show"
         );
 
-    });
+    }
+);
 
 
-    function updateSubFavoriteText() {
+// 點選副擔
 
-        const selected =
-            [
-                ...menu.querySelectorAll(
-                    'input[name="subFavoriteMember"]:checked'
-                )
-            ]
-                .map(
-                    checkbox =>
-                        checkbox.value
-                );
+menu?.querySelectorAll(
+    'input[name="subFavoriteMember"]'
+).forEach(checkbox => {
 
+    checkbox.addEventListener(
+        "change",
+        updateSubFavoriteText
+    );
+
+});
+
+
+function updateSubFavoriteText() {
+
+    const selected =
+        [
+            ...menu.querySelectorAll(
+                'input[name="subFavoriteMember"]:checked'
+            )
+        ]
+            .map(
+                checkbox =>
+                    checkbox.value
+            );
+
+
+    if (
+        selected.length
+    ) {
+
+        text.textContent =
+            selected.join("、");
+
+    } else {
+
+        text.textContent =
+            "選擇副擔";
+
+    }
+
+}
+
+
+// 點外面關閉副擔選單
+
+document.addEventListener(
+    "click",
+    function closeSubFavorite(event) {
 
         if (
-            selected.length
+            !event.target.closest(
+                "#subFavoriteSelect"
+            )
         ) {
 
-            text.textContent =
-                selected.join("、");
+            menu?.classList.remove(
+                "show"
+            );
 
-        } else {
-
-            text.textContent =
-                "選擇副擔";
+            document.removeEventListener(
+                "click",
+                closeSubFavorite
+            );
 
         }
 
     }
+);
 
 
-    // 點外面關閉副擔選單
+// ==================================================
+// 取消
+// ==================================================
 
-    document.addEventListener(
+document
+    .getElementById(
+        "cancelEditMember"
+    )
+    ?.addEventListener(
         "click",
-        function closeSubFavorite(event) {
+        () => {
 
-            if (
-                !event.target.closest(
-                    "#subFavoriteSelect"
-                )
-            ) {
+            editingMember = false;
 
-                menu?.classList.remove(
-                    "show"
-                );
-
-                document.removeEventListener(
-                    "click",
-                    closeSubFavorite
-                );
-
-            }
+            renderProfile();
 
         }
     );
 
-
-    // ==================================================
-    // 取消
-    // ==================================================
-
-    document
-        .getElementById(
-            "cancelEditMember"
-        )
-        ?.addEventListener(
-            "click",
-            () => {
-
-                editingMember = false;
-
-                renderProfile();
-
-            }
-        );
 
 // ==================================================
 // 快速修改會員狀態
@@ -2443,18 +2819,18 @@ document
         }
     );
     
-    // ==================================================
-    // 儲存
-    // ==================================================
+// ==================================================
+// 儲存
+// ==================================================
 
-    document
-        .getElementById(
-            "saveMember"
-        )
-        ?.addEventListener(
-            "click",
-            saveMember
-        );
+document
+    .getElementById(
+        "saveMember"
+    )
+    ?.addEventListener(
+        "click",
+        saveMember
+    );
 
 }
 
@@ -2604,6 +2980,7 @@ const referrerMemberNo =
             "referrerMemberNo"
         )
         ?.value || "";
+
 const otherSource =
     document
         .getElementById(
@@ -3127,6 +3504,7 @@ if (memberFavoriteFilter) {
 
 }
 
+
 // ==================================================
 // 點擊「待審核」快速查看
 // ==================================================
@@ -3353,6 +3731,8 @@ function escapeAttribute(value) {
 // ==================================================
 // 完成
 // ==================================================
+
+
 // ==================================================
 // 後台頁面切換
 // ==================================================
