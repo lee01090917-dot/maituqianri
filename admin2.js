@@ -3416,6 +3416,7 @@ pageItems.forEach(item => {
     page === "members" ||
     page === "tasks" ||
     page === "payments"
+    page === "deposit"
 ) {
     showPage(page);
 }
