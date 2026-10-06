@@ -6,7 +6,9 @@ import {
     collection,
     query,
     where,
-    getDocs
+    getDocs,
+    updateDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
@@ -607,7 +609,7 @@ function updatePaymentSummary() {
    Confirm
    ========================================================== */
 
-function confirmPayment() {
+async function confirmPayment() {
 
     const selected =
         MemberState.payments.filter(
@@ -645,12 +647,92 @@ function confirmPayment() {
             .join("\n");
 
 
-    alert(
-        `本次選擇 ${selected.length} 筆\n\n${text}\n\n總計：NT$${total.toLocaleString("zh-TW")}\n\n付款送出功能下一步接。`
-    );
+    const confirmed =
+        confirm(
+            `本次選擇 ${selected.length} 筆\n\n${text}\n\n總計：NT$${total.toLocaleString("zh-TW")}\n\n確認後會將這些項目標記為「待對帳」。`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const confirmButton =
+        document.getElementById(
+            "confirm-member-payment"
+        );
+
+
+    if (confirmButton) {
+
+        confirmButton.disabled = true;
+        confirmButton.textContent = "送出中...";
+
+    }
+
+
+    try {
+
+        await Promise.all(
+            selected.map(
+                item =>
+                    updateDoc(
+                        doc(
+                            db,
+                            "payments",
+                            item.id
+                        ),
+                        {
+                            status: "pending",
+                            paymentRequestedAt:
+                                serverTimestamp()
+                        }
+                    )
+            )
+        );
+
+
+        MemberState.selectedPayments.clear();
+
+
+        alert(
+            `已送出本次付款申請！\n\n共 ${selected.length} 筆，總計 NT$${total.toLocaleString("zh-TW")}。\n\n目前狀態：待對帳`
+        );
+
+
+        await loadPayments(
+            MemberState.user.uid
+        );
+
+
+        renderPaymentCenter();
+
+
+    } catch (error) {
+
+        console.error(
+            "付款申請送出失敗：",
+            error
+        );
+
+
+        alert(
+            "付款申請送出失敗，請稍後再試。"
+        );
+
+
+        if (confirmButton) {
+
+            confirmButton.disabled = false;
+            confirmButton.textContent =
+                "確認本次付款";
+
+        }
+
+    }
 
 }
-
 
 /* ==========================================================
    HTML Escape
