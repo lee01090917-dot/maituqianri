@@ -948,12 +948,13 @@ else if (
 
 
         <!-- ==========================================
-             加入資訊
+
+                     會員資料
         ========================================== -->
 
         <div class="profile-section-title">
 
-            📍 加入資訊
+            📋 會員資訊
 
         </div>
 
@@ -964,7 +965,26 @@ else if (
             <div class="profile-box">
 
                 <small>
-                    📍 加入來源
+                    📅 加入日期
+                </small>
+
+                <strong>
+
+                    ${escapeHTML(
+                        getDateValue(
+                            currentMember.joinDate
+                        ) || "-"
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="profile-box">
+
+                <small>
+                    📣 加入來源
                 </small>
 
                 <strong>
@@ -981,7 +1001,7 @@ else if (
             <div class="profile-box">
 
                 <small>
-                    👥 推薦人
+                    👤 推薦人
                 </small>
 
                 <strong>
@@ -995,102 +1015,17 @@ else if (
             </div>
 
 
-        </div>
-
-
-        <!-- ==========================================
-             會員狀態
-        ========================================== -->
-
-        <div class="profile-section-title">
-
-            🛡️ 會員狀態
-
-        </div>
-
-
-        <div class="profile-grid">
-
-
-           <div class="profile-box">
-
-    <div class="profile-box-title">
-
-        <small>
-            🏷️ 會員狀態
-        </small>
-
-        <button
-            type="button"
-            class="quick-edit-btn"
-            id="quickEditStatus">
-
-            ✏️
-
-        </button>
-
-    </div>
-
-    <strong
-        class="${statusClass}"
-        id="profileStatusText">
-
-        ${escapeHTML(
-            currentMember.status ||
-            "-"
-        )}
-
-    </strong>
-
-</div>
-
-
             <div class="profile-box">
 
                 <small>
-                    🟢 官方 LINE
+                    📌 會員狀態
                 </small>
 
-                <strong>
-
-                    ${
-                        currentMember.officialLine
-                            ? "已加入"
-                            : "未加入"
-                    }
-
-                </strong>
-
-            </div>
-
-
-        </div>
-
-
-        <!-- ==========================================
-             管理
-        ========================================== -->
-
-        <div class="profile-section-title">
-
-            📝 管理資訊
-
-        </div>
-
-
-        <div class="profile-grid">
-
-
-            <div class="profile-box profile-box-wide">
-
-                <small>
-                    📝 管理員備註
-                </small>
-
-                <strong>
+                <strong
+                    class="${statusClass}">
 
                     ${escapeHTML(
-                        currentMember.adminNote ||
+                        currentMember.status ||
                         "-"
                     )}
 
@@ -1101,11 +1036,83 @@ else if (
 
         </div>
 
+
+        <!-- ==========================================
+             官方 LINE
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            💬 官方 LINE
+
+        </div>
+
+
+        <div class="profile-line-box">
+
+            <span>
+
+                ${
+                    currentMember.officialLine
+                        ? "✅ 已加入官方 LINE"
+                        : "❌ 尚未加入官方 LINE"
+                }
+
+            </span>
+
+        </div>
+
+
+        <!-- ==========================================
+             管理備註
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            📝 管理備註
+
+        </div>
+
+
+        <div class="profile-note">
+
+            ${escapeHTML(
+                currentMember.adminNote ||
+                "目前沒有備註"
+            )}
+
+        </div>
+
+
+        <!-- ==========================================
+             快速操作
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            ⚡ 快速操作
+
+        </div>
+
+
+        <div class="profile-quick-actions">
+
+            <button
+                id="quickEditStatus"
+                type="button">
+
+                🔄 修改狀態
+
+            </button>
+
+        </div>
+
+
     `;
 
 
     // ==================================================
-    // 編輯按鈕
+    // 編輯會員
     // ==================================================
 
     document
@@ -1123,90 +1130,110 @@ else if (
             }
         );
 
+
+    // ==================================================
+    // 快速修改狀態
+    // ==================================================
+
+    document
+        .getElementById(
+            "quickEditStatus"
+        )
+        ?.addEventListener(
+            "click",
+            async () => {
+
+                if (!currentMember) return;
+
+
+                const currentStatus =
+                    currentMember.status ||
+                    "待審核";
+
+
+                const newStatus =
+                    prompt(
+                        "請輸入新的會員狀態：",
+                        currentStatus
+                    );
+
+
+                if (
+                    newStatus === null
+                ) {
+
+                    return;
+
+                }
+
+
+                try {
+
+                    await updateDoc(
+
+                        doc(
+                            db,
+                            "members",
+                            currentMember.id
+                        ),
+
+                        {
+                            status:
+                                newStatus.trim()
+                        }
+
+                    );
+
+
+                    currentMember.status =
+                        newStatus.trim();
+
+
+                    showToast(
+                        "會員狀態已更新！"
+                    );
+
+
+                    renderProfile();
+
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "更新會員狀態失敗：",
+                        error
+                    );
+
+
+                    alert(
+                        "會員狀態更新失敗，請稍後再試。"
+                    );
+
+                }
+
+            }
+        );
+
 }
 
 
 // ==================================================
-// 編輯會員資料
+// 編輯會員
 // ==================================================
 
 function renderEditProfile() {
 
-    const currentSubFavorites =
-        Array.isArray(
-            currentMember.subFavoriteMembers
-        )
-            ? currentMember.subFavoriteMembers
-            : [];
+    if (!profileCard) return;
 
-
-    // ==========================================
-    // 主擔選項
-    // ==========================================
-
-    const favoriteOptions =
-        ateezMembers
-            .map(member => `
-
-                <label class="platform-option">
-
-                    <input
-                        type="radio"
-                        name="favoriteMember"
-                        value="${escapeAttribute(member)}"
-                        ${
-                            currentMember.favoriteMember === member
-                                ? "checked"
-                                : ""
-                        }
-                    >
-
-                    <span>
-
-                        ${escapeHTML(member)}
-
-                    </span>
-
-                </label>
-
-            `)
-            .join("");
-
-
-    // ==========================================
-    // 副擔選項
-    // ==========================================
-
-    const subFavoriteOptions =
-        ateezMembers
-            .map(member => `
-
-                <label class="member-multi-option">
-
-                    <input
-                        type="checkbox"
-                        name="subFavoriteMember"
-                        value="${escapeAttribute(member)}"
-                        ${
-                            currentSubFavorites.includes(member)
-                                ? "checked"
-                                : ""
-                        }
-                    >
-
-                    <span>
-
-                        ${escapeHTML(member)}
-
-                    </span>
-
-                </label>
-
-            `)
-            .join("");
+    if (!currentMember) return;
 
 
     profileCard.innerHTML = `
+
+        <!-- ==========================================
+             編輯標題
+        ========================================== -->
 
         <div class="profile-header">
 
@@ -1223,7 +1250,7 @@ function renderEditProfile() {
 
                     <h2>
 
-                        編輯會員
+                        編輯會員資料
 
                     </h2>
 
@@ -1248,16 +1275,7 @@ function renderEditProfile() {
                     id="cancelEditMember"
                     type="button">
 
-                    取消
-
-                </button>
-
-
-                <button
-                    id="saveMember"
-                    type="button">
-
-                    💾 儲存
+                    ✕ 取消
 
                 </button>
 
@@ -1266,552 +1284,736 @@ function renderEditProfile() {
         </div>
 
 
-        <div class="profile-grid member-edit-grid">
+        <!-- ==========================================
+             基本資料
+        ========================================== -->
 
-            <!-- MQ 編號 -->
+        <div class="profile-section-title">
 
-            <div class="profile-box">
+            👤 基本資料
 
-                <small>
-                    🆔 MQ 編號
-                </small>
+        </div>
+
+
+        <div class="edit-grid">
+
+
+            <div class="edit-field">
+
+                <label>
+
+                    會員編號
+
+                </label>
+
 
                 <input
-                    class="member-edit-input"
                     id="editMemberNo"
                     type="text"
                     value="${escapeAttribute(
-                        currentMember.memberNo || ""
+                        currentMember.memberNo ||
+                        ""
                     )}"
                 >
 
             </div>
 
 
-            <!-- 暱稱 -->
+            <div class="edit-field">
 
-            <div class="profile-box">
+                <label>
 
-                <small>
-                    👤 暱稱
-                </small>
+                    暱稱
+
+                </label>
+
 
                 <input
-                    class="member-edit-input"
                     id="editNickname"
                     type="text"
                     value="${escapeAttribute(
-                        currentMember.nickname || ""
+                        currentMember.nickname ||
+                        ""
                     )}"
                 >
 
             </div>
 
 
-            <!-- 社群平台 -->
+            <div class="edit-field">
 
-            <div class="profile-box">
+                <label>
 
-                <small>
-                    📱 社群平台
-                </small>
+                    Email
 
-                <div class="platform-options">
-
-                    <label class="platform-option">
-
-                        <input
-                            type="radio"
-                            name="socialPlatform"
-                            value="Instagram"
-                            ${
-                                currentMember.socialPlatform === "Instagram"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
-
-                        <span>
-                            📷 Instagram
-                        </span>
-
-                    </label>
+                </label>
 
 
-                    <label class="platform-option">
+                <input
+                    id="editEmail"
+                    type="email"
+                    value="${escapeAttribute(
+                        currentMember.email ||
+                        ""
+                    )}"
+                >
 
-                        <input
-                            type="radio"
-                            name="socialPlatform"
-                            value="Threads"
-                            ${
-                                currentMember.socialPlatform === "Threads"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
-
-                        <span>
-                            🧵 Threads
-                        </span>
-
-                    </label>
+            </div>
 
 
-                    <label class="platform-option">
+            <div class="edit-field">
 
-                        <input
-                            type="radio"
-                            name="socialPlatform"
-                            value="Twitter"
-                            ${
-                                currentMember.socialPlatform === "Twitter"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
+                <label>
 
-                        <span>
-                            𝕏 Twitter
-                        </span>
+                    社群帳號
 
-                    </label>
+                </label>
 
 
-                    <label class="platform-option">
+                <input
+                    id="editSocialAccount"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.socialAccount ||
+                        ""
+                    )}"
+                >
 
-                        <input
-                            type="radio"
-                            name="socialPlatform"
-                            value="Facebook"
-                            ${
-                                currentMember.socialPlatform === "Facebook"
-                                    ? "checked"
-                                    : ""
-                            }
-                        >
+            </div>
 
-                        <span>
-                            📘 Facebook
-                        </span>
 
-                    </label>
+        </div>
+
+
+        <!-- ==========================================
+             社群平台
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            🔗 社群平台
+
+        </div>
+
+
+        <div class="platform-options">
+
+
+            <label class="platform-option">
+
+                <input
+                    type="radio"
+                    name="editSocialPlatform"
+                    value="Instagram"
+                    ${
+                        currentMember.socialPlatform ===
+                        "Instagram"
+                            ? "checked"
+                            : ""
+                    }
+                >
+
+                <span>
+
+                    Instagram
+
+                </span>
+
+            </label>
+
+
+            <label class="platform-option">
+
+                <input
+                    type="radio"
+                    name="editSocialPlatform"
+                    value="X"
+                    ${
+                        currentMember.socialPlatform ===
+                        "X"
+                            ? "checked"
+                            : ""
+                    }
+                >
+
+                <span>
+
+                    X
+
+                </span>
+
+            </label>
+
+
+            <label class="platform-option">
+
+                <input
+                    type="radio"
+                    name="editSocialPlatform"
+                    value="Facebook"
+                    ${
+                        currentMember.socialPlatform ===
+                        "Facebook"
+                            ? "checked"
+                            : ""
+                    }
+                >
+
+                <span>
+
+                    Facebook
+
+                </span>
+
+            </label>
+
+
+            <label class="platform-option">
+
+                <input
+                    type="radio"
+                    name="editSocialPlatform"
+                    value="Threads"
+                    ${
+                        currentMember.socialPlatform ===
+                        "Threads"
+                            ? "checked"
+                            : ""
+                    }
+                >
+
+                <span>
+
+                    Threads
+
+                </span>
+
+            </label>
+
+
+            <label class="platform-option">
+
+                <input
+                    type="radio"
+                    name="editSocialPlatform"
+                    value="其他"
+                    ${
+                        currentMember.socialPlatform ===
+                        "其他"
+                            ? "checked"
+                            : ""
+                    }
+                >
+
+                <span>
+
+                    其他
+
+                </span>
+
+            </label>
+
+
+        </div>
+
+
+        <!-- ==========================================
+             ATEEZ 喜好
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            ❤️ ATEEZ 喜好
+
+        </div>
+
+
+        <div class="edit-grid">
+
+
+            <div class="edit-field">
+
+                <label>
+
+                    主擔
+
+                </label>
+
+
+                <select id="editFavoriteMember">
+
+                    <option value="">
+
+                        未設定
+
+                    </option>
+
+
+                    ${ateezMembers
+                        .map(member => `
+
+                            <option
+                                value="${escapeAttribute(
+                                    member
+                                )}"
+                                ${
+                                    currentMember.favoriteMember ===
+                                    member
+                                        ? "selected"
+                                        : ""
+                                }
+                            >
+
+                                ${escapeHTML(
+                                    member
+                                )}
+
+                            </option>
+
+                        `)
+                        .join("")}
+
+                </select>
+
+            </div>
+
+
+            <div class="edit-field">
+
+                <label>
+
+                    副擔
+
+                </label>
+
+
+                <div
+                    class="sub-favorite-wrapper">
+
+                    <button
+                        type="button"
+                        id="subFavoriteToggle"
+                        class="sub-favorite-toggle">
+
+                        選擇副擔 ▾
+
+                    </button>
+
+
+                    <div
+                        id="subFavoriteMenu"
+                        class="sub-favorite-menu">
+
+                        ${ateezMembers
+                            .map(member => `
+
+                                <label>
+
+                                    <input
+                                        type="checkbox"
+                                        value="${escapeAttribute(
+                                            member
+                                        )}"
+                                        ${
+                                            Array.isArray(
+                                                currentMember.subFavoriteMembers
+                                            ) &&
+                                            currentMember.subFavoriteMembers.includes(
+                                                member
+                                            )
+                                                ? "checked"
+                                                : ""
+                                        }
+                                    >
+
+                                    <span>
+
+                                        ${escapeHTML(
+                                            member
+                                        )}
+
+                                    </span>
+
+                                </label>
+
+                            `)
+                            .join("")}
+
+                    </div>
 
                 </div>
 
             </div>
 
-                        button.addEventListener(
-                "click",
-                () => {
 
-                    const memberId =
-                        button.dataset.referrerId;
+        </div>
 
 
-                    const member =
-                        members.find(
-                            item =>
-                                item.id ===
-                                memberId
-                        );
+        <!-- ==========================================
+             官方 LINE
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            💬 官方 LINE
+
+        </div>
 
 
-                    if (member) {
+        <label
+            class="edit-checkbox">
 
-                        setReferrer(
-                            member
-                        );
-
-                    }
-
+            <input
+                id="editOfficialLine"
+                type="checkbox"
+                ${
+                    currentMember.officialLine
+                        ? "checked"
+                        : ""
                 }
-            );
+            >
 
-        });
+            <span>
 
-}
+                已加入官方 LINE
 
+            </span>
 
-// ==================================================
-// 加入來源切換
-// ==================================================
-
-if (referrerInput) {
-
-    referrerInput.addEventListener(
-        "input",
-        () => {
-
-            searchReferrer(
-                referrerInput.value
-            );
-
-        }
-    );
-
-}
+        </label>
 
 
-if (referrerSelect) {
+        <!-- ==========================================
+             加入來源
+        ========================================== -->
 
-    referrerSelect.addEventListener(
-        "change",
-        () => {
+        <div class="profile-section-title">
 
-            const memberId =
-                referrerSelect.value;
+            📣 加入來源
 
-
-            if (!memberId) {
-
-                if (referrerMemberIdInput) {
-
-                    referrerMemberIdInput.value =
-                        "";
-
-                }
+        </div>
 
 
-                if (referrerMemberNoInput) {
-
-                    referrerMemberNoInput.value =
-                        "";
-
-                }
+        <div class="source-options">
 
 
-                return;
+            ${[
+                "朋友介紹",
+                "社群",
+                "IG",
+                "Threads",
+                "X",
+                "其他"
+            ]
+                .map(source => `
 
-            }
+                    <label
+                        class="platform-option">
 
+                        <input
+                            type="radio"
+                            name="editJoinSource"
+                            value="${escapeAttribute(
+                                source
+                            )}"
+                            ${
+                                currentMember.joinSource ===
+                                source
+                                    ? "checked"
+                                    : ""
+                            }
+                        >
 
-            const member =
-                members.find(
-                    item =>
-                        item.id ===
-                        memberId
-                );
+                        <span>
 
+                            ${escapeHTML(
+                                source
+                            )}
 
-            if (member) {
+                        </span>
 
-                setReferrer(
-                    member
-                );
+                    </label>
 
-            }
-
-        }
-    );
-
-}
-
-
-// ==================================================
-// 加入來源 UI
-// ==================================================
-
-const joinSourceInputs =
-    document.querySelectorAll(
-        'input[name="joinSource"]'
-    );
-
-const referrerSourceBox =
-    document.getElementById(
-        "referrer-source-box"
-    );
-
-const otherSourceBox =
-    document.getElementById(
-        "other-source-box"
-    );
+                `)
+                .join("")}
 
 
-function updateJoinSourceUI() {
-
-    const selected =
-        document.querySelector(
-            'input[name="joinSource"]:checked'
-        )?.value || "";
+        </div>
 
 
-    if (referrerSourceBox) {
+        <div class="edit-grid">
 
-        referrerSourceBox.style.display =
-            selected === "朋友推薦"
-                ? "block"
-                : "none";
+
+            <div class="edit-field">
+
+                <label>
+
+                    推薦人
+
+                </label>
+
+
+                <input
+                    id="referrerInput"
+                    type="text"
+                    placeholder="輸入會員編號或暱稱"
+                    value="${escapeAttribute(
+                        currentMember.referrerNickname ||
+                        currentMember.referrerMemberNo ||
+                        ""
+                    )}"
+                >
+
+
+                <select
+                    id="referrerSelect">
+
+                    <option value="">
+
+                        不指定推薦人
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="edit-field">
+
+                <label>
+
+                    其他加入來源
+
+                </label>
+
+
+                <input
+                    id="editJoinSourceOther"
+                    type="text"
+                    value="${escapeAttribute(
+                        currentMember.joinSourceOther ||
+                        ""
+                    )}"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ==========================================
+             會員狀態
+        ========================================== -->
+
+        <div class="profile-section-title">
+
+            📌 會員狀態
+
+        </div>
+
+
+        <div class="edit-grid">
+
+
+            <div class="edit-field">
+
+                <label>
+
+                    狀態
+
+                </label>
+
+
+                <select id="editStatus">
+
+                    <option value="待審核">
+
+                        待審核
+
+                    </option>
+
+
+                    <option value="已通過">
+
+                        已通過
+
+                    </option>
+
+
+                    <option value="暫停">
+
+                        暫停
+
+                    </option>
+
+
+                    <option value="已拒絕">
+
+                        已拒絕
+
+                    </option>
+
+
+                </select>
+
+            </div>
+
+
+            <div class="edit-field">
+
+                <label>
+
+                    管理備註
+
+                </label>
+
+
+                <textarea
+                    id="editAdminNote"
+                    rows="4"
+                >${escapeHTML(
+                    currentMember.adminNote ||
+                    ""
+                )}</textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ==========================================
+             儲存
+        ========================================== -->
+
+        <div class="profile-edit-footer">
+
+            <button
+                id="saveMember"
+                type="button"
+                class="btn-primary">
+
+                💾 儲存會員資料
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    // ==================================================
+    // 預設狀態
+    // ==================================================
+
+    const statusSelect =
+        document.getElementById(
+            "editStatus"
+        );
+
+
+    if (statusSelect) {
+
+        statusSelect.value =
+            currentMember.status ||
+            "待審核";
 
     }
 
 
-    if (otherSourceBox) {
+    // ==================================================
+    // 取消
+    // ==================================================
 
-        otherSourceBox.style.display =
-            selected === "其他"
-                ? "block"
-                : "none";
+    document
+        .getElementById(
+            "cancelEditMember"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
 
-    }
+                editingMember = false;
 
-}
+                renderProfile();
 
-
-joinSourceInputs.forEach(input => {
-
-    input.addEventListener(
-        "change",
-        updateJoinSourceUI
-    );
-
-});
+            }
+        );
 
 
-// ==================================================
-// 副擔下拉
-// ==================================================
+    // ==================================================
+    // 副擔選單
+    // ==================================================
 
-const subFavoriteToggle =
-    document.getElementById(
-        "subFavoriteToggle"
-    );
+    const subFavoriteToggle =
+        document.getElementById(
+            "subFavoriteToggle"
+        );
 
-const subFavoriteMenu =
-    document.getElementById(
-        "subFavoriteMenu"
-    );
-
-const subFavoriteText =
-    document.getElementById(
-        "subFavoriteText"
-    );
+    const subFavoriteMenu =
+        document.getElementById(
+            "subFavoriteMenu"
+        );
 
 
-if (
-    subFavoriteToggle &&
+    subFavoriteToggle
+        ?.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                subFavoriteMenu
+                    ?.classList.toggle(
+                        "show"
+                    );
+
+            }
+        );
+
+
     subFavoriteMenu
-) {
+        ?.addEventListener(
+            "click",
+            event => {
 
-    subFavoriteToggle.addEventListener(
-        "click",
-        (event) => {
+                event.stopPropagation();
 
-            event.stopPropagation();
-
-            subFavoriteMenu.classList.toggle(
-                "show"
-            );
-
-        }
-    );
+            }
+        );
 
 
     document.addEventListener(
         "click",
         () => {
 
-            subFavoriteMenu.classList.remove(
-                "show"
-            );
+            subFavoriteMenu
+                ?.classList.remove(
+                    "show"
+                );
 
+        },
+        {
+            once: true
         }
     );
 
-}
 
+    // ==================================================
+    // 儲存
+    // ==================================================
 
-if (subFavoriteMenu) {
-
-    subFavoriteMenu
-        .querySelectorAll(
-            'input[type="checkbox"]'
+    document
+        .getElementById(
+            "saveMember"
         )
-        .forEach(checkbox => {
-
-            checkbox.addEventListener(
-                "change",
-                () => {
-
-                    const selected =
-                        [
-                            ...subFavoriteMenu.querySelectorAll(
-                                'input[type="checkbox"]:checked'
-                            )
-                        ]
-                        .map(
-                            item =>
-                                item.value
-                        );
-
-
-                    if (subFavoriteText) {
-
-                        subFavoriteText.textContent =
-                            selected.length
-                                ? selected.join("、")
-                                : "選擇副擔";
-
-                    }
-
-                }
-            );
-
-        });
+        ?.addEventListener(
+            "click",
+            saveMember
+        );
 
 }
-
-
-// ==================================================
-// 取消編輯
-// ==================================================
-
-document
-    .getElementById(
-        "cancelEditMember"
-    )
-    ?.addEventListener(
-        "click",
-        () => {
-
-            editingMember = false;
-
-            renderProfile();
-
-        }
-    );
-
-
-// ==================================================
-// 快速修改會員狀態
-// ==================================================
-
-document
-    .getElementById(
-        "quickEditStatus"
-    )
-    ?.addEventListener(
-        "click",
-        async () => {
-
-            if (!currentMember) return;
-
-
-            const currentStatus =
-                currentMember.status ||
-                "待審核";
-
-
-            const newStatus =
-                prompt(
-                    "請輸入新的會員狀態：\n\n已通過\n待審核\n已拒絕\n暫停",
-                    currentStatus
-                );
-
-
-            if (
-                newStatus === null
-            ) {
-
-                return;
-
-            }
-
-
-            const allowedStatuses = [
-
-                "已通過",
-
-                "待審核",
-
-                "已拒絕",
-
-                "暫停"
-
-            ];
-
-
-            if (
-                !allowedStatuses.includes(
-                    newStatus.trim()
-                )
-            ) {
-
-                alert(
-                    "會員狀態格式不正確。"
-                );
-
-                return;
-
-            }
-
-
-            try {
-
-                await updateDoc(
-
-                    doc(
-                        db,
-                        "members",
-                        currentMember.id
-                    ),
-
-                    {
-
-                        status:
-                            newStatus.trim()
-
-                    }
-
-                );
-
-
-                currentMember.status =
-                    newStatus.trim();
-
-
-                showToast(
-                    "會員狀態已更新！"
-                );
-
-
-                renderProfile();
-
-
-            }
-            catch (error) {
-
-                console.error(
-                    "更新會員狀態失敗：",
-                    error
-                );
-
-
-                alert(
-                    "會員狀態更新失敗，請稍後再試。"
-                );
-
-            }
-
-        }
-    );
-
-
-// ==================================================
-// 儲存
-// ==================================================
-
-document
-    .getElementById(
-        "saveMember"
-    )
-    ?.addEventListener(
-        "click",
-        saveMember
-    );
-
-}
-
 
 // ==================================================
 // 儲存會員
@@ -1865,7 +2067,7 @@ async function saveMember() {
 
         const socialPlatform =
             document.querySelector(
-                'input[name="socialPlatform"]:checked'
+                'input[name="editSocialPlatform"]:checked'
             )?.value || "";
 
 
@@ -1878,34 +2080,43 @@ async function saveMember() {
                 .trim() || "";
 
 
+        const email =
+            document
+                .getElementById(
+                    "editEmail"
+                )
+                ?.value
+                .trim() || "";
+
+
         // ==========================================
         // 主擔
         // ==========================================
 
         const favoriteMember =
-            document.querySelector(
-                'input[name="favoriteMember"]:checked'
-            )?.value || "";
+            document
+                .getElementById(
+                    "editFavoriteMember"
+                )
+                ?.value || "";
 
 
         // ==========================================
         // 副擔
         // ==========================================
 
-        const subFavoriteMembers =
-            [
-                ...document.querySelectorAll(
-                    'input[name="subFavoriteMember"]:checked'
-                )
-            ]
-                .map(
-                    checkbox =>
-                        checkbox.value
-                );
+        const subFavoriteMembers = [
+            ...document.querySelectorAll(
+                "#subFavoriteMenu input[type='checkbox']:checked"
+            )
+        ].map(
+            checkbox =>
+                checkbox.value
+        );
 
 
         // ==========================================
-        // 其他資料
+        // 官方 LINE
         // ==========================================
 
         const officialLine =
@@ -1916,60 +2127,73 @@ async function saveMember() {
                 ?.checked || false;
 
 
+        // ==========================================
+        // 加入來源
+        // ==========================================
+
         let joinSource =
             document.querySelector(
-                'input[name="joinSource"]:checked'
+                'input[name="editJoinSource"]:checked'
             )?.value || "";
 
 
+        const joinSourceOther =
+            document
+                .getElementById(
+                    "editJoinSourceOther"
+                )
+                ?.value
+                .trim() || "";
+
+
         if (
-            joinSource === "其他"
+            joinSource === "其他" &&
+            joinSourceOther
         ) {
 
             joinSource =
-                document
-                    .getElementById(
-                        "editOtherSource"
-                    )
-                    ?.value
-                    .trim() || "其他";
+                joinSourceOther;
 
         }
 
 
-        const referrerAccount =
-            document
-                .getElementById(
-                    "editReferrerAccount"
-                )
-                ?.value
-                .trim() || "";
+        // ==========================================
+        // 推薦人
+        // ==========================================
+
+        const referrerSelect =
+            document.getElementById(
+                "referrerSelect"
+            );
+
+
+        const referrerId =
+            referrerSelect?.value || "";
+
+
+        const referrer =
+            members.find(
+                member =>
+                    member.id ===
+                    referrerId
+            );
 
 
         const referrerMemberId =
-            document
-                .getElementById(
-                    "referrerMemberId"
-                )
-                ?.value || "";
+            referrer?.id || "";
 
 
         const referrerMemberNo =
-            document
-                .getElementById(
-                    "referrerMemberNo"
-                )
-                ?.value || "";
+            referrer?.memberNo || "";
 
 
-        const otherSource =
-            document
-                .getElementById(
-                    "editOtherSource"
-                )
-                ?.value
-                .trim() || "";
+        const referrerNickname =
+            referrer?.nickname || "";
 
+
+        // ==========================================
+        // 狀態
+        // ==========================================
 
         const status =
             document
@@ -1977,8 +2201,12 @@ async function saveMember() {
                     "editStatus"
                 )
                 ?.value ||
-                "待審核";
+            "待審核";
 
+
+        // ==========================================
+        // 管理備註
+        // ==========================================
 
         const adminNote =
             document
@@ -2007,6 +2235,8 @@ async function saveMember() {
 
                 nickname,
 
+                email,
+
                 socialPlatform,
 
                 socialAccount,
@@ -2019,17 +2249,20 @@ async function saveMember() {
 
                 joinSource,
 
-                referrerAccount,
+                joinSourceOther,
 
                 referrerMemberId,
 
                 referrerMemberNo,
 
-                otherSource,
+                referrerNickname,
 
                 status,
 
-                adminNote
+                adminNote,
+
+                updatedAt:
+                    new Date()
 
             }
 
@@ -2048,6 +2281,8 @@ async function saveMember() {
 
             nickname,
 
+            email,
+
             socialPlatform,
 
             socialAccount,
@@ -2060,13 +2295,13 @@ async function saveMember() {
 
             joinSource,
 
-            referrerAccount,
+            joinSourceOther,
 
             referrerMemberId,
 
             referrerMemberNo,
 
-            otherSource,
+            referrerNickname,
 
             status,
 
@@ -2130,12 +2365,13 @@ async function saveMember() {
         }, 0);
 
 
-        alert(
+        showToast(
             "會員資料已儲存！"
         );
 
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(
             "會員資料儲存失敗：",
@@ -2147,8 +2383,8 @@ async function saveMember() {
             "儲存失敗，請稍後再試。"
         );
 
-
-    } finally {
+    }
+    finally {
 
         if (saveButton) {
 
@@ -2156,13 +2392,14 @@ async function saveMember() {
                 false;
 
             saveButton.textContent =
-                "💾 儲存";
+                "💾 儲存會員資料";
 
         }
 
     }
 
 }
+
 
 // ==================================================
 // 最近加入會員
@@ -2197,153 +2434,147 @@ function renderRecentMembers() {
 
     const sortedMembers =
         [...members]
-            .sort((a, b) => {
+            .sort(
+                (a, b) => {
 
-                const dateA =
-                    getDateValue(
-                        a.joinDate
-                    );
-
-
-                const dateB =
-                    getDateValue(
-                        b.joinDate
-                    );
+                    const dateA =
+                        getDateValue(
+                            a.joinDate
+                        );
 
 
-                return dateB - dateA;
-
-            })
-            .slice(0, 3);
-
-
-    sortedMembers.forEach(member => {
+                    const dateB =
+                        getDateValue(
+                            b.joinDate
+                        );
 
 
-        const card =
-            document.createElement(
-                "div"
+                    return dateB - dateA;
+
+                }
+            )
+            .slice(
+                0,
+                3
             );
 
 
-        card.className =
-            "recent-member-card";
+    sortedMembers.forEach(
+        member => {
 
 
-        card.innerHTML = `
-
-            <div class="recent-member-avatar">
-
-                👤
-
-            </div>
+            const card =
+                document.createElement(
+                    "div"
+                );
 
 
-            <div class="recent-member-info">
-
-                <strong>
-
-                    ${escapeHTML(
-                        member.nickname ||
-                        "待發號"
-                    )}
-
-                </strong>
+            card.className =
+                "recent-member-card";
 
 
-                <span>
+            card.innerHTML = `
 
-                    ${
-                        member.memberNo
-                            ? escapeHTML(
-                                member.memberNo
+                <div class="recent-member-avatar">
+
+                    👤
+
+                </div>
+
+
+                <div class="recent-member-info">
+
+                    <strong>
+
+                        ${escapeHTML(
+                            member.nickname ||
+                            "待發號"
+                        )}
+
+                    </strong>
+
+
+                    <span>
+
+                        ${
+                            member.memberNo
+                                ? escapeHTML(
+                                    member.memberNo
+                                )
+                                : "尚未發號"
+                        }
+
+                        ·
+
+                        ${
+                            member.socialPlatform
+                                ? escapeHTML(
+                                    member.socialPlatform
+                                )
+                                : "尚未填寫平台"
+                        }
+
+                    </span>
+
+                </div>
+
+            `;
+
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    currentMember =
+                        member;
+
+
+                    editingMember =
+                        false;
+
+
+                    renderProfile();
+
+
+                    const target =
+                        document.querySelector(
+                            `.member-card[data-id="${member.id}"]`
+                        );
+
+
+                    if (target) {
+
+                        document
+                            .querySelectorAll(
+                                ".member-card"
                             )
-                            : "尚未發號"
-                    }
+                            .forEach(
+                                item => {
 
-                    ·
+                                    item.classList.remove(
+                                        "active"
+                                    );
 
-                    ${
-                        member.socialPlatform
-                            ? escapeHTML(
-                                member.socialPlatform
-                            )
-                            : "尚未填寫平台"
-                    }
-
-                </span>
-
-            </div>
-
-        `;
-
-
-        card.addEventListener(
-            "click",
-            () => {
-
-                currentMember =
-                    member;
-
-
-                editingMember =
-                    false;
-
-
-                renderProfile();
-
-
-                const target =
-                    document.querySelector(
-                        `.member-card[data-id="${member.id}"]`
-                    );
-
-
-                if (target) {
-
-                    document
-                        .querySelectorAll(
-                            ".member-card"
-                        )
-                        .forEach(item => {
-
-                            item.classList.remove(
-                                "active"
+                                }
                             );
 
-                        });
 
+                        target.classList.add(
+                            "active"
+                        );
 
-                    target.classList.add(
-                        "active"
-                    );
+                    }
 
                 }
+            );
 
 
-                window.scrollTo({
+            recentMembers.appendChild(
+                card
+            );
 
-                    top:
-                        document
-                            .querySelector(
-                                ".workspace"
-                            )
-                            ?.offsetTop || 0,
-
-                    behavior:
-                        "smooth"
-
-                });
-
-            }
-        );
-
-
-        recentMembers.appendChild(
-            card
-        );
-
-    });
+        }
+    );
 
 }
 
@@ -2363,7 +2594,8 @@ function getDateValue(value) {
 
     if (
         value &&
-        typeof value.toDate === "function"
+        typeof value.toDate ===
+        "function"
     ) {
 
         return value
@@ -2394,6 +2626,47 @@ function getDateValue(value) {
 
 
 // ==================================================
+// Toast
+// ==================================================
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    if (!toast) {
+
+        alert(message);
+
+        return;
+
+    }
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(() => {
+
+        toast.classList.remove(
+            "show"
+        );
+
+    }, 2200);
+
+}
+
+
+// ==================================================
 // 搜尋＋會員篩選
 // ==================================================
 
@@ -2401,6 +2674,7 @@ const memberStatusFilter =
     document.getElementById(
         "memberStatusFilter"
     );
+
 
 const memberFavoriteFilter =
     document.getElementById(
@@ -2410,9 +2684,11 @@ const memberFavoriteFilter =
 
 function applyMemberFilters() {
 
-    currentMember = null;
+    currentMember =
+        null;
 
-    editingMember = false;
+    editingMember =
+        false;
 
 
     const keyword =
@@ -2440,9 +2716,9 @@ function applyMemberFilters() {
 }
 
 
-// ==============================
+// ==================================================
 // 搜尋
-// ==============================
+// ==================================================
 
 if (memberSearch) {
 
@@ -2454,9 +2730,9 @@ if (memberSearch) {
 }
 
 
-// ==============================
+// ==================================================
 // 狀態篩選
-// ==============================
+// ==================================================
 
 if (memberStatusFilter) {
 
@@ -2468,9 +2744,9 @@ if (memberStatusFilter) {
 }
 
 
-// ==============================
+// ==================================================
 // 主擔篩選
-// ==============================
+// ==================================================
 
 if (memberFavoriteFilter) {
 
@@ -2492,24 +2768,27 @@ if (pendingStatCard) {
         "click",
         () => {
 
-            // 清空搜尋
             if (memberSearch) {
 
-                memberSearch.value = "";
+                memberSearch.value =
+                    "";
 
             }
 
 
-            // 主擔恢復全部
-            if (memberFavoriteFilter) {
+            if (
+                memberFavoriteFilter
+            ) {
 
-                memberFavoriteFilter.value = "";
+                memberFavoriteFilter.value =
+                    "";
 
             }
 
 
-            // 狀態設定為「待審核」
-            if (memberStatusFilter) {
+            if (
+                memberStatusFilter
+            ) {
 
                 memberStatusFilter.value =
                     "待審核";
@@ -2517,22 +2796,22 @@ if (pendingStatCard) {
             }
 
 
-            // 套用篩選
             applyMemberFilters();
 
 
-            // 捲到會員管理
             document
-                .querySelector(".workspace")
+                .querySelector(
+                    ".workspace"
+                )
                 ?.scrollIntoView({
-                    behavior: "smooth"
+                    behavior:
+                        "smooth"
                 });
 
         }
     );
 
 }
-
 
 // ==================================================
 // Modal
@@ -2723,32 +3002,40 @@ const pageSections =
 
 function showPage(pageName) {
 
-    pageSections.forEach(section => {
+    pageSections.forEach(
+        section => {
 
-        if (
-            section.dataset.pageContent ===
-            pageName
-        ) {
+            if (
+                section.dataset.pageContent ===
+                pageName
+            ) {
 
-            section.style.display = "";
+                section.style.display =
+                    "";
 
-        } else {
+            }
+            else {
 
-            section.style.display = "none";
+                section.style.display =
+                    "none";
+
+            }
 
         }
+    );
 
-    });
 
+    pageItems.forEach(
+        item => {
 
-    pageItems.forEach(item => {
+            item.classList.toggle(
+                "active",
+                item.dataset.page ===
+                pageName
+            );
 
-        item.classList.toggle(
-            "active",
-            item.dataset.page === pageName
-        );
-
-    });
+        }
+    );
 
 }
 
@@ -2757,40 +3044,45 @@ function showPage(pageName) {
 // 左側選單點擊
 // ==================================================
 
-pageItems.forEach(item => {
+pageItems.forEach(
+    item => {
 
-    item.addEventListener(
-        "click",
-        () => {
+        item.addEventListener(
+            "click",
+            () => {
 
-            const page =
-                item.dataset.page;
+                const page =
+                    item.dataset.page;
 
 
-            // 目前已完成的頁面
-            if (
-                page === "dashboard" ||
-                page === "members" ||
-                page === "tasks" ||
-                page === "payments" ||
-                page === "deposit"
-            ) {
+                if (
+                    page === "dashboard" ||
+                    page === "members" ||
+                    page === "tasks" ||
+                    page === "payments" ||
+                    page === "deposit"
+                ) {
 
-                showPage(page);
+                    showPage(
+                        page
+                    );
+
+                }
 
             }
+        );
 
-        }
-    );
-
-});
+    }
+);
 
 
 // ==================================================
 // 預設顯示 Dashboard
 // ==================================================
 
-showPage("dashboard");
+showPage(
+    "dashboard"
+);
 
 
 console.log(
